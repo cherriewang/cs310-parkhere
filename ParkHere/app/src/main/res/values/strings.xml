@@ -10,4 +10,23 @@
     <string name="first">First Name:</string>
     <string name="last">Last Name:</string>
 
+    <!--ListOfPayments strings-->
+    <string name="add_card_string">Add Card</string>
+
+    <!--ListingDetail strings-->
+    <string name="listing_title_string">Listing Title</string>
+    <string name="listing_address_string">Address</string>
+    <string name="price_string">$11</string>
+    <string name="owner_name_string">Owner</string>
+    <string name="category_string">Category</string>
+    <string name="about_string">About</string>
+    <string name="about_string_example">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit et ligula quis maximus. Cras tempus odio non felis dictum, ut suscipit ante tempus. Mauris id purus tellus. Donec dignissim eros vel odio fringilla dignissim. Nunc venenatis pretium arcu, ac porttitor dolor consectetur ac. Fusce vulputate bibendum turpis, blandit egestas mauris facilisis in. Donec tincidunt hendrerit nulla vel faucibus.</string>
+    <string name="listing_rating_string">Listing Rating</string>
+    <string name="owner_rating_string">Owner Rating</string>
+    <string name="more_reviews_string">More Reviews</string>
+    <string name="payment_string">Payment</string>
+    <string name="select_payment_string">Select Payment</string>
+    <string name="confirm_booking_string">Confirm Booking</string>
+    <string name="total_price_string">Total $11</string>
+
 </resources>
