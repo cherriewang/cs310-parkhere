@@ -33,7 +33,6 @@ public class ListOfPaymentsActivity extends AppCompatActivity{
     private void initialize(){
 
         addCardButton = (Button) findViewById(R.id.add_card_button);
-
         getSupportActionBar().setTitle("Payment");
 
     }
