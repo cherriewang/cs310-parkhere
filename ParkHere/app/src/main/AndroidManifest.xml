@@ -23,6 +23,11 @@
         <activity
             android:name=".ListOfPaymentsActivity"
             android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.cooltechworks.creditcarddesign.CardEditActivity"
@@ -33,11 +38,6 @@
         <activity
             android:name=".CreateEditListingActivity"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
