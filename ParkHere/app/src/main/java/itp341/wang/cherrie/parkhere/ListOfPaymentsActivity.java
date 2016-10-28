@@ -63,7 +63,7 @@ public class ListOfPaymentsActivity extends AppCompatActivity{
 
                 Intent intent = new Intent(ListOfPaymentsActivity.this, CardEditActivity.class);
                 intent.putExtra(CreditCardUtils.EXTRA_CARD_HOLDER_NAME, cardHolderName);
-                intent.putExtra(CreditCardUtils.EXTRA_CARD_NUMBER, cardNumber);
+                //intent.putExtra(CreditCardUtils.EXTRA_CARD_NUMBER, cardNumber);
                 intent.putExtra(CreditCardUtils.EXTRA_CARD_EXPIRY, expiry);
                 intent.putExtra(CreditCardUtils.EXTRA_CARD_CVV, cvv);
                 intent.putExtra(CreditCardUtils.EXTRA_CARD_SHOW_CARD_SIDE, CreditCardUtils.CARD_SIDE_FRONT);
