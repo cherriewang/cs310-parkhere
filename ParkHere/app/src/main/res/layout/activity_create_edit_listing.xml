@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_create_edit_listing"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context="itp341.wang.cherrie.parkhere.CreateEditListingActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/listingImageView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/placeholder_parking_spot"/>
+
+            <EditText
+                android:id="@+id/listingTitleEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:textSize="18sp"
+                android:hint="@string/listing_title_hint_string"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <CheckBox
+                    android:id="@+id/handicappedCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/handicapped_string"
+                    android:textSize="16sp"
+                    android:layout_marginEnd="45dp"/>
+
+                <CheckBox
+                    android:id="@+id/tandemCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tandem_string"
+                    android:textSize="16sp"/>
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/locationEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:textSize="18sp"
+                android:hint="@string/location_hint_string"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"/>
+
+            <EditText
+                android:id="@+id/aboutEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:textSize="18sp"
+                android:hint="@string/about_hint_string"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"/>
+
+            <com.blackcat.currencyedittext.CurrencyEditText
+                android:id="@+id/priceEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:textSize="18sp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                />
+
+            <Button
+                android:id="@+id/createListingButton"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:paddingEnd="50dp"
+                android:paddingStart="50dp"
+                android:text="@string/create_button_string"
+                android:backgroundTint="@color/colorAccent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

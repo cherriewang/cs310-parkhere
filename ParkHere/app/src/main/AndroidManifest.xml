@@ -3,21 +3,35 @@
     package="itp341.wang.cherrie.parkhere">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
+        android:name=".ParkHereApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name=".ParkHereApplication">
-        <activity android:name=".WelcomeActivity"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".WelcomeActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SignupActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ListOfPaymentsActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".LoginActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".SignupActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ListOfPaymentsActivity"
+        <activity
+            android:name="com.cooltechworks.creditcarddesign.CardEditActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ListingDetailActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".CreateEditListingActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,12 +39,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ListingDetailActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity android:name="com.cooltechworks.creditcarddesign.CardEditActivity"
-            android:screenOrientation="portrait"
-            />
     </application>
 
 </manifest>

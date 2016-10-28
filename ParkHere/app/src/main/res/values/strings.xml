@@ -30,4 +30,11 @@
     <string name="total_price_string">Total $11</string>
     <string name="review_string_example">This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. </string>
 
+    <!--CreateEditListing strings-->
+    <string name="listing_title_hint_string">Listing Name</string>
+    <string name="handicapped_string">Handicapped</string>
+    <string name="tandem_string">Tandem</string>
+    <string name="location_hint_string">Location</string>
+    <string name="about_hint_string">About</string>
+    <string name="create_button_string">Create</string>
 </resources>
