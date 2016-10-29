@@ -134,6 +134,9 @@ public class CreateEditListingActivity extends AppCompatActivity {
                 }
             }
         });
+        listingTitleEditText.addTextChangedListener(new EditTextListener(listingTitleEditText.getId()));
+        locationEditText.addTextChangedListener(new EditTextListener(locationEditText.getId()));
+        aboutEditText.addTextChangedListener(new EditTextListener(aboutEditText.getId()));
     }
 
     @Override
