@@ -33,15 +33,20 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".CreateEditListingActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".ForgotPasswordActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".RateReviewActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ListOfListingsActivity" />
-        <activity android:name=".ListOfBookingsActivity">
+        <activity
+            android:name=".ListOfListingsActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ListOfBookingsActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
