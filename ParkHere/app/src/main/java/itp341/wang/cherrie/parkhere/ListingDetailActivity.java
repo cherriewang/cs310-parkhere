@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -67,7 +68,12 @@ public class ListingDetailActivity extends AppCompatActivity{
     }
 
     private void listeners(){
-
+        confirmBookingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Intent for confirm
+            }
+        });
     }
 
     private void setCategoryTags(){
