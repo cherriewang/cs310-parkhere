@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -34,6 +36,13 @@ public class CreateEditListingActivity extends AppCompatActivity {
     private CurrencyEditText priceEditText;
     private Button createListingButton;
 
+    private String listingTitle;
+    private String location;
+    private String about;
+    private long price;
+    private boolean isTandem = false;
+    private boolean isHandicapped = false;
+
     public final static int CREATE_EDIT_REQUEST_CODE = 0;
 
     @Override
@@ -56,6 +65,23 @@ public class CreateEditListingActivity extends AppCompatActivity {
         aboutEditText = (EditText) findViewById(R.id.aboutEditText);
         priceEditText = (CurrencyEditText) findViewById(R.id.priceEditText);
         createListingButton = (Button) findViewById(R.id.createListingButton);
+    }
+
+    //Used to fill up info if editing a listing
+    private void populate(){
+        //listingTitle =
+        //location =
+        //about =
+        //price =
+        //isTandem =
+        //isHandicapped =
+
+        //listingEditText.setText(listingTitle);
+        //locationEditText.setText(location);
+        //aboutEditText.setText(about);
+        //priceEditText.setText(Long.toString(price));
+        //tandemCheckBox.setChecked(isTandem);
+        //handicappedCheckBox.setChecked(isHandicapped);
     }
 
     private void listeners(){
@@ -96,6 +122,18 @@ public class CreateEditListingActivity extends AppCompatActivity {
                 return true;
             }
         });
+        createListingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!listingTitle.isEmpty() && !location.isEmpty() && !about.isEmpty() && !isPriceEditTextEmpty()){
+                    price = priceEditText.getRawValue();
+                    isTandem = tandemCheckBox.isChecked();
+                    isHandicapped = handicappedCheckBox.isChecked();
+                    //create listing
+                    //finish activity
+                }
+            }
+        });
     }
 
     @Override
@@ -106,6 +144,36 @@ public class CreateEditListingActivity extends AppCompatActivity {
             ArrayList<Image> images = data.getParcelableArrayListExtra(ImagePickerActivity.INTENT_EXTRA_SELECTED_IMAGES);
             Bitmap image = BitmapFactory.decodeFile(images.get(0).getPath());
             listingImageView.setImageBitmap(image);
+        }
+    }
+
+    private boolean isPriceEditTextEmpty(){
+        return priceEditText.getText().toString().isEmpty();
+    }
+
+    class EditTextListener implements TextWatcher{
+
+        private int id;
+
+        public EditTextListener(int id){
+            this.id = id;
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if(id == R.id.listingTitleEditText){ listingTitle = s.toString(); }
+            else if(id == R.id.locationEditText){ location = s.toString(); }
+            else if(id == R.id.aboutEditText){ about = s.toString(); }
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
         }
     }
 }
