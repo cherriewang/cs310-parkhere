@@ -46,4 +46,8 @@
 
     <!--ListOfBookings strings-->
     <string name="list_of_bookings_actionbar_title">Bookings</string>
+    <string name="current_label_string">Current</string>
+
+    <!--ListOfBookings strings-->
+    <string name="list_of_listings_actionbar_title">Listings</string>
 </resources>
