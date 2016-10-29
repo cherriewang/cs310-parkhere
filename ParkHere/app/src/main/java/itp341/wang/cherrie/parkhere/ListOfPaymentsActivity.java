@@ -15,6 +15,10 @@ import com.cooltechworks.creditcarddesign.CreditCardView;
 import com.cooltechworks.creditcarddesign.CardEditActivity;
 import com.cooltechworks.creditcarddesign.CreditCardUtils;
 
+/**
+ * Created by glarencezhao on 10/23/16.
+ */
+
 public class ListOfPaymentsActivity extends AppCompatActivity{
 
     private Button addCardButton;

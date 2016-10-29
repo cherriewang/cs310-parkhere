@@ -37,4 +37,10 @@
     <string name="location_hint_string">Location</string>
     <string name="about_hint_string">About</string>
     <string name="create_button_string">Create</string>
+
+    <!--RateReview strings-->
+    <string name="review_hint_string">Please leave a review about your parking experience. Please note that your review will be moderated and published publicly for other users to see.</string>
+    <string name="submit_button_string">Submit</string>
+    <string name="owner_label_string">Owner</string>
+    <string name="listing_label_string">Listing</string>
 </resources>

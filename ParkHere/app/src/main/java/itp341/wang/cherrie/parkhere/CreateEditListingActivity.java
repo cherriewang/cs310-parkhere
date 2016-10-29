@@ -19,6 +19,10 @@ import com.nguyenhoanglam.imagepicker.model.Image;
 
 import java.util.ArrayList;
 
+/**
+ * Created by glarencezhao on 10/24/16.
+ */
+
 public class CreateEditListingActivity extends AppCompatActivity {
 
     private ImageView listingImageView;
