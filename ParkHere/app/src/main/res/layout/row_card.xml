@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="140dp">
+
+        <ImageView
+            android:id="@+id/listingImageView"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/placeholder_parking_spot"
+            android:scaleType="centerCrop"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"/>
+        
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/ownerReviewProfPic"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            fresco:placeholderImageScaleType="centerCrop"
+            fresco:placeholderImage="@drawable/placeholder_prof_pic"
+            fresco:roundAsCircle="true"
+            fresco:roundingBorderWidth="1dp"
+            fresco:roundingBorderColor="@color/grey"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/card_main_inner_simple_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/listing_title_string"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/owner_label_string"
+            android:textSize="18sp"/>
+
+        <me.zhanghai.android.materialratingbar.MaterialRatingBar
+            android:id="@+id/ownerRatingBar"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialRatingBar.RatingBar" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/listing_label_string"
+            android:textSize="18sp"/>
+
+        <me.zhanghai.android.materialratingbar.MaterialRatingBar
+            android:id="@+id/listingRatingBar"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialRatingBar.RatingBar"
+            android:layout_marginBottom="5dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:background="@drawable/edittext_style"
+            android:lines="4"
+            android:textSize="16sp"
+            android:id="@+id/reviewEditText"
+            android:padding="13dp"
+            android:layout_margin="10dp"
+            android:hint="@string/review_hint_string"/>
+
+    </LinearLayout>
+
+</LinearLayout>
