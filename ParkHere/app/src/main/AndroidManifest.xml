@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".WelcomeActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait" />
@@ -34,11 +34,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ListingDetailActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".CreateEditListingActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".ForgotPasswordActivity"></activity>
     </application>
 
 </manifest>
