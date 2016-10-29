@@ -33,7 +33,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".CreateEditListingActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".ForgotPasswordActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".RateReviewActivity"
             android:screenOrientation="portrait">
