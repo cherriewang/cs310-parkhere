@@ -10,6 +10,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        renderscriptTargetApi 19
+        renderscriptSupportModeEnabled true
     }
     buildTypes {
         release {
@@ -34,6 +36,10 @@ dependencies {
     //Core
     compile 'com.github.gabrielemariotti.cards:cardslib-core:2.1.0'
     compile 'me.zhanghai.android.materialratingbar:library:1.0.2'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.daimajia.easing:library:1.0.0@aar'
+    compile 'com.daimajia.androidanimations:library:1.1.2@aar'
+    compile 'com.daimajia.androidviewhover:library:1.0.4@aar'
 
     testCompile 'junit:junit:4.12'
 }
