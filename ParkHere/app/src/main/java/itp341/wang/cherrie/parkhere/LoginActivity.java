@@ -32,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 boolean validUser = true;
                 // verify email + password, return bool
+                
                 if (validUser){
                     // Intent to start HomeActivity
                     Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);

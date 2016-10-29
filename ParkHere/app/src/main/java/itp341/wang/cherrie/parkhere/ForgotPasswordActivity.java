@@ -30,7 +30,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 // verify that the email exists in the database
                 // some function that sends email for password reset
                 // return to login activity via intent for result
-                Intent loginIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
                 setResult(Activity.RESULT_OK, loginIntent);
                 finish();
             }
