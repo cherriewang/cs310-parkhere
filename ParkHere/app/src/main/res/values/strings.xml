@@ -43,4 +43,11 @@
     <string name="submit_button_string">Submit</string>
     <string name="owner_label_string">Owner</string>
     <string name="listing_label_string">Listing</string>
+
+    <!--ListOfBookings strings-->
+    <string name="list_of_bookings_actionbar_title">Bookings</string>
+    <string name="current_label_string">Current</string>
+
+    <!--ListOfBookings strings-->
+    <string name="list_of_listings_actionbar_title">Listings</string>
 </resources>
