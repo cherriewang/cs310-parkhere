@@ -1,0 +1,28 @@
+version: '2'
+services:
+  db:
+    image: postgres:9.5
+    expose:
+      - "5432"
+    ports:
+       - "127.0.0.1:5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=irfan
+      - POSTGRES_DB=parkhere
+
+  server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    links:
+      - db
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=finch
+      - DB_PORT_5432_TCP_ADDR=db
+    restart: always
