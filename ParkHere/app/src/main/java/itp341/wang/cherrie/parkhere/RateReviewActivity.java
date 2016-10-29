@@ -7,15 +7,16 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RatingBar;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import it.gmariotti.cardslib.library.internal.Card;
-import it.gmariotti.cardslib.library.internal.CardHeader;
-import it.gmariotti.cardslib.library.internal.CardThumbnail;
 import it.gmariotti.cardslib.library.view.CardView;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
+
+/**
+ * Created by glarencezhao on 10/28/16.
+ */
 
 public class RateReviewActivity extends AppCompatActivity {
 
