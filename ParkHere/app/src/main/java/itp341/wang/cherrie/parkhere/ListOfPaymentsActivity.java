@@ -57,6 +57,8 @@ public class ListOfPaymentsActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
 
+                //if Looking at or Editing Cards
+
                 System.out.println("EDITING CARD " + index);
 
                 CreditCardView creditCardView = (CreditCardView) v;
@@ -74,6 +76,10 @@ public class ListOfPaymentsActivity extends AppCompatActivity{
                 intent.putExtra(CreditCardUtils.EXTRA_VALIDATE_EXPIRY_DATE, true);
 
                 startActivityForResult(intent, index);
+
+                //else if choosing payment
+                //pass payment details
+                //finish activity
             }
         });
     }
