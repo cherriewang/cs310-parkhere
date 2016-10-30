@@ -2,7 +2,7 @@
     <string name="app_name">ParkHere</string>
     <!-- Button Text -->
     <string name="login">Login</string>
-    <string name="signup">Signup</string>
+    <string name="register">Register</string>
     <string name="email">Email:</string>
     <string name="phone_num">Phone Number:</string>
     <string name="password">Password:</string>
