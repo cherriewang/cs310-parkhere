@@ -16,6 +16,11 @@ type User struct {
 	HashedPassword string `json:"hashed_password"`
 }
 
+type LoginMsg struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 type Listing struct {
 	gorm.Model
 	PicURL   string   `json:"pic_url"`

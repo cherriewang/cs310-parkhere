@@ -5,7 +5,7 @@ services:
     expose:
       - "5432"
     ports:
-       - "127.0.0.1:5432:5432"
+       - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=password
       - POSTGRES_USER=irfan
@@ -25,4 +25,9 @@ services:
       - POSTGRES_PASSWORD=password
       - POSTGRES_USER=finch
       - DB_PORT_5432_TCP_ADDR=db
+      - DB_NAME=parkhere
+      - DB_USER=irfan
+      - DB_PASS=password
+      - DB_SERVICE=db
+      - DB_PORT=5432
     restart: always

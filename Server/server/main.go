@@ -5,14 +5,19 @@ import (
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
+
+var db *gorm.DB
 
 func main() {
 
 	router := NewRouter()
 	time.Sleep(time.Second * 10)
 	fmt.Println("starting to connect to DB...")
-	db := ConnectToPG()
+	db = ConnectToPG()
 	fmt.Println("intermediate check")
 	SetupDB(db)
 	fmt.Println("connected")

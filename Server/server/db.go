@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"os"
 )
 
 func check(err error) {
@@ -12,11 +14,19 @@ func check(err error) {
 }
 
 func ConnectToPG() *gorm.DB {
-	db, err := gorm.Open("postgres", "host=postgres user=irfan dbname=parkhere sslmode=disable password=password")
+	db, err := gorm.Open("postgres", fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable password=%s", os.Getenv("DB_SERVICE"), os.Getenv("DB_USER"), os.Getenv("DB_NAME"), os.Getenv("DB_PASS")))
 	check(err)
 	return db
 }
 
 func SetupDB(db *gorm.DB) {
 	db.AutoMigrate(&User{}, &Listing{}, &Booking{}, &Review{})
+}
+
+func CreateUser(user User, db *gorm.DB) {
+	if db.NewRecord(&user) {
+		db.Create(&user)
+	} else {
+		fmt.Println("error, primary key already exists for user")
+	}
 }
