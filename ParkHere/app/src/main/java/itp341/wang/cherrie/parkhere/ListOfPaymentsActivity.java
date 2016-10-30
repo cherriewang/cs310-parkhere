@@ -19,6 +19,7 @@ public class ListOfPaymentsActivity extends AppCompatActivity{
 
     private Button addCardButton;
     private final int CREATE_NEW_CARD = 0;
+    private LinearLayout cardContainer;
 
     private boolean isSelectingPayment;
 
@@ -33,14 +34,31 @@ public class ListOfPaymentsActivity extends AppCompatActivity{
 
         initialize();
         listeners();
-
     }
 
     private void initialize(){
-
         addCardButton = (Button) findViewById(R.id.add_card_button);
+        cardContainer = (LinearLayout) findViewById(R.id.card_container);
         getSupportActionBar().setTitle("Payment");
+        populate();
+    }
 
+    private void populate(){
+        CreditCardView sampleCreditCardView = new CreditCardView(this);
+
+        String name = "Glarence Zhao";
+        String cvv = "420";
+        String expiry = "01/18";
+        String cardNumber = "4242424242424242";
+
+        sampleCreditCardView.setCVV(cvv);
+        sampleCreditCardView.setCardHolderName(name);
+        sampleCreditCardView.setCardExpiry(expiry);
+        sampleCreditCardView.setCardNumber(cardNumber);
+
+        cardContainer.addView(sampleCreditCardView);
+        int index = cardContainer.getChildCount() - 1;
+        addCardListener(index, sampleCreditCardView);
     }
 
     private void listeners(){
@@ -90,8 +108,7 @@ public class ListOfPaymentsActivity extends AppCompatActivity{
     public void onActivityResult(int reqCode, int resultCode, Intent data) {
 
         if(resultCode == RESULT_OK) {
-
-            LinearLayout cardContainer = (LinearLayout) findViewById(R.id.card_container);
+            Debug.printToast("Result Code is OK", getApplicationContext());
 
             String name = data.getStringExtra(CreditCardUtils.EXTRA_CARD_HOLDER_NAME);
             String cardNumber = data.getStringExtra(CreditCardUtils.EXTRA_CARD_NUMBER);
@@ -99,8 +116,7 @@ public class ListOfPaymentsActivity extends AppCompatActivity{
             String cvv = data.getStringExtra(CreditCardUtils.EXTRA_CARD_CVV);
 
             if(reqCode == CREATE_NEW_CARD) {
-
-                System.out.println("CREATED NEW CARD");
+                Debug.printToast("CREATED NEW CARD", getApplicationContext());
 
                 CreditCardView creditCardView = new CreditCardView(this);
 
@@ -115,8 +131,7 @@ public class ListOfPaymentsActivity extends AppCompatActivity{
 
             }
             else {
-
-                System.out.println("EDITED EXISTING CARD " + reqCode);
+                Debug.printToast("EDITED EXISTING CARD " + reqCode, getApplicationContext());
 
                 CreditCardView creditCardView = (CreditCardView) cardContainer.getChildAt(reqCode);
 
