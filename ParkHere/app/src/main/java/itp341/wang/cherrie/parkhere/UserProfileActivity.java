@@ -1,5 +1,6 @@
 package itp341.wang.cherrie.parkhere;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -48,8 +49,8 @@ public class UserProfileActivity extends AppCompatActivity {
         reviewsLinkTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent for ListOfRatings
-                Debug.printToast("More reviews clicked!", getApplicationContext());
+                Intent i = new Intent(UserProfileActivity.this, ListOfRatingsActivity.class);
+                startActivity(i);
             }
         });
     }
