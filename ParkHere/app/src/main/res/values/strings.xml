@@ -34,6 +34,8 @@
     <string name="listing_title_hint_string">Listing Name</string>
     <string name="handicapped_string">Handicapped</string>
     <string name="tandem_string">Tandem</string>
+    <string name="suv_string">SUV</string>
+    <string name="covered_string">Covered</string>
     <string name="location_hint_string">Location</string>
     <string name="about_hint_string">About</string>
     <string name="create_button_string">Create</string>

@@ -154,14 +154,11 @@
                     android:textStyle="bold"
                     android:layout_marginBottom="12dp"/>
                 
-                <RatingBar
-                    android:theme="@style/RatingBar"
+                <me.zhanghai.android.materialratingbar.MaterialRatingBar
                     android:id="@+id/listingRatingBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:stepSize="0.5"
-                    android:numStars="5"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_gravity="center_horizontal"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -178,13 +175,10 @@
                     android:textStyle="bold"
                     android:layout_marginBottom="12dp"/>
 
-                <RatingBar
-                    android:theme="@style/RatingBar"
+                <me.zhanghai.android.materialratingbar.MaterialRatingBar
                     android:id="@+id/ownerRatingBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:stepSize="0.5"
-                    android:numStars="5"
                     android:layout_gravity="center_horizontal"/>
 
                 <View
@@ -284,7 +278,8 @@
         android:id="@id/persistentFooter"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:background="@drawable/bordershadow"
+        android:elevation="10dp"
+        android:background="#fff"
         android:layout_alignParentBottom="true">
 
         <TextView

@@ -24,10 +24,16 @@ public class ListOfPaymentsActivity extends AppCompatActivity{
     private Button addCardButton;
     private final int CREATE_NEW_CARD = 0;
 
+    private boolean isSelectingPayment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_payments);
+
+        Intent i = getIntent();
+        if(i != null)
+            isSelectingPayment = i.getBooleanExtra(ListingDetailActivity.SELECTING_PAYMENT, false);
 
         initialize();
         listeners();
@@ -57,29 +63,30 @@ public class ListOfPaymentsActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
 
-                //if Looking at or Editing Cards
+                if(isSelectingPayment){
+                    //pass payment details
+                    setResult(RESULT_OK);
+                    finishActivity(ListingDetailActivity.SELECT_PAYMENT_REQUEST_CODE);
+                }
+                else{
+                    System.out.println("EDITING CARD " + index);
 
-                System.out.println("EDITING CARD " + index);
+                    CreditCardView creditCardView = (CreditCardView) v;
+                    String cardNumber = creditCardView.getCardNumber();
+                    String expiry = creditCardView.getExpiry();
+                    String cardHolderName = creditCardView.getCardHolderName();
+                    String cvv = creditCardView.getCVV();
 
-                CreditCardView creditCardView = (CreditCardView) v;
-                String cardNumber = creditCardView.getCardNumber();
-                String expiry = creditCardView.getExpiry();
-                String cardHolderName = creditCardView.getCardHolderName();
-                String cvv = creditCardView.getCVV();
+                    Intent intent = new Intent(ListOfPaymentsActivity.this, CardEditActivity.class);
+                    intent.putExtra(CreditCardUtils.EXTRA_CARD_HOLDER_NAME, cardHolderName);
+                    intent.putExtra(CreditCardUtils.EXTRA_CARD_NUMBER, cardNumber);
+                    intent.putExtra(CreditCardUtils.EXTRA_CARD_EXPIRY, expiry);
+                    intent.putExtra(CreditCardUtils.EXTRA_CARD_CVV, cvv);
+                    intent.putExtra(CreditCardUtils.EXTRA_CARD_SHOW_CARD_SIDE, CreditCardUtils.CARD_SIDE_FRONT);
+                    intent.putExtra(CreditCardUtils.EXTRA_VALIDATE_EXPIRY_DATE, true);
 
-                Intent intent = new Intent(ListOfPaymentsActivity.this, CardEditActivity.class);
-                intent.putExtra(CreditCardUtils.EXTRA_CARD_HOLDER_NAME, cardHolderName);
-                intent.putExtra(CreditCardUtils.EXTRA_CARD_NUMBER, cardNumber);
-                intent.putExtra(CreditCardUtils.EXTRA_CARD_EXPIRY, expiry);
-                intent.putExtra(CreditCardUtils.EXTRA_CARD_CVV, cvv);
-                intent.putExtra(CreditCardUtils.EXTRA_CARD_SHOW_CARD_SIDE, CreditCardUtils.CARD_SIDE_FRONT);
-                intent.putExtra(CreditCardUtils.EXTRA_VALIDATE_EXPIRY_DATE, true);
-
-                startActivityForResult(intent, index);
-
-                //else if choosing payment
-                //pass payment details
-                //finish activity
+                    startActivityForResult(intent, index);
+                }
             }
         });
     }

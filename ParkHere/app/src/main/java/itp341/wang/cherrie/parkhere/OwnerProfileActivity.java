@@ -49,6 +49,7 @@ public class OwnerProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Intent for ListOfRatings
+                Debug.printToast("More reviews clicked!", getApplicationContext());
             }
         });
     }

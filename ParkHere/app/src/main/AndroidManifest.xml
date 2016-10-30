@@ -39,10 +39,17 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ListingDetailActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+        </activity>
         <activity
             android:name=".CreateEditListingActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ForgotPasswordActivity"
             android:screenOrientation="portrait" />
@@ -52,18 +59,28 @@
         <activity
             android:name=".ListOfListingsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".HelpActivity" />
-        <activity android:name=".SettingsActivity" />
+        <activity
+            android:name=".HelpActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".SettingsActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ListOfBookingsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".HomeActivity"
-            android:theme="@style/NavDrawerTheme">
+            android:theme="@style/NavDrawerTheme"
+            android:screenOrientation="portrait">
         </activity>
-
-        <activity android:name=".ListOfRatingsActivity"></activity>
-
+        <activity
+            android:name=".ListOfRatingsActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".OwnerProfileActivity"
+            android:screenOrientation="portrait">
+        </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -75,14 +92,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
-        <activity android:name=".OwnerProfileActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

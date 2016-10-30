@@ -126,6 +126,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             //Payment
                             else if(drawerItem.getIdentifier() == 5){
                                 Intent i = new Intent(HomeActivity.this, ListOfPaymentsActivity.class);
+                                i.putExtra(ListingDetailActivity.SELECTING_PAYMENT, false);
                                 startActivity(i);
                             }
                             //Settings

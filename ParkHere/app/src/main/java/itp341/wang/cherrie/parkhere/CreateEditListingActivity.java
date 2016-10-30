@@ -31,6 +31,8 @@ public class CreateEditListingActivity extends AppCompatActivity {
     private EditText listingTitleEditText;
     private CheckBox handicappedCheckBox;
     private CheckBox tandemCheckBox;
+    private CheckBox suvCheckBox;
+    private CheckBox coveredCheckBox;
     private EditText locationEditText;
     private EditText aboutEditText;
     private CurrencyEditText priceEditText;
@@ -42,6 +44,8 @@ public class CreateEditListingActivity extends AppCompatActivity {
     private long price = 0;
     private boolean isTandem = false;
     private boolean isHandicapped = false;
+    private boolean isSUV = false;
+    private boolean isCovered = false;
 
     public final static int CREATE_EDIT_REQUEST_CODE = 0;
 
@@ -61,6 +65,8 @@ public class CreateEditListingActivity extends AppCompatActivity {
         listingTitleEditText = (EditText) findViewById(R.id.listingTitleEditText);
         handicappedCheckBox = (CheckBox) findViewById(R.id.handicappedCheckBox);
         tandemCheckBox = (CheckBox) findViewById(R.id.tandemCheckBox);
+        suvCheckBox = (CheckBox) findViewById(R.id.suvCheckBox);
+        coveredCheckBox = (CheckBox) findViewById(R.id.coveredCheckBox);
         locationEditText = (EditText) findViewById(R.id.locationEditText);
         aboutEditText = (EditText) findViewById(R.id.aboutEditText);
         priceEditText = (CurrencyEditText) findViewById(R.id.priceEditText);
@@ -129,6 +135,8 @@ public class CreateEditListingActivity extends AppCompatActivity {
                     price = priceEditText.getRawValue();
                     isTandem = tandemCheckBox.isChecked();
                     isHandicapped = handicappedCheckBox.isChecked();
+                    isSUV = suvCheckBox.isChecked();
+                    isCovered = coveredCheckBox.isChecked();
                     //create listing
                     setResult(RESULT_OK);
                     finish();
@@ -138,6 +146,7 @@ public class CreateEditListingActivity extends AppCompatActivity {
         listingTitleEditText.addTextChangedListener(new EditTextListener(listingTitleEditText.getId()));
         locationEditText.addTextChangedListener(new EditTextListener(locationEditText.getId()));
         aboutEditText.addTextChangedListener(new EditTextListener(aboutEditText.getId()));
+
     }
 
     @Override
