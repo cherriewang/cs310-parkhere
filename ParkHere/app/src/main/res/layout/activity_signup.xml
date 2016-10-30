@@ -100,7 +100,8 @@
             android:background="@drawable/rounded_button"
             android:textColor="@color/white"
             android:gravity ="center"
-            android:id="@+id/buttonEnter" />
+            android:id="@+id/buttonEnter"
+            android:layout_marginTop="16dp"/>
 
     </LinearLayout>
 

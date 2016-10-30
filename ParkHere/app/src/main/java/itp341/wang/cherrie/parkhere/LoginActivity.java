@@ -19,12 +19,20 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getSupportActionBar().hide();
 
+        initialize();
+        listeners();
+    }
+
+    private void initialize(){
         emailEditText = (EditText) findViewById(R.id.editTextEmail);
         passwordEditText = (EditText) findViewById(R.id.editTextPass);
         forgotPassword = (TextView) findViewById(R.id.textForgotPassword);
         enterButton = (Button) findViewById(R.id.buttonEnter);
+    }
 
+    private void listeners(){
         // ENTER BUTTON LISTENER
         enterButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -32,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 boolean validUser = true;
                 // verify email + password, return bool
-                
+
                 if (validUser){
                     // Intent to start HomeActivity
                     Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);

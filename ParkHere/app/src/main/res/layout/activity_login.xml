@@ -12,10 +12,9 @@
 
     <LinearLayout
         android:orientation="vertical"
+        android:layout_centerInParent="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center">
-
+        android:layout_height="wrap_content">
 
         <TextView
             android:text="@string/email"
@@ -49,15 +48,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity ="center"
-            android:id="@+id/textForgotPassword" />
+            android:gravity ="right"
+            android:id="@+id/textForgotPassword"
+            android:layout_marginTop="16dp"/>
 
         <Button
             android:text="@string/login"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:background="@drawable/rounded_button"
+            android:textColor="@color/white"
             android:gravity ="center"
+            android:layout_marginTop="32dp"
             android:id="@+id/buttonEnter" />
     </LinearLayout>
 
