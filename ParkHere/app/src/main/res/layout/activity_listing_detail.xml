@@ -85,7 +85,7 @@
                     android:id="@+id/ownerTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="John Appleseed"
+                    android:text="John"
                     android:textSize="18sp"
                     android:layout_marginTop="8dp"/>
 
@@ -221,16 +221,16 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/reviewUserName"
-                            android:text="First Last"
+                            android:id="@+id/reviewUserNameTextView"
+                            android:text="First"
                             android:textSize="16sp"
                             android:layout_marginBottom="8dp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/reviewDate"
-                            android:text="Month year"
+                            android:id="@+id/reviewDateTextView"
+                            android:text="Month Year"
                             android:textSize="16sp"/>
 
                     </LinearLayout>
@@ -240,7 +240,7 @@
                 <TextView
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:id="@+id/reviewTextView"
+                    android:id="@+id/reviewContentTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/review_string_example"

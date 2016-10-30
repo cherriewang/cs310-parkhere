@@ -58,11 +58,11 @@ public class ListOfPaymentsActivity extends AppCompatActivity{
         creditCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if(isSelectingPayment){
                     //pass payment details
                     setResult(RESULT_OK);
-                    finishActivity(ListingDetailActivity.SELECT_PAYMENT_REQUEST_CODE);
+                    //finishActivity(ListingDetailActivity.SELECT_PAYMENT_REQUEST_CODE);
+                    finish();
                 }
                 else{
                     System.out.println("EDITING CARD " + index);

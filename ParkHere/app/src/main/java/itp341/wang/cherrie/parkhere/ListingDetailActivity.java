@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.cunoraz.tagview.Tag;
 import com.cunoraz.tagview.TagView;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
@@ -33,6 +34,10 @@ public class ListingDetailActivity extends AppCompatActivity{
     private MaterialRatingBar listingRatingBar;
     private MaterialRatingBar ownerRatingBar;
     private TagView categoryTags;
+    private SimpleDraweeView reviewProfPicView;
+    private TextView reviewUserNameTextView;
+    private TextView reviewDateTextView;
+    private TextView reviewContentTextView;
 
     public static final int SELECT_PAYMENT_REQUEST_CODE = 0;
     public static final String SELECTING_PAYMENT = "Selecting Payment";
@@ -61,6 +66,10 @@ public class ListingDetailActivity extends AppCompatActivity{
         confirmBookingButton = (Button)findViewById(R.id.confirmBookingButton);
         listingRatingBar = (MaterialRatingBar)findViewById(R.id.listingRatingBar);
         ownerRatingBar = (MaterialRatingBar)findViewById(R.id.ownerRatingBar);
+        reviewProfPicView = (SimpleDraweeView)findViewById(R.id.reviewProfPicView);
+        reviewUserNameTextView = (TextView)findViewById(R.id.reviewUserNameTextView);
+        reviewDateTextView = (TextView)findViewById(R.id.reviewDateTextView);
+        reviewContentTextView = (TextView)findViewById(R.id.reviewContentTextView);
 
         populate();
     }
@@ -97,6 +106,14 @@ public class ListingDetailActivity extends AppCompatActivity{
                 startActivityForResult(i, SELECT_PAYMENT_REQUEST_CODE);
             }
         });
+        reviewProfPicView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ListingDetailActivity.this, UserProfileActivity.class);
+                //pass user object
+                startActivity(i);
+            }
+        });
     }
 
     private void populate(){
@@ -104,17 +121,19 @@ public class ListingDetailActivity extends AppCompatActivity{
         listingTitleTextView.setText("Shrine Habitat Parking");
         listingAddressTextView.setText("701 W 32nd St");
         priceTextView.setText("$11.50");
-        ownerTextView.setText("Kanye West");
+        ownerTextView.setText("Kanye");
         //aboutTextView.setText("");
         //totalPriceTextView.setText("");
         listingRatingBar.setRating((float)3.0);
         ownerRatingBar.setRating((float)3.0);
         paymentMethodTextView.setText("");
-
         //To display review user image, same code for listing detail image
         //Uri uri = Uri.parse("https://raw.githubusercontent.com/facebook/fresco/gh-pages/static/logo.png");
         //SimpleDraweeView draweeView = (SimpleDraweeView) findViewById(R.id.my_image_view);
         //draweeView.setImageURI(uri);
+        reviewUserNameTextView.setText("Justin");
+        reviewDateTextView.setText("June 2016");
+        //reviewContentTextView.setText("");
 
         setCategoryTags();
     }
@@ -145,6 +164,7 @@ public class ListingDetailActivity extends AppCompatActivity{
 
         if(requestCode == SELECT_PAYMENT_REQUEST_CODE){
             if(resultCode == RESULT_OK){
+                Debug.printToast("Saved card details", getApplicationContext());
                 //save card details
                 //paymentMethodTextView.setText("Credit Card or PayPal");
             }
