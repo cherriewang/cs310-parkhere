@@ -51,6 +51,12 @@
     <!--ListOfBookings strings-->
     <string name="list_of_listings_actionbar_title">Listings</string>
 
+    <!--ListOfRatings strings-->
+    <string name="list_of_ratings_actionbar_title">Ratings</string>
+
+    <!--Rating strings-->
+    <string name="rating_title_string">Rating title</string>
+
     <!--Home strings-->
     <string name="home_drawer_item_string">Home</string>
     <string name="bookings_drawer_item_string">Bookings</string>
