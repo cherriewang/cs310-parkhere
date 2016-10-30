@@ -1,9 +1,5 @@
 package itp341.wang.cherrie.parkhere;
 
-/**
- * Created by glarencezhao on 10/24/16.
- */
-
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
