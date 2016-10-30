@@ -38,6 +38,8 @@ public class ListingDetailActivity extends AppCompatActivity{
     private TextView reviewUserNameTextView;
     private TextView reviewDateTextView;
     private TextView reviewContentTextView;
+    private TextView availibilityTextView;
+    private TextView cancellationTextView;
 
     public static final int SELECT_PAYMENT_REQUEST_CODE = 0;
     public static final String SELECTING_PAYMENT = "Selecting Payment";
@@ -70,6 +72,8 @@ public class ListingDetailActivity extends AppCompatActivity{
         reviewUserNameTextView = (TextView)findViewById(R.id.reviewUserNameTextView);
         reviewDateTextView = (TextView)findViewById(R.id.reviewDateTextView);
         reviewContentTextView = (TextView)findViewById(R.id.reviewContentTextView);
+        availibilityTextView = (TextView)findViewById(R.id.availibilityTextView);
+        cancellationTextView = (TextView)findViewById(R.id.cancellationTextView);
 
         populate();
     }
@@ -134,6 +138,8 @@ public class ListingDetailActivity extends AppCompatActivity{
         reviewUserNameTextView.setText("Justin");
         reviewDateTextView.setText("June 2016");
         //reviewContentTextView.setText("");
+        availibilityTextView.setText("Yes");
+        cancellationTextView.setText("Must book ahead of time by at least 24 hours and so and so");
 
         setCategoryTags();
     }
