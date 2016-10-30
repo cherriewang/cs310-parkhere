@@ -51,7 +51,12 @@
     <!--ListOfBookings strings-->
     <string name="list_of_listings_actionbar_title">Listings</string>
 
-    <!--Navigation Drawer strings-->
-    <string name="primary_item_test_string">Primary Item</string>
-    <string name="secondary_item_test_string">Secondary Item</string>
+    <!--Home strings-->
+    <string name="home_drawer_item_string">Home</string>
+    <string name="bookings_drawer_item_string">Bookings</string>
+    <string name="listings_drawer_item_string">Listings</string>
+    <string name="create_listing_drawer_item_string">Create Listing</string>
+    <string name="payment_drawer_item_string">Payment</string>
+    <string name="settings_drawer_item_string">Settings</string>
+    <string name="help_drawer_item_string">Help</string>
 </resources>

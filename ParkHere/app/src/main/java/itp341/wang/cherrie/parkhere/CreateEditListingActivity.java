@@ -36,10 +36,10 @@ public class CreateEditListingActivity extends AppCompatActivity {
     private CurrencyEditText priceEditText;
     private Button createListingButton;
 
-    private String listingTitle;
-    private String location;
-    private String about;
-    private long price;
+    private String listingTitle = "";
+    private String location = "";
+    private String about = "";
+    private long price = 0;
     private boolean isTandem = false;
     private boolean isHandicapped = false;
 
@@ -130,7 +130,8 @@ public class CreateEditListingActivity extends AppCompatActivity {
                     isTandem = tandemCheckBox.isChecked();
                     isHandicapped = handicappedCheckBox.isChecked();
                     //create listing
-                    //finish activity
+                    setResult(RESULT_OK);
+                    finish();
                 }
             }
         });

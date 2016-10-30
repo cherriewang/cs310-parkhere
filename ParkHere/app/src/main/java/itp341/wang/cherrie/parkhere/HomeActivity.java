@@ -1,5 +1,6 @@
 package itp341.wang.cherrie.parkhere;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ActionBarOverlayLayout;
@@ -53,22 +54,51 @@ public class HomeActivity extends AppCompatActivity {
                 .withActivity(this)
                 .withAccountHeader(headerResult) //set the AccountHeader we created earlier for the header
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName("Home").withIdentifier(1), //withIcon(FontAwesome.Icon.faw_home) before withIdentifier
-                        new PrimaryDrawerItem().withName("Free Play").withIdentifier(2),
-                        new PrimaryDrawerItem().withName("Custom").withIdentifier(3),
+                        new PrimaryDrawerItem().withName(R.string.home_drawer_item_string).withIdentifier(1), //withIcon(FontAwesome.Icon.faw_home) before withIdentifier
+                        new PrimaryDrawerItem().withName(R.string.bookings_drawer_item_string).withIdentifier(2),
+                        new PrimaryDrawerItem().withName(R.string.listings_drawer_item_string).withIdentifier(3),
+                        new PrimaryDrawerItem().withName(R.string.create_listing_drawer_item_string).withIdentifier(4),
+                        new PrimaryDrawerItem().withName(R.string.payment_drawer_item_string).withIdentifier(5),
                         new DividerDrawerItem(),
-                        new SecondaryDrawerItem().withName("Settings").withIdentifier(4),
-                        new SecondaryDrawerItem().withName("Help").withIdentifier(5)
+                        new SecondaryDrawerItem().withName(R.string.settings_drawer_item_string).withIdentifier(6),
+                        new SecondaryDrawerItem().withName(R.string.help_drawer_item_string).withIdentifier(7)
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         if (drawerItem != null) {
-                            //drawerItem.getIdentifier() == 1
-                            //drawerItem.getIdentifier() == 2
-                            //drawerItem.getIdentifier() == 3
-                            //drawerItem.getIdentifier() == 4
-                            //drawerItem.getIdentifier() == 5
+                            //Home
+                            if(drawerItem.getIdentifier() == 1){}
+                            //List of Bookings
+                            else if(drawerItem.getIdentifier() == 2){
+                                Intent i = new Intent(HomeActivity.this, ListOfBookingsActivity.class);
+                                startActivity(i);
+                            }
+                            //List of Listings
+                            else if(drawerItem.getIdentifier() == 3){
+                                Intent i = new Intent(HomeActivity.this, ListOfListingsActivity.class);
+                                startActivity(i);
+                            }
+                            //Create Listing
+                            else if(drawerItem.getIdentifier() == 4){
+                                Intent i = new Intent(HomeActivity.this, CreateEditListingActivity.class);
+                                startActivity(i);
+                            }
+                            //Payment
+                            else if(drawerItem.getIdentifier() == 5){
+                                Intent i = new Intent(HomeActivity.this, ListOfPaymentsActivity.class);
+                                startActivity(i);
+                            }
+                            //Settings
+                            else if(drawerItem.getIdentifier() == 6){
+                                Intent i = new Intent(HomeActivity.this, SettingsActivity.class);
+                                startActivity(i);
+                            }
+                            //Help
+                            else if(drawerItem.getIdentifier() == 7){
+                                Intent i = new Intent(HomeActivity.this, HelpActivity.class);
+                                startActivity(i);
+                            }
                         }
 
                         return false;
