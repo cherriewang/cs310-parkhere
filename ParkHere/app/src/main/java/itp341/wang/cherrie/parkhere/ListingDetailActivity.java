@@ -148,16 +148,17 @@ public class ListingDetailActivity extends AppCompatActivity{
         categoryTags = (TagView)findViewById(R.id.categoryTags);
         Tag handicappedTag = new Tag("Handicapped");
         handicappedTag.radius = 10f;
-        handicappedTag.layoutColor = Color.MAGENTA;
+        handicappedTag.layoutColor = getResources().getColor(R.color.handicapped_tag_color);
         Tag tandemTag = new Tag("Tandem");
         tandemTag.radius = 10f;
-        tandemTag.layoutColor = Color.CYAN;
+        tandemTag.layoutColor = getResources().getColor(R.color.tandem_tag_color);
         Tag coveredTag = new Tag("Covered");
         coveredTag.radius = 10f;
-        coveredTag.layoutColor = Color.GRAY;
+        coveredTag.layoutColor = getResources().getColor(R.color.covered_tag_color);
         Tag suvTag = new Tag("SUV");
         suvTag.radius = 10f;
-        suvTag.layoutColor = Color.GREEN;
+        suvTag.layoutColor = getResources().getColor(R.color.suv_tag_color);
+        //if the category is not used, switch to R.color.muted_tag_color
         categoryTags.addTag(handicappedTag);
         categoryTags.addTag(tandemTag);
         categoryTags.addTag(coveredTag);

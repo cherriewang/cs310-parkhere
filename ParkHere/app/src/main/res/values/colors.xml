@@ -6,4 +6,10 @@
 
     <color name="md_orange_500">#ff9800</color>
     <color name="rating_color">#FFCC00</color>
+
+    <color name="handicapped_tag_color">#F44336</color>
+    <color name="tandem_tag_color">#2196F3</color>
+    <color name="covered_tag_color">#009688</color>
+    <color name="suv_tag_color">#FF9800</color>
+    <color name="muted_tag_color">#E0E0E0</color>
 </resources>
