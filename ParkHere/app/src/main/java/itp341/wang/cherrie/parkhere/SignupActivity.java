@@ -83,7 +83,8 @@ public class SignupActivity extends AppCompatActivity {
                         writeStream(out);
 
                         InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                        readStream(in);
+                        // Just printing whatever string we get back
+                        Debug.printToast(readStream(in), getApplicationContext());
                     } catch (Exception e) {
                         String except = new String("Exception: " + e.getMessage());
                         Debug.printToast(except, getApplicationContext());
