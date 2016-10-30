@@ -10,13 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="140dp">
 
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/listingImageView"
             android:layout_width="match_parent"
             android:layout_height="140dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/placeholder_parking_spot"
-            android:scaleType="centerCrop"
+            fresco:placeholderImageScaleType="centerCrop"
+            fresco:placeholderImage="@drawable/placeholder_parking_spot"
+            fresco:roundedCornerRadius="2dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"/>
         

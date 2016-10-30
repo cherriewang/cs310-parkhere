@@ -25,6 +25,7 @@ public class RateReviewActivity extends AppCompatActivity {
     private EditText reviewEditText;
     private Button submitButton;
     private SimpleDraweeView ownerReviewProfPic;
+    private SimpleDraweeView listingImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,9 @@ public class RateReviewActivity extends AppCompatActivity {
         reviewEditText = (EditText) findViewById(R.id.reviewEditText);
         submitButton = (Button) findViewById(R.id.submitReviewButton);
         ownerReviewProfPic = (SimpleDraweeView) findViewById(R.id.ownerReviewProfPic);
+        //load owner picture
+        listingImageView = (SimpleDraweeView) findViewById(R.id.listingImageView);
+        //load listing picture
     }
 
     private void listeners(){
