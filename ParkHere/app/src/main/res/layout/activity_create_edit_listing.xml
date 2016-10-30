@@ -43,6 +43,7 @@
                     android:id="@+id/handicappedCheckBox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorAccent"
                     android:text="@string/handicapped_string"
                     android:textSize="14sp"
                     android:layout_marginEnd="5dp"/>
@@ -51,6 +52,7 @@
                     android:id="@+id/tandemCheckBox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorAccent"
                     android:text="@string/tandem_string"
                     android:textSize="14sp"
                     android:layout_marginEnd="5dp"/>
@@ -59,6 +61,7 @@
                     android:id="@+id/suvCheckBox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorAccent"
                     android:text="@string/suv_string"
                     android:textSize="14sp"
                     android:layout_marginEnd="5dp"/>
@@ -67,6 +70,7 @@
                     android:id="@+id/coveredCheckBox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorAccent"
                     android:text="@string/covered_string"
                     android:textSize="14sp"
                     android:layout_marginEnd="5dp"/>
@@ -110,13 +114,14 @@
             <Button
                 android:id="@+id/createListingButton"
                 android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="20dp"
                 android:paddingBottom="20dp"
                 android:paddingEnd="50dp"
                 android:paddingStart="50dp"
                 android:text="@string/create_button_string"
+                android:textColor="@color/white"
                 android:backgroundTint="@color/colorAccent"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
