@@ -76,7 +76,7 @@ public class ListingDetailActivity extends AppCompatActivity{
         ownerTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(ListingDetailActivity.this, OwnerProfileActivity.class);
+                Intent i = new Intent(ListingDetailActivity.this, UserProfileActivity.class);
                 //put owner info in i
                 startActivity(i);
             }

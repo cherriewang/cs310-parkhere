@@ -13,7 +13,7 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar;
  * Created by glarencezhao on 10/30/16.
  */
 
-public class OwnerProfileActivity extends AppCompatActivity {
+public class UserProfileActivity extends AppCompatActivity {
 
     private SimpleDraweeView ownerProfPic;
     private TextView ownerNameTextView;

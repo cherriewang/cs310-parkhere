@@ -79,7 +79,7 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".OwnerProfileActivity"
+            android:name=".UserProfileActivity"
             android:screenOrientation="portrait">
         </activity>
         <!--
