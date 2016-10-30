@@ -20,6 +20,10 @@ type LoginMsg struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
+type LoginSuccessMsg struct {
+	Email   string `json:"email"`
+	Success bool   `json:"success"`
+}
 
 type Listing struct {
 	gorm.Model
