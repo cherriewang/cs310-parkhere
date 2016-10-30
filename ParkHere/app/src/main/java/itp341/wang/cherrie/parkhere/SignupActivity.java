@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -62,23 +63,33 @@ public class SignupActivity extends AppCompatActivity {
 
                 HttpURLConnection urlConnection = null;
 
-                // store User in database
-                try {
-                    URL url = new URL(URL_ADDRESS);
-                    urlConnection = (HttpURLConnection) url.openConnection();
-                    urlConnection.setDoOutput(true);
-                    urlConnection.setChunkedStreamingMode(0);
+                if(isFieldsEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Fields are empty, please fill them out",
+                            Toast.LENGTH_SHORT).show();
+                }
+                else if(!isPasswordOK()) {
+                    Toast.makeText(getApplicationContext(),
+                            "Password must have at least 10 characters long with one special character",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    // store User in database
+                    try {
+                        URL url = new URL(URL_ADDRESS);
+                        urlConnection = (HttpURLConnection) url.openConnection();
+                        urlConnection.setDoOutput(true);
+                        urlConnection.setChunkedStreamingMode(0);
 
-                    OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
-                    writeStream(out);
+                        OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
+                        writeStream(out);
 
-                    InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                    readStream(in);
-                } catch(Exception e){
-                    String except = new String("Exception: " + e.getMessage());
-                    Debug.printToast(except, getApplicationContext());
-                }finally {
-                    urlConnection.disconnect();
+                        InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                        readStream(in);
+                    } catch (Exception e) {
+                        String except = new String("Exception: " + e.getMessage());
+                        Debug.printToast(except, getApplicationContext());
+                    } finally {
+                        urlConnection.disconnect();
+                    }
                 }
 
                 // from the readStream
@@ -115,6 +126,23 @@ public class SignupActivity extends AppCompatActivity {
         }
         is.close();
         return sb.toString();
+    }
+
+    private boolean isFieldsEmpty(){
+        if(!firstNameEditText.getText().toString().isEmpty()
+                && !lastNameEditText.getText().toString().isEmpty()
+                && !emailEditText.getText().toString().isEmpty()
+                && !phoneEditText.getText().toString().isEmpty()
+                && !passwordEditText.getText().toString().isEmpty())
+            return true;
+        return false;
+    }
+
+    private boolean isPasswordOK(){
+        String password = passwordEditText.getText().toString();
+        //if 10 characters and at least one special character
+        //return true
+        return false;
     }
 
     // Handlers for return result Intents
