@@ -26,6 +26,7 @@
     <string name="more_reviews_string">More Reviews</string>
     <string name="payment_string">Payment</string>
     <string name="select_payment_string">Select Payment</string>
+    <string name="payment_method_string">Payment Method</string>
     <string name="confirm_booking_string">Confirm Booking</string>
     <string name="total_price_string">Total $11</string>
     <string name="review_string_example">This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. </string>

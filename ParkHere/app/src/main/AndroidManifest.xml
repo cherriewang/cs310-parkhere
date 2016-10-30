@@ -40,10 +40,6 @@
         <activity
             android:name=".ListingDetailActivity"
             android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".CreateEditListingActivity"
-            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,11 +47,16 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".CreateEditListingActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name=".ForgotPasswordActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".RateReviewActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+        </activity>
         <activity
             android:name=".ListOfListingsActivity"
             android:screenOrientation="portrait" />

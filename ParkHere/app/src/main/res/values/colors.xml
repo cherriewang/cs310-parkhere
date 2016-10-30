@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="md_orange_500">#ff9800</color>
+    <color name="rating_color">#FFCC00</color>
 </resources>

@@ -27,6 +27,7 @@ public class ListingDetailActivity extends AppCompatActivity{
     private TextView aboutTextView;
     private TextView moreReviewsTextView;
     private TextView selectPaymentTextView;
+    private TextView paymentMethodTextView;
     private TextView totalPriceTextView;
     private Button confirmBookingButton;
     private MaterialRatingBar listingRatingBar;
@@ -55,6 +56,7 @@ public class ListingDetailActivity extends AppCompatActivity{
         aboutTextView = (TextView)findViewById(R.id.aboutTextView);
         moreReviewsTextView = (TextView)findViewById(R.id.moreReviewsTextView);
         selectPaymentTextView = (TextView)findViewById(R.id.selectPaymentTextView);
+        paymentMethodTextView = (TextView)findViewById(R.id.paymentMethodTextView);
         totalPriceTextView = (TextView)findViewById(R.id.totalPriceTextView);
         confirmBookingButton = (Button)findViewById(R.id.confirmBookingButton);
         listingRatingBar = (MaterialRatingBar)findViewById(R.id.listingRatingBar);
@@ -107,6 +109,7 @@ public class ListingDetailActivity extends AppCompatActivity{
         //totalPriceTextView.setText("");
         listingRatingBar.setRating((float)3.0);
         ownerRatingBar.setRating((float)3.0);
+        paymentMethodTextView.setText("");
 
         //To display review user image, same code for listing detail image
         //Uri uri = Uri.parse("https://raw.githubusercontent.com/facebook/fresco/gh-pages/static/logo.png");
@@ -143,7 +146,7 @@ public class ListingDetailActivity extends AppCompatActivity{
         if(requestCode == SELECT_PAYMENT_REQUEST_CODE){
             if(resultCode == RESULT_OK){
                 //save card details
-                //selectPaymentTextView.setText("Credit Card Number");
+                //paymentMethodTextView.setText("Credit Card or PayPal");
             }
         }
     }
