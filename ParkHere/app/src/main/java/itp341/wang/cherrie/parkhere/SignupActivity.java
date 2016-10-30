@@ -1,5 +1,6 @@
 package itp341.wang.cherrie.parkhere;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -82,10 +83,12 @@ public class SignupActivity extends AppCompatActivity {
 
                 // from the readStream
                 if(true) {
-                    // intent to HomeActivity
+                    // Intent to HomeActivity
+                    Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                    startActivityForResult(homeIntent,0);
                 } else {
-                    // toast unsuccessful, clear input fields
-
+                    // Toast unsuccessful, clear input fields
+                    Debug.printToast("Signup Unsuccessful", getApplicationContext());
                 }
 
             }
@@ -112,5 +115,17 @@ public class SignupActivity extends AppCompatActivity {
         }
         is.close();
         return sb.toString();
+    }
+
+    // Handlers for return result Intents
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case(0): {
+                // Return from HomeActivity
+            }
+            break;
+        }
     }
 }
