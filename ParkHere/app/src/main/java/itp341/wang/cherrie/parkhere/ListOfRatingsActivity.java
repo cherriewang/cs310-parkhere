@@ -40,13 +40,13 @@ public class ListOfRatingsActivity extends AppCompatActivity {
         ArrayList<Card> cards = new ArrayList<Card>();
 
         // Create a Listing Card
-        Card ratingCard = new Card(this, R.layout.rating_card);
+        Card ratingCard = new Card(this, R.layout.row_rating_layout);
         //Set listing title
         ratingCard.setTitle("Rating Title");
         // Add card to array
         cards.add(ratingCard);
 
-        Card testCard = new Card(this, R.layout.rating_card);
+        Card testCard = new Card(this, R.layout.row_rating_layout);
         testCard.setTitle("Test");
         cards.add(testCard);
 

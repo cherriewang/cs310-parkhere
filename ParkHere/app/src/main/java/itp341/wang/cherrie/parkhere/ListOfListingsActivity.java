@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
-import it.gmariotti.cardslib.library.prototypes.CardSection;
 import it.gmariotti.cardslib.library.view.CardListView;
 
 /**
@@ -41,13 +40,13 @@ public class ListOfListingsActivity extends AppCompatActivity {
         ArrayList<Card> cards = new ArrayList<Card>();
 
         // Create a Listing Card
-        Card bookingCard = new Card(this, R.layout.listing_card);
+        Card bookingCard = new Card(this, R.layout.row_listing_layout);
         //Set listing title
         bookingCard.setTitle("Listing Title");
         // Add card to array
         cards.add(bookingCard);
 
-        Card testCard = new Card(this, R.layout.listing_card);
+        Card testCard = new Card(this, R.layout.row_listing_layout);
         testCard.setTitle("Test");
         cards.add(testCard);
 

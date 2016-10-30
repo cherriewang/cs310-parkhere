@@ -10,12 +10,10 @@
     android:orientation="vertical"
     tools:context="itp341.wang.cherrie.parkhere.ListOfBookingsActivity">
 
-    <it.gmariotti.cardslib.library.view.CardListView
+    <ListView
         android:id="@+id/listingsListView"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginBottom="16dp"
-        android:scrollbars="none"
-        card:list_card_layout_resourceID="@layout/booking_card"/>
+        android:layout_height="wrap_content"
+        android:scrollbars="none"></ListView>
 
 </LinearLayout>

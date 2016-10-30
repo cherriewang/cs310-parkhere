@@ -22,7 +22,7 @@ public class CustomSectionAdapter extends SectionedCardAdapter {
      * Define your layout in the constructor
      */
     public CustomSectionAdapter(Context context, CardArrayAdapter cardArrayAdapter) {
-        super(context, R.layout.custom_section_layout, cardArrayAdapter);
+        super(context, R.layout.section_custom_layout, cardArrayAdapter);
     }
 
     /*

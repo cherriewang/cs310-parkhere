@@ -40,7 +40,7 @@ public class RateReviewActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         // Create a Review Card
-        Card reviewCard = new Card(this, R.layout.row_card);
+        Card reviewCard = new Card(this, R.layout.card_review_inner_layout);
         //Set listing title
         reviewCard.setTitle("Listing Title");
         // Set card in the cardView
