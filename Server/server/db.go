@@ -23,10 +23,14 @@ func SetupDB(db *gorm.DB) {
 	db.AutoMigrate(&User{}, &Listing{}, &Booking{}, &Review{})
 }
 
-func CreateUser(user User, db *gorm.DB) {
-	if db.NewRecord(&user) {
+func CreateUser(user User, db *gorm.DB) bool {
+	var blankUser User
+	db.Where("email = ?", user.Email).First(&blankUser)
+	if blankUser.Email != user.Email {
 		db.Create(&user)
+		return true
 	} else {
 		fmt.Println("error, primary key already exists for user")
+		return false
 	}
 }

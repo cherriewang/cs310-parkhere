@@ -73,13 +73,27 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 	}
-	// DATABASE CODE //
 
-	CreateUser(user, db)
-
-	// END OF DATABASE CODE //
+	success := CreateUser(user, db)
+	successMsg := LoginSuccessMsg{Email: user.Email, Success: success}
 	w.WriteHeader(http.StatusOK)
-	//if err := json.NewEncoder(w).Encode(); err != nil {
-	//	panic(err)
-	//}
+	if err := json.NewEncoder(w).Encode(successMsg); err != nil {
+		panic(err)
+	}
+}
+
+func AddListing(w http.ResponseWriter, r *http.Request) {
+
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	if origin := r.Header.Get("Origin"); origin != "" {
+		w.Header().Set("Access-Control-Allow-Origin", origin)
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		w.Header().Set("Access-Control-Allow-Headers",
+			"Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+	}
+
+	// Stop here if its Preflighted OPTIONS request
+	if r.Method == "OPTIONS" {
+		return
+	}
 }
