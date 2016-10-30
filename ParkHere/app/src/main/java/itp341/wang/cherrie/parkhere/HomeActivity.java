@@ -50,8 +50,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
 
-    // Add a test marker for Glarence's Home and move the camera.
-    LatLng glarenceAPT = new LatLng(34.024652, -118.280782);
+    //Test markers
+    private LatLng glarenceAPT = new LatLng(34.024652, -118.280782);
 
     private PermissionListener permissionListener = new PermissionListener() {
         @Override
