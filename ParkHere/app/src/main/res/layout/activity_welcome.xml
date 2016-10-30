@@ -6,36 +6,39 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:layout_centerHorizontal="true"
-    android:layout_centerVertical="true"
+    android:gravity="center_vertical"
+    android:padding="@dimen/activity_horizontal_margin"
     tools:context="itp341.wang.cherrie.parkhere.WelcomeActivity">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="ParkHere" />
 
     <Button
         android:text="@string/login"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:background="@drawable/rounded_button"
+        android:textColor="@color/white"
         android:id="@+id/buttonLogin" />
 
     <Button
         android:text="@string/register"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:id="@+id/buttonSignup" />
+        android:background="@drawable/rounded_button"
+        android:textColor="@color/white"
+        android:id="@+id/buttonSignup"
+        android:layout_marginTop="32dp"/>
 
     <Button
         android:text="Facebook Signup"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:id="@+id/buttonFacebook" />
+        android:background="@drawable/rounded_button"
+        android:textColor="@color/white"
+        android:id="@+id/buttonFacebook"
+        android:layout_marginTop="32dp"/>
+
 </LinearLayout>
 
 

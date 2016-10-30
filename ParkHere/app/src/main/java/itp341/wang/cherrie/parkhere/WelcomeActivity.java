@@ -15,11 +15,19 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+        getSupportActionBar().hide();
 
+        initialize();
+        listeners();
+    }
+
+    private void initialize(){
         signUpButton = (Button) findViewById(R.id.buttonSignup);
         loginButton = (Button) findViewById(R.id.buttonLogin);
         mFacebookLoginButton = (Button) findViewById(R.id.buttonFacebook);
+    }
 
+    private void listeners(){
         // SIGN UP BUTTON LISTENER
         signUpButton.setOnClickListener(new View.OnClickListener(){
             @Override
