@@ -43,11 +43,6 @@
         <activity
             android:name=".ListOfListingsActivity"
             android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".HelpActivity" />
         <activity android:name=".SettingsActivity" />
@@ -55,7 +50,15 @@
             android:name=".ListOfBookingsActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".HomeActivity"></activity>
+        <activity
+            android:name=".HomeActivity"
+            android:theme="@style/NavDrawerTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
