@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity;
 import com.nguyenhoanglam.imagepicker.model.Image;
 
@@ -28,6 +30,8 @@ import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
+
+import itp341.wang.cherrie.parkhere.ParkHereApplication;
 
 import itp341.wang.cherrie.parkhere.model.User;
 
@@ -136,24 +140,10 @@ public class SignupActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                 } else {
                     // store User in database
-                    try {
-                        URL url = new URL(URL_ADDRESS);
-                        urlConnection = (HttpURLConnection) url.openConnection();
-                        urlConnection.setDoOutput(true);
-                        urlConnection.setChunkedStreamingMode(0);
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference();
 
-                        OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
-                        writeStream(out);
-
-                        InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                        // Just printing whatever string we get back
-                        Debug.printToast(readStream(in), getApplicationContext());
-                    } catch (Exception e) {
-                        String except = new String("Exception: " + e.getMessage());
-                        Debug.printToast(except, getApplicationContext());
-                    } finally {
-                        urlConnection.disconnect();
-                    }
+                    myRef.child("users").setValue(myUser);
                 }
 
                 // from the readStream
