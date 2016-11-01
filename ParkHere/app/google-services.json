@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "561822749440",
+    "firebase_url": "https://park-here-65306.firebaseio.com",
+    "project_id": "park-here-65306",
+    "storage_bucket": "park-here-65306.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:561822749440:android:13952b0b55c7fa62",
+        "android_client_info": {
+          "package_name": "itp341.wang.cherrie.parkhere"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "561822749440-87dalhg6u2a4pocmnqkv674g644re541.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJWAXcmJMk_sNFz1vOnvKN5Fe49xboGes"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
