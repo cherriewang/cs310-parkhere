@@ -11,7 +11,7 @@
     tools:context="itp341.wang.cherrie.parkhere.ListOfListingsActivity">
 
     <it.gmariotti.cardslib.library.view.CardListView
-        android:id="@+id/listingsListView"
+        android:id="@+id/listingsCardListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="16dp"

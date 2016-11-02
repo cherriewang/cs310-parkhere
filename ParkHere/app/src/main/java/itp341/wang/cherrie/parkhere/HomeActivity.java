@@ -25,6 +25,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -126,11 +128,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             //Create Listing
                             else if(drawerItem.getIdentifier() == 4){
                                 // DIALOG BOX OPENS IF USER IS NOT AN OWNER
-                                showLocationDialog();
-                                // display dialog
-
-                                //Intent i = new Intent(HomeActivity.this, CreateEditListingActivity.class);
-                                //startActivity(i);
+                                if (myUser.isOwner()) {
+                                    Intent i = new Intent(HomeActivity.this, CreateEditListingActivity.class);
+                                    startActivity(i);
+                                }
+                                else {
+                                    showLocationDialog();
+                                }
                             }
                             //Payment
                             else if(drawerItem.getIdentifier() == 5){
@@ -195,9 +199,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // positive button logic, send them to signup activity
-                        Intent i = new Intent(HomeActivity.this, SignupActivity.class);
-                        startActivity(i);
+                        myUser.setOwner(true);
+                        Debug.printToast("Signed up as owner", getApplicationContext());
+
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference myRef = database.getReference();
+                        myRef.child("users").child(myUser.getmNormalizedEmail()).setValue(myUser);
                     }
                 });
 

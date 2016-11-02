@@ -16,12 +16,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.blackcat.currencyedittext.CurrencyEditText;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity;
 import com.nguyenhoanglam.imagepicker.model.Image;
 
 import java.util.ArrayList;
 
 import itp341.wang.cherrie.parkhere.model.Listing;
+import itp341.wang.cherrie.parkhere.model.User;
 
 /**
  * Created by glarencezhao on 10/24/16.
@@ -49,7 +52,7 @@ public class CreateEditListingActivity extends AppCompatActivity {
     private boolean isHandicapped = false;
     private boolean isSUV = false;
     private boolean isCovered = false;
-
+    private User myUser;
     public final static int CREATE_EDIT_REQUEST_CODE = 0;
 
     @Override
@@ -76,6 +79,8 @@ public class CreateEditListingActivity extends AppCompatActivity {
         createListingButton = (Button) findViewById(R.id.createListingButton);
 
         myListing = new Listing();
+
+        myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
     }
 
     //Used to fill up info if editing a listing
@@ -146,7 +151,7 @@ public class CreateEditListingActivity extends AppCompatActivity {
 
                     // CREATE LISTING OBJECT
                     myListing.setListingTitle(listingTitle);
-                    myListing.setListingOwner("MY_USER"); // should have a global user here
+                    myListing.setListingOwner(myUser.getmNormalizedEmail()); // should have a global user here
                     myListing.setAbout(about);
                     myListing.setPrice(price);
                     myListing.setTandem(isTandem);
@@ -155,6 +160,12 @@ public class CreateEditListingActivity extends AppCompatActivity {
                     myListing.setCovered(isCovered);
 
                     // TODO: Listing object now created, need to have to passed to database under the owner
+                    myUser.appendListing(myListing);
+
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference();
+                    myRef.child("users").child(myUser.getmNormalizedEmail()).setValue(myUser);
+                    myRef.child("listings").child(listingTitle).setValue(myListing);
 
                     setResult(RESULT_OK);
                     finish();

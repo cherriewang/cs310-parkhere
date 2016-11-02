@@ -8,12 +8,15 @@ import java.util.ArrayList;
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.view.CardListView;
+import itp341.wang.cherrie.parkhere.model.Listing;
+import itp341.wang.cherrie.parkhere.model.User;
 
 /**
  * Created by glarencezhao on 10/28/16.
  */
 
 public class ListOfListingsActivity extends AppCompatActivity {
+    private User myUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,29 +30,27 @@ public class ListOfListingsActivity extends AppCompatActivity {
     private void initialize(){
         getSupportActionBar().setTitle(getResources().getString(R.string.list_of_listings_actionbar_title));
 //
-//        //Owned listings
-//        ArrayList<Card> ownedListingCards = createCards();
-//        CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(this, ownedListingCards);
-//        CardListView currentListingsListView = (CardListView) this.findViewById(R.id.listingsListView);
-//        if (currentListingsListView!=null){
-//            currentListingsListView.setAdapter(mCardArrayAdapter);
-//        }
+        myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
+        //Owned listings
+        ArrayList<Card> ownedListingCards = createCards();
+        CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(this, ownedListingCards);
+        CardListView currentListingsListView = (CardListView) this.findViewById(R.id.listingsCardListView);
+        if (currentListingsListView != null){
+            currentListingsListView.setAdapter(mCardArrayAdapter);
+        }
     }
 
-    private ArrayList<Card> createCards(){
-        ArrayList<Card> cards = new ArrayList<Card>();
+    private ArrayList<Card> createCards() {
+        ArrayList<Card> cards = new ArrayList<>();
 
         // Create a Listing Card
-        Card bookingCard = new Card(this, R.layout.row_listing_layout);
-        //Set listing title
-        bookingCard.setTitle("Listing Title");
-        // Add card to array
-        cards.add(bookingCard);
-
-        Card testCard = new Card(this, R.layout.row_listing_layout);
-        testCard.setTitle("Test");
-        cards.add(testCard);
-
+        for (Listing l : myUser.getmListings()) {
+            // TODO: Setup card layout here
+            Card bookingCard = new Card(this, R.layout.row_listing_layout);
+            bookingCard.setTitle(l.getListingTitle());
+            cards.add(bookingCard);
+        }
+        Debug.printToast(cards.size() + "", getApplicationContext());
         return cards;
     }
 

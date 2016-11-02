@@ -4,6 +4,8 @@ import android.net.Uri;
 import android.util.Base64;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Cherrie on 10/28/16.
@@ -27,6 +29,8 @@ public class User implements Serializable {
 
     private boolean isOwner;
     private boolean isSeeker;
+    private List<Booking> mBookings;
+    private List<Listing> mListings;
 
     // CONSTRUCTOR
     public User() {
@@ -67,6 +71,10 @@ public class User implements Serializable {
     public boolean isSeeker() {
         return isSeeker;
     }
+
+    public List<Booking> getmBookings() { return mBookings; }
+
+    public List<Listing> getmListings() { return mListings; }
     // setters
 
     public void setmFirstName(String mFirstName) {
@@ -100,5 +108,21 @@ public class User implements Serializable {
 
     public void setSeeker(boolean seeker) {
         isSeeker = seeker;
+    }
+
+    public void appendListing(Listing l) {
+        if (mListings == null) {
+            mListings = new ArrayList<Listing>();
+        }
+
+        mListings.add(l);
+    }
+
+    public void appendBooking(Booking b) {
+        if (mBookings == null) {
+            mBookings = new ArrayList<Booking>();
+        }
+
+        mBookings.add(b);
     }
 }

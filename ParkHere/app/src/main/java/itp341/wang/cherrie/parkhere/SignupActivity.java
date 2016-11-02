@@ -116,21 +116,14 @@ public class SignupActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null && myUser != null && myUser.getmNormalizedEmail() != null) {
+                    Debug.printToast("Signup Successful", getApplicationContext());
+
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference myRef = database.getReference();
-                    Debug.printToast("Signup Successful", getApplicationContext());
-//                    if (myRef.child("users").child(myUser.getmNormalizedEmail()).getRoot() == null)
-//                    {
-                        myRef.child("users").child(myUser.getmNormalizedEmail()).setValue(myUser);
-                        // Intent to HomeActivity
-                        Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
-                        startActivityForResult(homeIntent,0);
+                    myRef.child("users").child(myUser.getmNormalizedEmail()).setValue(myUser);
 
-//                    }
-//                    else
-//                    {
-//                        Debug.printToast("Signup Unsuccessful: Email already exists", getApplicationContext());
-//                    }
+                    Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                    startActivityForResult(homeIntent,0);
                 } else {
                     // User is signed out
                 }
