@@ -73,4 +73,6 @@
     <string name="settings_drawer_item_string">Settings</string>
     <string name="help_drawer_item_string">Help</string>
     <string name="title_activity_maps">Map</string>
+    <string name="dialog_title">Warning: You are not registered as an Owner</string>
+    <string name="dialog_message">Only registered Owners can create listings. Would you like to sign up as an Owner?</string>
 </resources>
