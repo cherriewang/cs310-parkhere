@@ -28,6 +28,7 @@ public class RateReviewActivity extends AppCompatActivity {
     private MaterialRatingBar ownerRatingBar;
     private MaterialRatingBar listingRatingBar;
     private EditText reviewEditText;
+    private EditText reviewTitleEditText;
     private Button submitButton;
     private SimpleDraweeView ownerReviewProfPic;
     private SimpleDraweeView listingImageView;
@@ -69,6 +70,7 @@ public class RateReviewActivity extends AppCompatActivity {
         ownerRatingBar = (MaterialRatingBar) findViewById(R.id.ownerRatingBar);
         listingRatingBar = (MaterialRatingBar) findViewById(R.id.listingRatingBar);
         reviewEditText = (EditText) findViewById(R.id.reviewEditText);
+        reviewTitleEditText = (EditText) findViewById(R.id.reviewTitleEditText);
         submitButton = (Button) findViewById(R.id.submitReviewButton);
         ownerReviewProfPic = (SimpleDraweeView) findViewById(R.id.ownerReviewProfPic);
         listingImageView = (SimpleDraweeView) findViewById(R.id.listingImageView);
@@ -88,6 +90,18 @@ public class RateReviewActivity extends AppCompatActivity {
         ownerRatingBar.setOnRatingChangeListener(RBListener);
         listingRatingBar.setOnRatingChangeListener(RBListener);
         reviewEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //get review from here
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+        reviewTitleEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 

@@ -87,7 +87,15 @@
             app:mrb_progressTint="@color/rating_color"
             app:mrb_secondaryProgressTint="@color/rating_color"
             android:layout_marginBottom="5dp"/>
-
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:background="@drawable/edittext_style"
+            android:textSize="16sp"
+            android:id="@+id/reviewTitleEditText"
+            android:padding="13dp"
+            android:layout_margin="10dp" />
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

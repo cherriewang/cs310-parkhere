@@ -6,6 +6,12 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
+import it.gmariotti.cardslib.library.view.CardListView;
+import itp341.wang.cherrie.parkhere.model.Booking;
+import itp341.wang.cherrie.parkhere.model.User;
+
 /**
  * Created by glarencezhao on 10/27/16.
  */
@@ -13,6 +19,7 @@ import java.util.ArrayList;
 public class ListOfBookingsActivity extends AppCompatActivity {
 
     private ListView bookingsListView;
+    private User myUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,12 +35,31 @@ public class ListOfBookingsActivity extends AppCompatActivity {
 
         bookingsListView = (ListView) findViewById(R.id.listingsListView);
 
-        //Current listings
-        //ArrayList<Card> currentListing;
+        getSupportActionBar().setTitle(getResources().getString(R.string.list_of_listings_actionbar_title));
 
-        //Past listings
-        //ArrayList<Card> pastListings;
+        myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
 
+        ArrayList<Card> bookingCards = createCards();
+        CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(this, bookingCards);
+        CardListView bookingListView = (CardListView) this.findViewById();
+        if (bookingListView != null){
+            bookingListView.setAdapter(mCardArrayAdapter);
+        }
+
+
+    }
+    private ArrayList<Card> createCards() {
+        ArrayList<Card> cards = new ArrayList<>();
+
+        // Create a Listing Card
+        for (Booking b : myUser.getmBookings()) {
+            // TODO: Setup card layout here
+            Card bookingCard = new Card(this, R.layout.row_booking_layout);
+            bookingCard.setTitle(b.getBookingTitle());
+            cards.add(bookingCard);
+        }
+        Debug.printToast(cards.size() + "", getApplicationContext());
+        return cards;
     }
 
     private void listeners(){
