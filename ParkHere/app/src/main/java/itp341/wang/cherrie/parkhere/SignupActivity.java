@@ -143,7 +143,7 @@ public class SignupActivity extends AppCompatActivity {
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference myRef = database.getReference();
 
-                    myRef.child("users").setValue(myUser);
+                    myRef.child("users").child(myUser.getmEmail()).setValue(myUser);
                 }
 
                 // from the readStream
