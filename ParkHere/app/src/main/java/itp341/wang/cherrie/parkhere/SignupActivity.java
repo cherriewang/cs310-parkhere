@@ -91,15 +91,15 @@ public class SignupActivity extends AppCompatActivity {
                 && !emailEditText.getText().toString().isEmpty()
                 && !phoneEditText.getText().toString().isEmpty()
                 && !passwordEditText.getText().toString().isEmpty())
-            return true;
-        return false;
+            return false;
+        return true;
     }
 
     private boolean isPasswordOK(){
         String password = passwordEditText.getText().toString();
         //if 10 characters and at least one special character
         //return true
-        return false;
+        return true;
     }
 
     private void initialize(){
