@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <com.daimajia.androidviewhover.BlurLayout
+        android:id="@+id/bookingBlurLayout"
         android:layout_width="match_parent"
         android:layout_height="140dp"
         android:elevation="20dp">
@@ -41,6 +42,6 @@
             android:layout_marginStart="10dp"
             android:layout_above="@id/listingOwnerTextView"/>
 
-    </RelativeLayout>
+    </com.daimajia.androidviewhover.BlurLayout>
 
 </RelativeLayout>
