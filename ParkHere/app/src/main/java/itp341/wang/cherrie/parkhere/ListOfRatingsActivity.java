@@ -58,7 +58,7 @@ public class ListOfRatingsActivity extends AppCompatActivity {
             reviewCard.setTitle(r.getReviewText());
             cards.add(reviewCard);
         }
-        
+
         Debug.printToast(cards.size() + "", getApplicationContext());
         return cards;
     }

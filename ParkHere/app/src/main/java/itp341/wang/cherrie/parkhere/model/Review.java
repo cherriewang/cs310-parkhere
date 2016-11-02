@@ -15,6 +15,7 @@ public class Review {
     private String reviewText;
     private Bitmap ownerReviewImage;
     private Bitmap listingImage;
+    private String title;
 
     // CONSTRUCTOR
     public Review() {
@@ -64,4 +65,11 @@ public class Review {
         this.listingImage = listingImage;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }

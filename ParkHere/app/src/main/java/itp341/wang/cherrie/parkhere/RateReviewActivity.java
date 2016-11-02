@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.view.CardView;
@@ -38,6 +40,16 @@ public class RateReviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rate_review);
 
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                myListing = null;
+            } else {
+                myListing = (Listing)extras.getSerializable("LISTING");
+            }
+        } else {
+            myListing = (Listing) savedInstanceState.getSerializable("LISTING");
+        }
 
         initialize();
         listeners();
@@ -49,7 +61,7 @@ public class RateReviewActivity extends AppCompatActivity {
         // Create a Review Card
         Card reviewCard = new Card(this, R.layout.card_review_inner_layout);
         //Set listing title
-        reviewCard.setTitle("Listing Title");
+        reviewCard.setTitle(myListing.getListingTitle());
         // Set card in the cardView
         CardView cardView = (CardView) findViewById(R.id.reviewCard);
         cardView.setCard(reviewCard);
@@ -59,9 +71,7 @@ public class RateReviewActivity extends AppCompatActivity {
         reviewEditText = (EditText) findViewById(R.id.reviewEditText);
         submitButton = (Button) findViewById(R.id.submitReviewButton);
         ownerReviewProfPic = (SimpleDraweeView) findViewById(R.id.ownerReviewProfPic);
-        //load owner picture
         listingImageView = (SimpleDraweeView) findViewById(R.id.listingImageView);
-        //load listing picture
 
         myReview = new Review();
         myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
@@ -96,7 +106,13 @@ public class RateReviewActivity extends AppCompatActivity {
         myReview.setReviewText(reviewEditText.getText().toString());
         myReview.setListingImage(listingImageView.getDrawingCache());
         myReview.setOwnerReviewImage(ownerReviewProfPic.getDrawingCache());
-        // TODO: put this into the database
+        myReview.setTitle(reviewTitleEditText.getText().toString());
+        myListing.addReview(myReview);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+        myRef.child("listings").child(myListing.getListingTitle()).setValue(myListing);
+        myRef.child("reviews").child(myReview.getTitle()).setValue(myReview);
     }
 
     class RatingBarListener implements MaterialRatingBar.OnRatingChangeListener {
