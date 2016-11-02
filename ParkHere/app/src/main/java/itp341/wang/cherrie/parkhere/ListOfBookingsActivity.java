@@ -41,7 +41,7 @@ public class ListOfBookingsActivity extends AppCompatActivity {
 
         ArrayList<Card> bookingCards = createCards();
         CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(this, bookingCards);
-        CardListView bookingListView = (CardListView) this.findViewById();
+        CardListView bookingListView = (CardListView) this.findViewById(R.id.listingsCardListView);
         if (bookingListView != null){
             bookingListView.setAdapter(mCardArrayAdapter);
         }

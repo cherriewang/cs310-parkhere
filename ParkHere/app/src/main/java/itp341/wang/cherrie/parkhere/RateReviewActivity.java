@@ -115,7 +115,6 @@ public class RateReviewActivity extends AppCompatActivity {
         });
 
         // CREATE REVIEW
-//        myReview.setOwner();
         myReview.setReviewer(myUser.getmEmail());
         myReview.setReviewText(reviewEditText.getText().toString());
         myReview.setListingImage(listingImageView.getDrawingCache());
