@@ -40,6 +40,8 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.util.ArrayList;
 
+import itp341.wang.cherrie.parkhere.model.User;
+
 /**
  * Created by glarencezhao on 10/29/16.
  */
@@ -51,6 +53,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
+    private User myUser;
 
     //Test markers
     private LatLng glarenceAPT = new LatLng(34.024652, -118.280782);
@@ -71,14 +74,14 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
         //Setup Navigation Drawer
         // Handle Toolbar
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Testing Nav Drawer");
         // Create a few sample profile
-        final IProfile profile = new ProfileDrawerItem().withName("Glarence Zhao").withEmail("glarencez@gmail.com").withIcon(R.drawable.placeholder_prof_pic);
+        final IProfile profile = new ProfileDrawerItem().withName(myUser.getmFirstName() + " " + myUser.getmLastName()).withEmail(myUser.getmEmail()).withIcon(R.drawable.placeholder_prof_pic);
         // Create the AccountHeader
         headerResult = new AccountHeaderBuilder()
                 .withActivity(this)

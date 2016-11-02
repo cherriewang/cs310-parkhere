@@ -99,6 +99,7 @@ public class ListingDetailActivity extends AppCompatActivity{
             public void onClick(View v) {
                 Intent i = new Intent(ListingDetailActivity.this, ListOfRatingsActivity.class);
                 //put listing in i
+//                getIntent().putExtra("EXTRA_RATINGS", )
                 startActivity(i);
             }
         });

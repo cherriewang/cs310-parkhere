@@ -132,11 +132,19 @@ public class SignupActivity extends AppCompatActivity {
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference myRef = database.getReference();
 
-                    myRef.child("users").child(myUser.getmNormalizedEmail()).setValue(myUser);
-                    // Intent to HomeActivity
-                    Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
-                    startActivityForResult(homeIntent,0);
-                    Debug.printToast("Signup Successful", getApplicationContext());
+                    if (myRef.child("users").child(myUser.getmNormalizedEmail()).getRoot() == null)
+                    {
+                        myRef.child("users").child(myUser.getmNormalizedEmail()).setValue(myUser);
+                        // Intent to HomeActivity
+                        Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                        startActivityForResult(homeIntent,0);
+                        Debug.printToast("Signup Successful", getApplicationContext());
+                    }
+                    else
+                    {
+                        Debug.printToast("Signup Unsuccessful: Email already exists", getApplicationContext());
+                    }
+
                 }
 
                 // Toast unsuccessful, clear input fields
