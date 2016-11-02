@@ -1,5 +1,8 @@
 package itp341.wang.cherrie.parkhere.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Cherrie on 11/1/16.
  */
@@ -20,6 +23,8 @@ public class Listing {
     private String location;
     private String about;
     private long price;
+
+    private List<Review> reviews;
 
     public String getListingOwner() {
         return listingOwner;
@@ -57,6 +62,8 @@ public class Listing {
         return price;
     }
 
+    public List<Review> getReviews() { return reviews; }
+
     public void setListingTitle(String listingTitle) {
         this.listingTitle = listingTitle;
     }
@@ -91,5 +98,14 @@ public class Listing {
 
     public void setPrice(long price) {
         this.price = price;
+    }
+
+    public void addReview(Review r)
+    {
+        if (reviews == null) {
+            reviews = new ArrayList<>();
+        }
+
+        reviews.add(r);
     }
 }

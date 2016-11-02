@@ -12,7 +12,9 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.view.CardView;
+import itp341.wang.cherrie.parkhere.model.Listing;
 import itp341.wang.cherrie.parkhere.model.Review;
+import itp341.wang.cherrie.parkhere.model.User;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 /**
@@ -28,11 +30,14 @@ public class RateReviewActivity extends AppCompatActivity {
     private SimpleDraweeView ownerReviewProfPic;
     private SimpleDraweeView listingImageView;
     private Review myReview;
+    private Listing myListing;
+    private User myUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rate_review);
+
 
         initialize();
         listeners();
@@ -59,6 +64,7 @@ public class RateReviewActivity extends AppCompatActivity {
         //load listing picture
 
         myReview = new Review();
+        myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
     }
 
     private void listeners(){
@@ -85,8 +91,8 @@ public class RateReviewActivity extends AppCompatActivity {
         });
 
         // CREATE REVIEW
-        myReview.setListingOwner("MY_USER"); // need owner of this listing
-        myReview.setReviewer("MY_REVIEWER"); // need to change to who ever is reviewing
+//        myReview.setOwner();
+        myReview.setReviewer(myUser.getmEmail());
         myReview.setReviewText(reviewEditText.getText().toString());
         myReview.setListingImage(listingImageView.getDrawingCache());
         myReview.setOwnerReviewImage(ownerReviewProfPic.getDrawingCache());

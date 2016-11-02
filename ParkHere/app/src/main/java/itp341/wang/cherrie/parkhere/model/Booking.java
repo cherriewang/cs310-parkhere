@@ -13,7 +13,7 @@ public class Booking {
     }
 
     private String bookingOwner;
-    private String listingOwner;
+    private Listing owner;
     private String bookingTitle;
     private boolean handicapped;
     private boolean tandem;
@@ -27,8 +27,8 @@ public class Booking {
         return bookingOwner;
     }
 
-    public String getListingOwner() {
-        return listingOwner;
+    public Listing getOwner() {
+        return owner;
     }
 
     public String getBookingTitle() {
@@ -67,8 +67,8 @@ public class Booking {
         this.bookingTitle = bookingTitle;
     }
 
-    public void setListingOwner(String listingOwner) {
-        this.listingOwner = listingOwner;
+    public void setOwner(Listing owner) {
+        this.owner = owner;
     }
 
     public void setBookingOwner(String bookingOwner) {

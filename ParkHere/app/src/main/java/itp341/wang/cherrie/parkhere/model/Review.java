@@ -10,7 +10,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 public class Review {
 
-    private String listingOwner;
+    private Listing owner;
     private String reviewer;
     private String reviewText;
     private Bitmap ownerReviewImage;
@@ -22,8 +22,8 @@ public class Review {
     }
 
     // GETTERS
-    public String getListingOwner() {
-        return listingOwner;
+    public Listing getOwner() {
+        return owner;
     }
 
     public String getReviewer() {
@@ -44,8 +44,8 @@ public class Review {
 
     // SETTERS
 
-    public void setListingOwner(String listingOwner) {
-        this.listingOwner = listingOwner;
+    public void setOwner(Listing owner) {
+        this.owner = owner;
     }
 
     public void setReviewer(String reviewer) {
