@@ -26,14 +26,14 @@ public class ListOfListingsActivity extends AppCompatActivity {
 
     private void initialize(){
         getSupportActionBar().setTitle(getResources().getString(R.string.list_of_listings_actionbar_title));
-
-        //Owned listings
-        ArrayList<Card> ownedListingCards = createCards();
-        CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(this, ownedListingCards);
-        CardListView currentListingsListView = (CardListView) this.findViewById(R.id.listingsListView);
-        if (currentListingsListView!=null){
-            currentListingsListView.setAdapter(mCardArrayAdapter);
-        }
+//
+//        //Owned listings
+//        ArrayList<Card> ownedListingCards = createCards();
+//        CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(this, ownedListingCards);
+//        CardListView currentListingsListView = (CardListView) this.findViewById(R.id.listingsListView);
+//        if (currentListingsListView!=null){
+//            currentListingsListView.setAdapter(mCardArrayAdapter);
+//        }
     }
 
     private ArrayList<Card> createCards(){
