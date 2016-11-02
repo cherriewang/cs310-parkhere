@@ -12,6 +12,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.view.CardView;
+import itp341.wang.cherrie.parkhere.model.Review;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 /**
@@ -26,6 +27,7 @@ public class RateReviewActivity extends AppCompatActivity {
     private Button submitButton;
     private SimpleDraweeView ownerReviewProfPic;
     private SimpleDraweeView listingImageView;
+    private Review myReview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,8 @@ public class RateReviewActivity extends AppCompatActivity {
         //load owner picture
         listingImageView = (SimpleDraweeView) findViewById(R.id.listingImageView);
         //load listing picture
+
+        myReview = new Review();
     }
 
     private void listeners(){
@@ -79,6 +83,14 @@ public class RateReviewActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {}
         });
+
+        // CREATE REVIEW
+        myReview.setListingOwner("MY_USER"); // need owner of this listing
+        myReview.setReviewer("MY_REVIEWER"); // need to change to who ever is reviewing
+        myReview.setReviewText(reviewEditText.getText().toString());
+        myReview.setListingImage(listingImageView.getDrawingCache());
+        myReview.setOwnerReviewImage(ownerReviewProfPic.getDrawingCache());
+        // TODO: put this into the database
     }
 
     class RatingBarListener implements MaterialRatingBar.OnRatingChangeListener {

@@ -25,6 +25,9 @@ public class User implements Serializable {
 
     private String mNormalizedEmail;
 
+    private boolean isOwner;
+    private boolean isSeeker;
+
     // CONSTRUCTOR
     public User() {
         super();
@@ -57,6 +60,13 @@ public class User implements Serializable {
 
     public String getmNormalizedEmail() { return mNormalizedEmail; }
 
+    public boolean isOwner() {
+        return isOwner;
+    }
+
+    public boolean isSeeker() {
+        return isSeeker;
+    }
     // setters
 
     public void setmFirstName(String mFirstName) {
@@ -84,4 +94,11 @@ public class User implements Serializable {
         this.mHashedPassword = mHashedPassword;
     }
 
+    public void setOwner(boolean owner) {
+        isOwner = owner;
+    }
+
+    public void setSeeker(boolean seeker) {
+        isSeeker = seeker;
+    }
 }

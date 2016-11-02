@@ -1,11 +1,13 @@
 package itp341.wang.cherrie.parkhere;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -120,8 +122,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             }
                             //Create Listing
                             else if(drawerItem.getIdentifier() == 4){
-                                Intent i = new Intent(HomeActivity.this, CreateEditListingActivity.class);
-                                startActivity(i);
+                                // DIALOG BOX OPENS IF USER IS NOT AN OWNER
+                                showLocationDialog();
+                                // display dialog
+
+                                //Intent i = new Intent(HomeActivity.this, CreateEditListingActivity.class);
+                                //startActivity(i);
                             }
                             //Payment
                             else if(drawerItem.getIdentifier() == 5){
@@ -174,6 +180,36 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapFragment);
         mapFragment.getMapAsync(this);
+    }
+
+    private void showLocationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this, R.style.MyDialogTheme);
+        builder.setTitle(getString(R.string.dialog_title));
+        builder.setMessage(getString(R.string.dialog_message));
+
+        String positiveText = getString(android.R.string.ok);
+        builder.setPositiveButton(positiveText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // positive button logic, send them to signup activity
+                        Intent i = new Intent(HomeActivity.this, SignupActivity.class);
+                        startActivity(i);
+                    }
+                });
+
+        String negativeText = getString(android.R.string.cancel);
+        builder.setNegativeButton(negativeText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // negative button logic
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        // display dialog
+        dialog.show();
     }
 
     @Override

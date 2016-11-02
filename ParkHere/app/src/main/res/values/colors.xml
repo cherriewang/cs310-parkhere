@@ -3,6 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="pink">#FF4081</color>
+    <color name="off_white">#FAFAFA</color>
 
     <color name="md_orange_500">#ff9800</color>
     <color name="rating_color">#FFCC00</color>
