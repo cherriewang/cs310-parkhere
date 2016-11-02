@@ -6,7 +6,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="140dp">
+        android:layout_height="140dp"
+        android:elevation="20dp">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/listingImageView"
@@ -15,7 +16,7 @@
             android:layout_centerInParent="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            fresco:roundedCornerRadius="5dp"
+            fresco:roundedCornerRadius="2dp"
             fresco:placeholderImageScaleType="centerCrop"
             fresco:placeholderImage="@drawable/placeholder_parking_spot"/>
 

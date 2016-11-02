@@ -44,7 +44,7 @@ public class BookingAdapter extends ArrayAdapter<Booking>{
         Booking results = getItem(position);
 
         holder.listingTitleTextView.setText(results.getBookingTitle());
-        holder.listingOwnerTextView.setText(results.getListingOwner());
+        //holder.listingOwnerTextView.setText(results.getOwner().getListingTitle());
 
         // Load the screen  image on a background thread
         /*if(!results.getImage_url().isEmpty()) {

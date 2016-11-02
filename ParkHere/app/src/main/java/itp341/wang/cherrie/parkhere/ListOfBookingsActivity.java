@@ -37,10 +37,10 @@ public class ListOfBookingsActivity extends AppCompatActivity {
         ArrayList<Booking> currentListings = new ArrayList<Booking>();
         Booking booking1 = new Booking();
         booking1.setBookingTitle("Booking");
-        booking1.setBookingOwner("Owner");
+        //set listing owner title
         Booking booking2 = new Booking();
         booking2.setBookingTitle("Booking2");
-        booking2.setBookingOwner("Owner2");
+        //set listing owner title
         currentListings.add(booking1);
         currentListings.add(booking2);
         mBookingAdapter = new BookingAdapter(getApplicationContext(), 0, currentListings);
@@ -48,7 +48,6 @@ public class ListOfBookingsActivity extends AppCompatActivity {
 
         //Past listings
         //ArrayList<Card> pastListings;
-
     }
 
     private void listeners(){
