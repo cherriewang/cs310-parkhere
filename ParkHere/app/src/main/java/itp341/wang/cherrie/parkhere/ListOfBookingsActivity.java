@@ -2,9 +2,12 @@ package itp341.wang.cherrie.parkhere;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
@@ -19,6 +22,7 @@ import itp341.wang.cherrie.parkhere.model.User;
 public class ListOfBookingsActivity extends AppCompatActivity {
 
     private ListView bookingsListView;
+    private BookingAdapter mBookingAdapter;
     private User myUser;
 
     @Override
@@ -32,47 +36,25 @@ public class ListOfBookingsActivity extends AppCompatActivity {
 
     private void initialize(){
         getSupportActionBar().setTitle(getResources().getString(R.string.list_of_bookings_actionbar_title));
-
         bookingsListView = (ListView) findViewById(R.id.listingsListView);
-
         getSupportActionBar().setTitle(getResources().getString(R.string.list_of_listings_actionbar_title));
-
         myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
-
-        ArrayList<Card> bookingCards = createCards();
-        if (bookingCards == null)
-        {
-            // Handle 0 bookings
-        }
-        else {
-            CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(this, bookingCards);
-            CardListView bookingListView = (CardListView) this.findViewById(R.id.listingsCardListView);
-            if (bookingListView != null){
-                bookingListView.setAdapter(mCardArrayAdapter);
-            }
-        }
+        createCards();
     }
-    private ArrayList<Card> createCards() {
-        ArrayList<Card> cards = new ArrayList<>();
 
-        // Create a Listing Card
-        if (myUser.getmBookings() != null) {
-            for (Booking b : myUser.getmBookings()) {
-                // TODO: Setup card layout here
-                Card bookingCard = new Card(this, R.layout.row_booking_layout);
-                bookingCard.setTitle(b.getBookingTitle());
-                cards.add(bookingCard);
-            }
-            Debug.printToast(cards.size() + "", getApplicationContext());
-            return cards;
-        }
-        else
-        {
-            return null;
-        }
+    private void createCards() {
+        //Current listings
+        List<Booking> currentBookings = myUser.getmBookings();
+        mBookingAdapter = new BookingAdapter(getApplicationContext(), 0, (ArrayList<Booking>) currentBookings);
+        bookingsListView.setAdapter(mBookingAdapter);
     }
 
     private void listeners(){
+        bookingsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+            }
+        });
     }
 }

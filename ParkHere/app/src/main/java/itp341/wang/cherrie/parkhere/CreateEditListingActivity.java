@@ -203,9 +203,9 @@ public class CreateEditListingActivity extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable s) {
-            if(id == R.id.listingTitleEditText){ listingTitle = s.toString(); }
-            else if(id == R.id.locationEditText){ location = s.toString(); }
-            else if(id == R.id.aboutEditText){ about = s.toString(); }
+            if (id == R.id.listingTitleEditText) { listingTitle = s.toString(); }
+            else if (id == R.id.locationEditText) { location = s.toString(); }
+            else if (id == R.id.aboutEditText) { about = s.toString(); }
         }
 
         @Override
