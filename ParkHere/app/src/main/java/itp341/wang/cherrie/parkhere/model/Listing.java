@@ -109,4 +109,12 @@ public class Listing implements Serializable{
 
         reviews.add(r);
     }
+
+    public float getAverageRating() {
+        float sum = 0;
+        for (Review r : getReviews()) {
+            sum += r.getStars();
+        }
+        return sum / (float)getReviews().size();
+    }
 }

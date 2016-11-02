@@ -31,6 +31,8 @@ public class User implements Serializable {
     private boolean isSeeker;
     private List<Booking> mBookings;
     private List<Listing> mListings;
+    private float rating;
+    private int numRatings;
 
     // CONSTRUCTOR
     public User() {
@@ -124,5 +126,23 @@ public class User implements Serializable {
         }
 
         mBookings.add(b);
+    }
+
+
+    public float getRating() {
+        return rating;
+    }
+
+    public int getNumRatings() {
+        return numRatings;
+    }
+
+    public void setNumRatings(int numRatings) {
+        this.numRatings = numRatings;
+    }
+
+    public void addRating(float rating) {
+        this.rating = (rating * numRatings) + rating;
+        this.rating /= numRatings++;
     }
 }

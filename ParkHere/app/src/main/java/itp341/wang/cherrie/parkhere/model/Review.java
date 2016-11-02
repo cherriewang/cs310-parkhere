@@ -16,6 +16,7 @@ public class Review {
     private Bitmap ownerReviewImage;
     private Bitmap listingImage;
     private String title;
+    private float rating;
 
     // CONSTRUCTOR
     public Review() {
@@ -71,5 +72,13 @@ public class Review {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
     }
 }

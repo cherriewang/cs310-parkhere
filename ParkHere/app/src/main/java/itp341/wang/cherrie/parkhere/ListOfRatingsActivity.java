@@ -55,7 +55,7 @@ public class ListOfRatingsActivity extends AppCompatActivity {
         for (Review r : myListing.getReviews()) {
             // TODO: Setup card layout here
             Card reviewCard = new Card(this, R.layout.row_listing_layout);
-            reviewCard.setTitle(r.getReviewText());
+            reviewCard.setTitle(r.getTitle());
             cards.add(reviewCard);
         }
 

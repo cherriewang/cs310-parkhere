@@ -13,6 +13,7 @@ import com.cunoraz.tagview.Tag;
 import com.cunoraz.tagview.TagView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import itp341.wang.cherrie.parkhere.model.Listing;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 /**
@@ -41,6 +42,8 @@ public class ListingDetailActivity extends AppCompatActivity{
     private TextView availibilityTextView;
     private TextView cancellationTextView;
 
+    private Listing myListing;
+
     public static final int SELECT_PAYMENT_REQUEST_CODE = 0;
     public static final String SELECTING_PAYMENT = "Selecting Payment";
 
@@ -48,6 +51,17 @@ public class ListingDetailActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listing_detail);
+
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                myListing = null;
+            } else {
+                myListing = (Listing)extras.getSerializable("LISTING");
+            }
+        } else {
+            myListing = (Listing) savedInstanceState.getSerializable("LISTING");
+        }
 
         initialize();
         listeners();
@@ -75,6 +89,7 @@ public class ListingDetailActivity extends AppCompatActivity{
         availibilityTextView = (TextView)findViewById(R.id.availibilityTextView);
         cancellationTextView = (TextView)findViewById(R.id.cancellationTextView);
 
+
         populate();
     }
 
@@ -84,6 +99,8 @@ public class ListingDetailActivity extends AppCompatActivity{
             public void onClick(View v) {
                 //Intent for confirm
                 Debug.printToast("Confirm button clicked!", getApplicationContext());
+                Intent i = new Intent(ListingDetailActivity.this, ListOfBookingsActivity.class);
+                startActivity(i);
             }
         });
         ownerTextView.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +116,7 @@ public class ListingDetailActivity extends AppCompatActivity{
             public void onClick(View v) {
                 Intent i = new Intent(ListingDetailActivity.this, ListOfRatingsActivity.class);
                 //put listing in i
-//                getIntent().putExtra("EXTRA_RATINGS", )
+                getIntent().putExtra("LISTING", myListing);
                 startActivity(i);
             }
         });
@@ -123,13 +140,13 @@ public class ListingDetailActivity extends AppCompatActivity{
 
     private void populate(){
         //Populate details
-        listingTitleTextView.setText("Shrine Habitat Parking");
-        listingAddressTextView.setText("701 W 32nd St");
-        priceTextView.setText("$11.50");
-        ownerTextView.setText("Kanye");
+        listingTitleTextView.setText(myListing.getListingTitle());
+//        listingAddressTextView.setText(myListing.ge);
+        priceTextView.setText("" + myListing.getPrice());
+        ownerTextView.setText(myListing.getListingOwner());
         //aboutTextView.setText("");
         //totalPriceTextView.setText("");
-        listingRatingBar.setRating((float)3.0);
+        listingRatingBar.setRating(myListing.getAverageRating());
         ownerRatingBar.setRating((float)3.0);
         paymentMethodTextView.setText("");
         //To display review user image, same code for listing detail image
