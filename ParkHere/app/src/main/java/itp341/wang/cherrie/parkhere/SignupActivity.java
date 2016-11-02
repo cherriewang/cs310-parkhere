@@ -50,10 +50,6 @@ public class SignupActivity extends AppCompatActivity {
 
     public final static int SIGN_UP_REQUEST_CODE = 1;
 
-    String URL_ADDRESS = "http://localhost:8080/signup";
-    private HttpURLConnection client;
-    // ImageView upload??
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,28 +59,6 @@ public class SignupActivity extends AppCompatActivity {
 
         initialize();
         listeners();
-    }
-
-    private void writeStream(OutputStream out){
-        String output = "Hello world";
-        try {
-            out.write(output.getBytes());
-            out.flush();
-        }  catch(Exception e) {
-            String except = new String("Exception: " + e.getMessage());
-            Debug.printToast(except, getApplicationContext());
-        }
-    }
-
-    // Temp readStream function that assumes we're reading a String response back
-    private String readStream(InputStream is) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        BufferedReader r = new BufferedReader(new InputStreamReader(is),1000);
-        for (String line = r.readLine(); line != null; line = r.readLine()){
-            sb.append(line);
-        }
-        is.close();
-        return sb.toString();
     }
 
     private boolean isFieldsEmpty(){
@@ -162,8 +136,6 @@ public class SignupActivity extends AppCompatActivity {
                     // TODO: change back to Home. it's going to ListOfBookings right now
                     Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
                     startActivityForResult(homeIntent,0);
-//                    Intent bookIntent = new Intent(getApplicationContext(), ListOfBookingsActivity.class);
-//                    startActivityForResult(bookIntent,1);
                     Debug.printToast("Signup Successful", getApplicationContext());
                 }
 
