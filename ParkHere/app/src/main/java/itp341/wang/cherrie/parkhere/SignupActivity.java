@@ -153,12 +153,16 @@ public class SignupActivity extends AppCompatActivity {
                     DatabaseReference myRef = database.getReference();
 
                     myRef.child("users").child(myUser.getmFirstName()).setValue(myUser);
+                }
+
+                // from the readStream
+                if(true) {
                     // Intent to HomeActivity
                     // TODO: change back to Home. it's going to ListOfBookings right now
-                    //Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
-                    //startActivityForResult(homeIntent,0);
-                    Intent bookIntent = new Intent(getApplicationContext(), ListOfBookingsActivity.class);
-                    startActivityForResult(bookIntent,1);
+                    Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                    startActivityForResult(homeIntent,0);
+//                    Intent bookIntent = new Intent(getApplicationContext(), ListOfBookingsActivity.class);
+//                    startActivityForResult(bookIntent,1);
                     Debug.printToast("Signup Successful", getApplicationContext());
                 }
 
