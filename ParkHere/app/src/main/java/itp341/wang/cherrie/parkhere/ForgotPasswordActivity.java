@@ -8,6 +8,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import itp341.wang.cherrie.parkhere.model.User;
+
 public class ForgotPasswordActivity extends AppCompatActivity {
     private Button sendEmailButton;
     private EditText emailInput;
@@ -30,6 +38,21 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 // verify that the email exists in the database
                 // some function that sends email for password reset
                 // return to login activity via intent for result
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference ref = database.getReference("users").child(emailAddress.replace(".", "%2E"));
+
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        System.out.println(dataSnapshot.getValue(User.class));
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // ...
+                    }
+                });
+
                 Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
                 setResult(Activity.RESULT_OK, loginIntent);
                 finish();
