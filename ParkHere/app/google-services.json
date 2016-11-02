@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "561822749440-ffig4oba701o2kp727t8enqsdep7bber.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "itp341.wang.cherrie.parkhere",
+            "certificate_hash": "F21A31245C3236B12FFB081252BC8BA79AA8756D"
+          }
+        },
+        {
           "client_id": "561822749440-87dalhg6u2a4pocmnqkv674g644re541.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "561822749440-87dalhg6u2a4pocmnqkv674g644re541.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

@@ -93,8 +93,8 @@ public class SignupActivity extends AppCompatActivity {
                 && !emailEditText.getText().toString().isEmpty()
                 && !phoneEditText.getText().toString().isEmpty()
                 && !passwordEditText.getText().toString().isEmpty())
-            return true;
-        return false;
+            return false;
+        return true;
     }
 
     private boolean isPasswordOK(){
@@ -152,7 +152,7 @@ public class SignupActivity extends AppCompatActivity {
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference myRef = database.getReference();
 
-                    myRef.child("users").setValue(myUser);
+                    myRef.child("users").child(myUser.getmEmail()).setValue(myUser);
                 }
 
                 // from the readStream
