@@ -146,7 +146,7 @@ public class CreateEditListingActivity extends AppCompatActivity {
 
                     // CREATE LISTING OBJECT
                     myListing.setListingTitle(listingTitle);
-                    //myListing.setListingOwner();
+                    myListing.setListingOwner("MY_USER"); // should have a global user here
                     myListing.setAbout(about);
                     myListing.setPrice(price);
                     myListing.setTandem(isTandem);
