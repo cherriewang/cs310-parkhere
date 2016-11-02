@@ -3,8 +3,10 @@ package itp341.wang.cherrie.parkhere;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +16,11 @@ import android.widget.Toast;
 
 import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity;
@@ -50,6 +57,9 @@ public class SignupActivity extends AppCompatActivity {
     private boolean isOwner = false;
     private SimpleDraweeView userProfPicView;
     private User myUser;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
 
     public final static int SIGN_UP_REQUEST_CODE = 1;
 
@@ -99,6 +109,63 @@ public class SignupActivity extends AppCompatActivity {
 
         ((ParkHereApplication) this.getApplication()).setMyUser(new User());
         myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
+
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null && myUser != null && myUser.getmNormalizedEmail() != null) {
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference();
+                    Debug.printToast("Signup Successful", getApplicationContext());
+//                    if (myRef.child("users").child(myUser.getmNormalizedEmail()).getRoot() == null)
+//                    {
+                        myRef.child("users").child(myUser.getmNormalizedEmail()).setValue(myUser);
+                        // Intent to HomeActivity
+                        Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                        startActivityForResult(homeIntent,0);
+
+//                    }
+//                    else
+//                    {
+//                        Debug.printToast("Signup Unsuccessful: Email already exists", getApplicationContext());
+//                    }
+                } else {
+                    // User is signed out
+                }
+            }
+        };
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    private void signUp() {
+        mAuth.createUserWithEmailAndPassword(myUser.getmEmail(), passwordEditText.getText().toString())
+            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    // If sign in fails, display a message to the user. If sign in succeeds
+                    // the auth state listener will be notified and logic to handle the
+                    // signed in user can be handled in the listener.
+                    if (!task.isSuccessful()) {
+                                    Toast.makeText(SignupActivity.this, "Sign up unsuccesful",
+                                            Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
     }
 
     private void listeners(){
@@ -117,7 +184,6 @@ public class SignupActivity extends AppCompatActivity {
                 myUser.setOwner(isOwner);
                 myUser.setSeeker(isSeeker);
 
-                HttpURLConnection urlConnection = null;
 
                 if(isFieldsEmpty()) {
                     Toast.makeText(getApplicationContext(), "Fields are empty, please fill them out",
@@ -129,27 +195,8 @@ public class SignupActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                 } else {
                     // store User in database
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef = database.getReference();
-
-                    if (myRef.child("users").child(myUser.getmNormalizedEmail()).getRoot() == null)
-                    {
-                        myRef.child("users").child(myUser.getmNormalizedEmail()).setValue(myUser);
-                        // Intent to HomeActivity
-                        Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
-                        startActivityForResult(homeIntent,0);
-                        Debug.printToast("Signup Successful", getApplicationContext());
-                    }
-                    else
-                    {
-                        Debug.printToast("Signup Unsuccessful: Email already exists", getApplicationContext());
-                    }
-
+                    signUp();
                 }
-
-                // Toast unsuccessful, clear input fields
-                //Debug.printToast("Signup Successful", getApplicationContext());
-
             }
         });
         userProfPicView.setOnClickListener(new View.OnClickListener() {

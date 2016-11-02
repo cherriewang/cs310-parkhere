@@ -1,14 +1,27 @@
 package itp341.wang.cherrie.parkhere;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,12 +33,21 @@ import itp341.wang.cherrie.parkhere.model.User;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private static final String TAG = "EmailPassword";
     private Button enterButton;
     private EditText emailEditText;
     private EditText passwordEditText;
     private TextView forgotPassword;
     private User candidateUser;
     private User myUser;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,57 +57,88 @@ public class LoginActivity extends AppCompatActivity {
 
         initialize();
         listeners();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    private void initialize(){
+    private void initialize() {
         emailEditText = (EditText) findViewById(R.id.editTextEmail);
         passwordEditText = (EditText) findViewById(R.id.editTextPass);
         forgotPassword = (TextView) findViewById(R.id.textForgotPassword);
         enterButton = (Button) findViewById(R.id.buttonEnter);
+        FirebaseAuth.getInstance().signOut();
     }
 
-    private boolean checkUser(User cUser, int hashedPassword) {
-        if (cUser.getmHashedPassword() == hashedPassword) {
-            ((ParkHereApplication) this.getApplication()).setMyUser(cUser);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private void listeners(){
-        // ENTER BUTTON LISTENER
-        enterButton.setOnClickListener(new View.OnClickListener(){
+    private void listeners() {
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            //On click function
-            public void onClick(View view) {
-                boolean validUser = false;
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    FirebaseDatabase.getInstance().getReference().child("users").child(user.getEmail().replace(".", "%2E")).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            // Get user information
+                            myUser  = dataSnapshot.getValue(User.class);
+                            ((ParkHereApplication) getApplication()).setMyUser(myUser);
+                            System.out.println(myUser.getmEmail());
+                            Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                            startActivityForResult(homeIntent,0);
+                        }
 
-                String email = emailEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
-                int hashedPassword = password.hashCode();
-
-                UserLoginTask t = new UserLoginTask(email, hashedPassword);
-                t.execute((Void) null);
-
-                if (validUser){
-                    // Intent to start HomeActivity
-                    Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
-                    startActivityForResult(homeIntent,0);
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+                } else {
+                    // User is signed out
+                    Debug.printToast("Signed out", getApplicationContext());
                 }
-
             }
-        });
+        };
 
-        // forgotPasswordListener()
-        // Override onClick with an Intent to start ForgotPasswordActivity
-        // ENTER BUTTON LISTENER
-        forgotPassword.setOnClickListener(new View.OnClickListener(){
+        SetEnterButtonListener();
+        SetForgotPasswordListener();
+    }
+
+    private void SetForgotPasswordListener() {
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             //On click function
             public void onClick(View view) {
                 Intent forgotPassIntent = new Intent(getApplicationContext(), ForgotPasswordActivity.class);
-                startActivityForResult(forgotPassIntent,1);
+                startActivityForResult(forgotPassIntent, 1);
+            }
+        });
+    }
+
+    private void SetEnterButtonListener() {
+        enterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            //On click function
+            public void onClick(View view) {
+                signIn();
+            }
+        });
+    }
+
+    private void signIn() {
+        String email = emailEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                Debug.printToast("Signing in", getApplicationContext());
+
+                // If sign in fails, display a message to the user. If sign in succeeds
+                // the auth state listener will be notified and logic to handle the
+                // signed in user can be handled in the listener.
+                if (!task.isSuccessful()) {
+                    Log.w(TAG, "signInWithEmail:failed", task.getException());
+                    Debug.printToast("Sign in failed", getApplicationContext());
+                }
             }
         });
     }
@@ -95,7 +148,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case(0): {
+            case (0): {
                 // Return from HomeActivity
                 // Logout?
             }
@@ -107,43 +160,33 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Represents an asynchronous, multi-threaded login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final int mHashedPassword;
-        private boolean authenticationStatus = true;
-        UserLoginTask(String username, int password) {
-            mEmail = username;
-            mHashedPassword = password;
-            authenticationStatus = doInBackground((Void) null);
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            //A firebaseError will occur whenever the authentication fails.
-//            ref = new Firebase("https://anchronize.firebaseio.com");
-
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference ref = database.getReference("users").child(mEmail.replace(".", "%2E"));
-
-            ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    candidateUser = dataSnapshot.getValue(User.class);
-                    checkUser(candidateUser, mHashedPassword);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    // ...
-                }
-            });
-
-            return authenticationStatus;
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
     }
-}}
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Login Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+}

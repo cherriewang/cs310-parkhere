@@ -4,7 +4,9 @@ import android.app.Application;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import itp341.wang.cherrie.parkhere.model.User;
 
@@ -30,4 +32,11 @@ public class ParkHereApplication extends Application{
         FirebaseApp.initializeApp(this);
         myUser = null;
     }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        FirebaseAuth.getInstance().signOut();
+    }
+
 }
