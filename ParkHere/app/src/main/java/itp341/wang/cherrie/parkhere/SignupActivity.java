@@ -39,7 +39,6 @@ import itp341.wang.cherrie.parkhere.model.User;
 
 public class SignupActivity extends AppCompatActivity {
 
-    private User myUser;
     private Button enterButton;
     private EditText firstNameEditText;
     private EditText lastNameEditText;
@@ -47,6 +46,7 @@ public class SignupActivity extends AppCompatActivity {
     private EditText phoneEditText;
     private EditText passwordEditText;
     private SimpleDraweeView userProfPicView;
+    private User myUser;
 
     public final static int SIGN_UP_REQUEST_CODE = 1;
 
@@ -120,7 +120,8 @@ public class SignupActivity extends AppCompatActivity {
         enterButton = (Button) findViewById(R.id.buttonEnter);
         userProfPicView = (SimpleDraweeView) findViewById(R.id.userProfPicView);
 
-        myUser = new User();
+        ((ParkHereApplication) this.getApplication()).setMyUser(new User());
+        myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
     }
 
     private void listeners(){
@@ -135,7 +136,7 @@ public class SignupActivity extends AppCompatActivity {
                 myUser.setmLastName(lastNameEditText.getText().toString());
                 myUser.setmEmail(emailEditText.getText().toString());
                 myUser.setmPhoneNumber(phoneEditText.getText().toString());
-                myUser.setmHashedPassword(passwordEditText.getText().toString());
+                myUser.setmHashedPassword(passwordEditText.getText().toString().hashCode());
 
                 HttpURLConnection urlConnection = null;
 
@@ -152,7 +153,7 @@ public class SignupActivity extends AppCompatActivity {
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference myRef = database.getReference();
 
-                    myRef.child("users").child(myUser.getmFirstName()).setValue(myUser);
+                    myRef.child("users").child(myUser.getmNormalizedEmail()).setValue(myUser);
                 }
 
                 // from the readStream

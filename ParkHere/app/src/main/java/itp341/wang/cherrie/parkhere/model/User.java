@@ -1,5 +1,8 @@
 package itp341.wang.cherrie.parkhere.model;
 
+import android.net.Uri;
+import android.util.Base64;
+
 import java.io.Serializable;
 
 /**
@@ -18,7 +21,9 @@ public class User implements Serializable {
     // email
     private String mEmail;
     // hashed password
-    private String mHashedPassword;
+    private int mHashedPassword;
+
+    private String mNormalizedEmail;
 
     // CONSTRUCTOR
     public User() {
@@ -46,9 +51,11 @@ public class User implements Serializable {
         return mEmail;
     }
 
-    public String getmHashedPassword() {
+    public int getmHashedPassword() {
         return mHashedPassword;
     }
+
+    public String getmNormalizedEmail() { return mNormalizedEmail; }
 
     // setters
 
@@ -70,9 +77,11 @@ public class User implements Serializable {
 
     public void setmEmail(String mEmail) {
         this.mEmail = mEmail;
+        this.mNormalizedEmail = mEmail.replace(".", "%2E");
     }
 
-    public void setmHashedPassword(String mHashedPassword) {
+    public void setmHashedPassword(int mHashedPassword) {
         this.mHashedPassword = mHashedPassword;
     }
+
 }
