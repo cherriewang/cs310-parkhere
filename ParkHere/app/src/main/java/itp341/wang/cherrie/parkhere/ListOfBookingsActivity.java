@@ -40,26 +40,36 @@ public class ListOfBookingsActivity extends AppCompatActivity {
         myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
 
         ArrayList<Card> bookingCards = createCards();
-        CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(this, bookingCards);
-        CardListView bookingListView = (CardListView) this.findViewById(R.id.listingsCardListView);
-        if (bookingListView != null){
-            bookingListView.setAdapter(mCardArrayAdapter);
+        if (bookingCards == null)
+        {
+            // Handle 0 bookings
         }
-
-
+        else {
+            CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(this, bookingCards);
+            CardListView bookingListView = (CardListView) this.findViewById(R.id.listingsCardListView);
+            if (bookingListView != null){
+                bookingListView.setAdapter(mCardArrayAdapter);
+            }
+        }
     }
     private ArrayList<Card> createCards() {
         ArrayList<Card> cards = new ArrayList<>();
 
         // Create a Listing Card
-        for (Booking b : myUser.getmBookings()) {
-            // TODO: Setup card layout here
-            Card bookingCard = new Card(this, R.layout.row_booking_layout);
-            bookingCard.setTitle(b.getBookingTitle());
-            cards.add(bookingCard);
+        if (myUser.getmBookings() != null) {
+            for (Booking b : myUser.getmBookings()) {
+                // TODO: Setup card layout here
+                Card bookingCard = new Card(this, R.layout.row_booking_layout);
+                bookingCard.setTitle(b.getBookingTitle());
+                cards.add(bookingCard);
+            }
+            Debug.printToast(cards.size() + "", getApplicationContext());
+            return cards;
         }
-        Debug.printToast(cards.size() + "", getApplicationContext());
-        return cards;
+        else
+        {
+            return null;
+        }
     }
 
     private void listeners(){
