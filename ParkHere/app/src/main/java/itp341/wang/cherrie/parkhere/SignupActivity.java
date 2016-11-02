@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.facebook.drawee.generic.RoundingParams;
@@ -45,6 +46,8 @@ public class SignupActivity extends AppCompatActivity {
     private EditText emailEditText;
     private EditText phoneEditText;
     private EditText passwordEditText;
+    private boolean isSeeker = false;
+    private boolean isOwner = false;
     private SimpleDraweeView userProfPicView;
     private User myUser;
 
@@ -111,6 +114,8 @@ public class SignupActivity extends AppCompatActivity {
                 myUser.setmEmail(emailEditText.getText().toString());
                 myUser.setmPhoneNumber(phoneEditText.getText().toString());
                 myUser.setmHashedPassword(passwordEditText.getText().toString().hashCode());
+                myUser.setOwner(isOwner);
+                myUser.setSeeker(isOwner);
 
                 HttpURLConnection urlConnection = null;
 
@@ -128,12 +133,7 @@ public class SignupActivity extends AppCompatActivity {
                     DatabaseReference myRef = database.getReference();
 
                     myRef.child("users").child(myUser.getmNormalizedEmail()).setValue(myUser);
-                }
-
-                // from the readStream
-                if(true) {
                     // Intent to HomeActivity
-                    // TODO: change back to Home. it's going to ListOfBookings right now
                     Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
                     startActivityForResult(homeIntent,0);
                     Debug.printToast("Signup Successful", getApplicationContext());
@@ -164,6 +164,24 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radio_seeker:
+                if (checked)
+                    // seeker
+                    isSeeker = true;
+                    break;
+            case R.id.radio_owner:
+                if (checked)
+                    // owner
+                    isOwner = true;
+                    break;
+        }
+    }
     // Handlers for return result Intents
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
