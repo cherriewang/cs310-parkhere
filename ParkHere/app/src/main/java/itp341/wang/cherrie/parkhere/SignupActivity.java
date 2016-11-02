@@ -82,7 +82,7 @@ public class SignupActivity extends AppCompatActivity {
         boolean b = m.find();
         int length = password.length();
         //if 10 characters and at least one special character
-        if(b == true && length >= 10){
+        if(b && length >= 10){
             return true;
         }
         return false;
@@ -104,18 +104,18 @@ public class SignupActivity extends AppCompatActivity {
     private void listeners(){
         // enterButtonListener()
         // Override onClick with an Intent to start HomeActivity if sign up is successful
-        // SEND EMAIL BUTTON LISTENER
         enterButton.setOnClickListener(new View.OnClickListener(){
             @Override
             //On click function
             public void onClick(View view) {
+                // Populate User object
                 myUser.setmFirstName(firstNameEditText.getText().toString());
                 myUser.setmLastName(lastNameEditText.getText().toString());
                 myUser.setmEmail(emailEditText.getText().toString());
                 myUser.setmPhoneNumber(phoneEditText.getText().toString());
                 myUser.setmHashedPassword(passwordEditText.getText().toString().hashCode());
                 myUser.setOwner(isOwner);
-                myUser.setSeeker(isOwner);
+                myUser.setSeeker(isSeeker);
 
                 HttpURLConnection urlConnection = null;
 
