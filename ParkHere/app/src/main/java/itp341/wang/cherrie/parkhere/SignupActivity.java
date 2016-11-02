@@ -30,6 +30,8 @@ import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import itp341.wang.cherrie.parkhere.ParkHereApplication;
 
@@ -97,8 +99,15 @@ public class SignupActivity extends AppCompatActivity {
 
     private boolean isPasswordOK(){
         String password = passwordEditText.getText().toString();
+
+        Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(password);
+        boolean b = m.find();
+        int length = password.length();
         //if 10 characters and at least one special character
-        //return true
+        if(b == true && length >= 10){
+            return true;
+        }
         return false;
     }
 
