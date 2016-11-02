@@ -1,5 +1,6 @@
 package itp341.wang.cherrie.parkhere.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * Created by Cherrie on 11/1/16.
  */
 
-public class Listing {
+public class Listing implements Serializable{
 
     // CONSTRUCTOR
     public Listing() {

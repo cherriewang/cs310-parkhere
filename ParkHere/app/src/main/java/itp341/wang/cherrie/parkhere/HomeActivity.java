@@ -288,9 +288,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.setMyLocationEnabled(true);
 
             Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            // Getting last location and zooming to that level w/o animation
-            //if(mLastLocation == null)
-                //Debug.printToast("Location is null", getApplicationContext());
             CameraPosition currentPosition = new CameraPosition.Builder()
                     //.target(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()))
                     .target(glarenceAPT)
