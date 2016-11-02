@@ -152,18 +152,18 @@ public class SignupActivity extends AppCompatActivity {
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference myRef = database.getReference();
 
-                    myRef.child("users").child(myUser.getmEmail()).setValue(myUser);
+                    myRef.child("users").child(myUser.getmFirstName()).setValue(myUser);
+                    // Intent to HomeActivity
+                    // TODO: change back to Home. it's going to ListOfBookings right now
+                    //Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                    //startActivityForResult(homeIntent,0);
+                    Intent bookIntent = new Intent(getApplicationContext(), ListOfBookingsActivity.class);
+                    startActivityForResult(bookIntent,1);
+                    Debug.printToast("Signup Successful", getApplicationContext());
                 }
 
-                // from the readStream
-                if(true) {
-                    // Intent to HomeActivity
-                    Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
-                    startActivityForResult(homeIntent,0);
-                } else {
-                    // Toast unsuccessful, clear input fields
-                    Debug.printToast("Signup Unsuccessful", getApplicationContext());
-                }
+                // Toast unsuccessful, clear input fields
+                //Debug.printToast("Signup Successful", getApplicationContext());
 
             }
         });
