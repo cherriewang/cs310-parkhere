@@ -39,21 +39,13 @@ public class ListOfListingsActivity extends AppCompatActivity {
 //
         myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
 
-        ArrayList<Card> ownedListingCards = createCards();
-        CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(this, ownedListingCards);
-        CardListView currentListingsListView = (CardListView) this.findViewById(R.id.listingsCardListView);
-        if (currentListingsListView != null){
-            currentListingsListView.setAdapter(mCardArrayAdapter);
-        }
-
-
     }
 
     private ArrayList<Card> createCards() {
         ArrayList<Card> cards = new ArrayList<>();
 
         // Create a Listing Card
-        for (Listing l : myUser.getmListings()) {
+        for (Listing l : myListings) {
             // TODO: Setup card layout here
             Card bookingCard = new Card(this, R.layout.row_listing_layout);
             bookingCard.setTitle(l.getListingTitle());
@@ -74,6 +66,8 @@ public class ListOfListingsActivity extends AppCompatActivity {
                     Listing listing = postSnapshot.getValue(Listing.class);
                     myListings.add(listing);
                 }
+
+                updateCardUi();
             }
 
             @Override
@@ -81,5 +75,14 @@ public class ListOfListingsActivity extends AppCompatActivity {
                 // ...
             }
         });
+    }
+
+    private void updateCardUi() {
+        ArrayList<Card> ownedListingCards = createCards();
+        CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(this, ownedListingCards);
+        CardListView currentListingsListView = (CardListView) this.findViewById(R.id.listingsCardListView);
+        if (currentListingsListView != null) {
+            currentListingsListView.setAdapter(mCardArrayAdapter);
+        }
     }
 }
