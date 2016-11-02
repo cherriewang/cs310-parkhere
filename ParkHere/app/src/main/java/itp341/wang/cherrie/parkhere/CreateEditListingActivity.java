@@ -21,6 +21,8 @@ import com.nguyenhoanglam.imagepicker.model.Image;
 
 import java.util.ArrayList;
 
+import itp341.wang.cherrie.parkhere.model.Listing;
+
 /**
  * Created by glarencezhao on 10/24/16.
  */
@@ -37,6 +39,7 @@ public class CreateEditListingActivity extends AppCompatActivity {
     private EditText aboutEditText;
     private CurrencyEditText priceEditText;
     private Button createListingButton;
+    private Listing myListing;
 
     private String listingTitle = "";
     private String location = "";
@@ -71,6 +74,8 @@ public class CreateEditListingActivity extends AppCompatActivity {
         aboutEditText = (EditText) findViewById(R.id.aboutEditText);
         priceEditText = (CurrencyEditText) findViewById(R.id.priceEditText);
         createListingButton = (Button) findViewById(R.id.createListingButton);
+
+        myListing = new Listing();
     }
 
     //Used to fill up info if editing a listing
@@ -132,12 +137,25 @@ public class CreateEditListingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(!listingTitle.isEmpty() && !location.isEmpty() && !about.isEmpty() && !isPriceEditTextEmpty()){
+                    // getting all values from the input fields
                     price = priceEditText.getRawValue();
                     isTandem = tandemCheckBox.isChecked();
                     isHandicapped = handicappedCheckBox.isChecked();
                     isSUV = suvCheckBox.isChecked();
                     isCovered = coveredCheckBox.isChecked();
-                    //create listing
+
+                    // CREATE LISTING OBJECT
+                    myListing.setListingTitle(listingTitle);
+                    //myListing.setListingOwner();
+                    myListing.setAbout(about);
+                    myListing.setPrice(price);
+                    myListing.setTandem(isTandem);
+                    myListing.setHandicapped(isHandicapped);
+                    myListing.setSuv(isSUV);
+                    myListing.setCovered(isCovered);
+
+                    // TODO: Listing object now created, need to have to passed to database under the owner
+
                     setResult(RESULT_OK);
                     finish();
                 }

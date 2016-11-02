@@ -5,6 +5,7 @@ package itp341.wang.cherrie.parkhere.model;
  */
 
 public class Listing {
+
     // CONSTRUCTOR
     public Listing() {
         super();
