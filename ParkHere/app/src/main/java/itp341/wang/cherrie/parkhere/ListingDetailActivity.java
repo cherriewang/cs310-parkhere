@@ -12,8 +12,12 @@ import android.widget.TextView;
 import com.cunoraz.tagview.Tag;
 import com.cunoraz.tagview.TagView;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import itp341.wang.cherrie.parkhere.model.Booking;
 import itp341.wang.cherrie.parkhere.model.Listing;
+import itp341.wang.cherrie.parkhere.model.User;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 /**
@@ -43,6 +47,7 @@ public class ListingDetailActivity extends AppCompatActivity{
     private TextView cancellationTextView;
 
     private Listing myListing;
+    private User myUser;
 
     public static final int SELECT_PAYMENT_REQUEST_CODE = 0;
     public static final String SELECTING_PAYMENT = "Selecting Payment";
@@ -63,6 +68,7 @@ public class ListingDetailActivity extends AppCompatActivity{
             myListing = (Listing) savedInstanceState.getSerializable("LISTING");
         }
 
+        myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
         initialize();
         listeners();
     }
@@ -97,6 +103,7 @@ public class ListingDetailActivity extends AppCompatActivity{
         confirmBookingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                BookListing();
                 //Intent for confirm
                 Debug.printToast("Confirm button clicked!", getApplicationContext());
                 Intent i = new Intent(ListingDetailActivity.this, ListOfBookingsActivity.class);
@@ -136,6 +143,16 @@ public class ListingDetailActivity extends AppCompatActivity{
                 startActivity(i);
             }
         });
+    }
+
+    private void BookListing() {
+        Booking b = new Booking(myListing);
+        myUser.appendBooking(b);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+        myRef.child("users").child(myUser.getmNormalizedEmail()).setValue(myUser);
+        myRef.child("bookings").child(b.getBookingTitle()).setValue(b);
     }
 
     private void populate(){

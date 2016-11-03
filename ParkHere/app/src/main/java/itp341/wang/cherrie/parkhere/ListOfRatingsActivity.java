@@ -2,21 +2,24 @@ package itp341.wang.cherrie.parkhere;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ListView;
 
 import java.util.ArrayList;
-
-import it.gmariotti.cardslib.library.internal.Card;
-import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
-import it.gmariotti.cardslib.library.view.CardListView;
 import itp341.wang.cherrie.parkhere.model.Listing;
 import itp341.wang.cherrie.parkhere.model.Review;
+import itp341.wang.cherrie.parkhere.model.User;
 
 /**
  * Created by cherriewang on 10/28/16.
  */
 
 public class ListOfRatingsActivity extends AppCompatActivity {
+
+    private User myUser;
+    private ListView ratingsListView;
+    private RatingAdapter mRatingAdapter;
     private Listing myListing;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,32 +41,37 @@ public class ListOfRatingsActivity extends AppCompatActivity {
     }
 
     private void initialize(){
-        getSupportActionBar().setTitle(getResources().getString(R.string.list_of_ratings_actionbar_title));
+        getSupportActionBar().setTitle(myListing.getListingTitle());
+        ratingsListView = (ListView) findViewById(R.id.ratingsListView);
 
-        ArrayList<Card> ownedListingCards = createCards();
-        CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(this, ownedListingCards);
-        CardListView currentListingsListView = (CardListView) this.findViewById(R.id.ratingsListView);
-        if (currentListingsListView!=null){
-            currentListingsListView.setAdapter(mCardArrayAdapter);
-        }
-    }
-
-    private ArrayList<Card> createCards(){
-        ArrayList<Card> cards = new ArrayList<>();
-
-        // Create a Listing Card
-        for (Review r : myListing.getReviews()) {
-            // TODO: Setup card layout here
-            Card reviewCard = new Card(this, R.layout.row_listing_layout);
-            reviewCard.setTitle(r.getTitle());
-            cards.add(reviewCard);
-        }
-
-        Debug.printToast(cards.size() + "", getApplicationContext());
-        return cards;
+        myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
+        createCards();
     }
 
     private void listeners(){
-
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference ref = database.getReference("listings").child(myListing.getListingTitle());
+//
+//        ref.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+//                    Listing listing = postSnapshot.getValue(Listing.class);
+//                    myListings.add(listing);
+//                }
+//
+//                updateCardUi();
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//            }
+//        });
     }
+
+    private void createCards() {
+        mRatingAdapter = new RatingAdapter(getApplicationContext(), 0, (ArrayList<Review>) myListing.getReviews());
+        ratingsListView.setAdapter(mRatingAdapter);
+    }
+
 }

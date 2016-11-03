@@ -12,6 +12,22 @@ public class Booking {
         super();
     }
 
+    public Booking(Listing l) {
+        this();
+        if (l != null) {
+            this.bookingOwner = l.getListingOwner();
+            this.owner = l;
+            this.bookingTitle = l.getListingTitle();
+            this.handicapped = l.isHandicapped();
+            this.tandem = l.isTandem();
+            this.suv = l.isSuv();
+            this.covered = l.isCovered();
+            this.location = l.getLocation();
+            this.about = l.getAbout();
+            this.price = l.getPrice();
+        }
+    }
+
     private String bookingOwner;
     private Listing owner;
     private String bookingTitle;

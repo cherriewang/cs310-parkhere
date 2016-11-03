@@ -60,6 +60,17 @@ public class CreateEditListingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_edit_listing);
 
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                myListing = null;
+            } else {
+                myListing = (Listing)extras.getSerializable("LISTING");
+            }
+        } else {
+            myListing = (Listing) savedInstanceState.getSerializable("LISTING");
+        }
+
         initialize();
         listeners();
     }
@@ -78,26 +89,30 @@ public class CreateEditListingActivity extends AppCompatActivity {
         priceEditText = (CurrencyEditText) findViewById(R.id.priceEditText);
         createListingButton = (Button) findViewById(R.id.createListingButton);
 
-        myListing = new Listing();
+        if (myListing == null) {
+            myListing = new Listing();
+        } else {
+            populate();
+        }
 
         myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
     }
 
     //Used to fill up info if editing a listing
     private void populate(){
-        //listingTitle =
-        //location =
-        //about =
-        //price =
-        //isTandem =
-        //isHandicapped =
+        listingTitle = myListing.getListingTitle();
+        location = myListing.getLocation();
+        about = myListing.getAbout();
+        price = myListing.getPrice();
+        isTandem = myListing.isTandem();
+        isHandicapped = myListing.isHandicapped();
 
-        //listingEditText.setText(listingTitle);
-        //locationEditText.setText(location);
-        //aboutEditText.setText(about);
-        //priceEditText.setText(Long.toString(price));
-        //tandemCheckBox.setChecked(isTandem);
-        //handicappedCheckBox.setChecked(isHandicapped);
+        listingTitleEditText.setText(listingTitle);
+        locationEditText.setText(location);
+        aboutEditText.setText(about);
+        priceEditText.setText(Long.toString(price));
+        tandemCheckBox.setChecked(isTandem);
+        handicappedCheckBox.setChecked(isHandicapped);
     }
 
     private void listeners(){
