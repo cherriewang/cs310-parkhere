@@ -32,7 +32,7 @@ public class ListingAdapter extends ArrayAdapter<Listing>{
         ResultsViewHolder holder;
 
         if (row == null) {
-            row = mLayoutInflater.inflate(R.layout.row_booking_layout, parent, false);
+            row = mLayoutInflater.inflate(R.layout.row_listing_layout, parent, false);
             holder = new ResultsViewHolder(row);
             row.setTag(holder);
         }
@@ -48,12 +48,10 @@ public class ListingAdapter extends ArrayAdapter<Listing>{
 
     static final class ResultsViewHolder {
         TextView listingTitleTextView;
-        TextView listingOwnerTextView;
         SimpleDraweeView listingImageView;
 
         public ResultsViewHolder(View v) {
             listingTitleTextView = (TextView) v.findViewById(R.id.listingTitleTextView);
-            listingOwnerTextView = (TextView) v.findViewById(R.id.listingOwnerTextView);
             listingImageView = (SimpleDraweeView) v.findViewById(R.id.listingImageView);
         }
     }

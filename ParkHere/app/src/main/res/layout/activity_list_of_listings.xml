@@ -8,15 +8,15 @@
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
     android:orientation="vertical"
-    tools:context="itp341.wang.cherrie.parkhere.ListOfListingsActivity">
+    tools:context="itp341.wang.cherrie.parkhere.ListOfBookingsActivity">
 
-    <it.gmariotti.cardslib.library.view.CardListView
-        android:id="@+id/listingsCardListView"
+    <ListView
+        android:id="@+id/listingsListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp"
-        android:scrollbars="none"
-        card:list_card_layout_resourceID="@layout/row_booking_layout"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"
+        android:scrollbars="none"></ListView>
 
 </LinearLayout>
