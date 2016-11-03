@@ -6,12 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.androidviewhover.BlurLayout;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.ArrayList;
 
@@ -41,6 +44,7 @@ public class BookingAdapter extends ArrayAdapter<Booking>{
             //Hover code
             BlurLayout bookingBlurLayout = (BlurLayout) row.findViewById(R.id.bookingBlurLayout);
             View hover = LayoutInflater.from(getContext()).inflate(R.layout.hover_booking_layout, null);
+            setHoverIcons(hover);
             listeners(hover);
             bookingBlurLayout.setHoverView(hover);
             holder = new ResultsViewHolder(row);
@@ -107,6 +111,15 @@ public class BookingAdapter extends ArrayAdapter<Booking>{
                 //code to cancel or remove booking
             }
         });
+    }
+
+    private void setHoverIcons(View v){
+        ImageView listingDetail = (ImageView)v.findViewById(R.id.listingDetail);
+        listingDetail.setImageDrawable(new IconicsDrawable(getContext()).icon(FontAwesome.Icon.faw_info).color(getContext().getResources().getColor(R.color.colorAccent)).sizeDp(20));
+        ImageView review = (ImageView)v.findViewById(R.id.review);
+        review.setImageDrawable(new IconicsDrawable(getContext()).icon(FontAwesome.Icon.faw_pencil).color(getContext().getResources().getColor(R.color.colorAccent)).sizeDp(20));
+        ImageView cancel = (ImageView)v.findViewById(R.id.cancel);
+        cancel.setImageDrawable(new IconicsDrawable(getContext()).icon(FontAwesome.Icon.faw_trash).color(getContext().getResources().getColor(R.color.colorAccent)).sizeDp(20));
     }
 
 }
