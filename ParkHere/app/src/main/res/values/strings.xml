@@ -75,4 +75,9 @@
     <string name="title_activity_maps">Map</string>
     <string name="dialog_title">Warning: You are not registered as an Owner</string>
     <string name="dialog_message">Only registered Owners can create listings. Would you like to sign up as an Owner?</string>
+
+    <!--Floating Search Bar strings-->
+    <string name="menu_advanced_string">Advanced</string>
+    <string name="menu_filters_string">Filters</string>
+    <string name="menu_latlong_string">LatLong Search</string>
 </resources>
