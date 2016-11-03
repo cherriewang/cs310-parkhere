@@ -20,6 +20,7 @@ import itp341.wang.cherrie.parkhere.model.User;
 
 /**
  * Created by glarencezhao on 10/28/16.
+ * View All Listings not just yours
  */
 
 public class ListOfListingsActivity extends AppCompatActivity {

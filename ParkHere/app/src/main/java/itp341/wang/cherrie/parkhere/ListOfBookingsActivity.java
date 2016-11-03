@@ -17,6 +17,7 @@ import itp341.wang.cherrie.parkhere.model.User;
 
 /**
  * Created by glarencezhao on 10/27/16.
+ * View only your bookings
  */
 
 public class ListOfBookingsActivity extends AppCompatActivity {
