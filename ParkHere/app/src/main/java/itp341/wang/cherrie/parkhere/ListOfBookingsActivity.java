@@ -45,8 +45,10 @@ public class ListOfBookingsActivity extends AppCompatActivity {
     private void createCards() {
         //Current listings
         List<Booking> currentBookings = myUser.getmBookings();
-        mBookingAdapter = new BookingAdapter(getApplicationContext(), 0, (ArrayList<Booking>) currentBookings);
-        bookingsListView.setAdapter(mBookingAdapter);
+        if (currentBookings != null) {
+            mBookingAdapter = new BookingAdapter(getApplicationContext(), 0, (ArrayList<Booking>) currentBookings);
+            bookingsListView.setAdapter(mBookingAdapter);
+        }
     }
 
     private void listeners(){
