@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <com.daimajia.androidviewhover.BlurLayout
-        android:id="@+id/bookingBlurLayout"
+        android:id="@+id/listingBlurLayout"
         android:layout_width="match_parent"
         android:layout_height="140dp"
         android:elevation="20dp">
