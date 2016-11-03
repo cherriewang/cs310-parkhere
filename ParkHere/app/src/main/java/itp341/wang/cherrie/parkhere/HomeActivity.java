@@ -29,6 +29,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -83,16 +85,14 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Testing Nav Drawer");
         // Create a few sample profile
-        final IProfile profile = new ProfileDrawerItem().withName(myUser.getmFirstName() + " " + myUser.getmLastName()).withEmail(myUser.getmEmail()).withIcon(R.drawable.placeholder_prof_pic);
+        //final IProfile profile = new ProfileDrawerItem().withName(myUser.getmFirstName() + " " + myUser.getmLastName()).withEmail(myUser.getmEmail()).withIcon(R.drawable.placeholder_prof_pic);
         // Create the AccountHeader
         headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withCompactStyle(true)
                 .withHeaderBackground(R.drawable.header)
                 .withSelectionListEnabledForSingleProfile(false)
-                .addProfiles(
-                        profile
-                )
+                //.addProfiles(profile)
                 .withSavedInstance(savedInstanceState)
                 .build();
         //Create the drawer
@@ -100,14 +100,14 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .withActivity(this)
                 .withAccountHeader(headerResult) //set the AccountHeader we created earlier for the header
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName(R.string.home_drawer_item_string).withIdentifier(1), //withIcon(FontAwesome.Icon.faw_home) before withIdentifier
-                        new PrimaryDrawerItem().withName(R.string.bookings_drawer_item_string).withIdentifier(2),
-                        new PrimaryDrawerItem().withName(R.string.listings_drawer_item_string).withIdentifier(3),
-                        new PrimaryDrawerItem().withName(R.string.create_listing_drawer_item_string).withIdentifier(4),
-                        new PrimaryDrawerItem().withName(R.string.payment_drawer_item_string).withIdentifier(5),
+                        new PrimaryDrawerItem().withName(R.string.home_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_home).sizeDp(20).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(1),
+                        new PrimaryDrawerItem().withName(R.string.bookings_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_align_left).sizeDp(20).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(2),
+                        new PrimaryDrawerItem().withName(R.string.listings_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_align_right).sizeDp(20).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(3),
+                        new PrimaryDrawerItem().withName(R.string.create_listing_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_pencil_square).sizeDp(20).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(4),
+                        new PrimaryDrawerItem().withName(R.string.payment_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_credit_card_alt).sizeDp(20).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(5),
                         new DividerDrawerItem(),
-                        new SecondaryDrawerItem().withName(R.string.settings_drawer_item_string).withIdentifier(6),
-                        new SecondaryDrawerItem().withName(R.string.help_drawer_item_string).withIdentifier(7)
+                        new SecondaryDrawerItem().withName(R.string.settings_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_cog).sizeDp(20).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(6),
+                        new SecondaryDrawerItem().withName(R.string.help_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_question).sizeDp(20).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(7)
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override

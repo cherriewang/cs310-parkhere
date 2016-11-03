@@ -37,7 +37,6 @@ dependencies {
     //Material rating bar
     //android hover UX
     //Navigation Drawer
-    //ButterKnife
     compile('com.mikepenz:materialdrawer:5.7.0@aar') {
         transitive = true
     }
@@ -61,9 +60,8 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:9.6.0'
     compile 'gun0912.ted:tedpermission:1.0.2'
     compile 'com.google.android.gms:play-services-location:9.6.0'
-    compile 'com.jakewharton:butterknife:8.4.0'
-    compile 'com.jakewharton:butterknife:8.4.0'
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile "com.mikepenz:iconics-core:2.8.1@aar"
+    compile 'com.mikepenz:fontawesome-typeface:4.7.0.0@aar'
     testCompile 'junit:junit:4.12'
 
     compile 'com.google.android.gms:play-services-appindexing:9.6.0'
