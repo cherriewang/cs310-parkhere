@@ -48,7 +48,7 @@ public class BookingAdapter extends ArrayAdapter<Booking>{
             listeners(hover);
             bookingBlurLayout.setHoverView(hover);
             holder = new ResultsViewHolder(row);
-            bookingBlurLayout.setBlurDuration(300);
+            bookingBlurLayout.setBlurDuration(100);
             bookingBlurLayout.addChildAppearAnimator(hover, R.id.listingDetail, Techniques.FlipInX, 550, 0);
             bookingBlurLayout.addChildAppearAnimator(hover, R.id.review, Techniques.FlipInX, 550, 250);
             bookingBlurLayout.addChildAppearAnimator(hover, R.id.cancel, Techniques.FlipInX, 550, 500);
