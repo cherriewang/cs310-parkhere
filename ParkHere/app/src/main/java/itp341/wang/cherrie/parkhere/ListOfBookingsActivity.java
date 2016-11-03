@@ -40,7 +40,16 @@ public class ListOfBookingsActivity extends AppCompatActivity {
         bookingsListView = (ListView) findViewById(R.id.listingsListView);
         getSupportActionBar().setTitle(getResources().getString(R.string.list_of_listings_actionbar_title));
         myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
-        createCards();
+        //createCards();
+        //test code for hover layout
+        List<Booking> currentBookings = new ArrayList<Booking>();
+        Booking booking1 = new Booking();
+        booking1.setBookingTitle("Booking1");
+        currentBookings.add(booking1);
+        if (currentBookings != null) {
+            mBookingAdapter = new BookingAdapter(getApplicationContext(), 0, (ArrayList<Booking>) currentBookings);
+            bookingsListView.setAdapter(mBookingAdapter);
+        }
     }
 
     private void createCards() {

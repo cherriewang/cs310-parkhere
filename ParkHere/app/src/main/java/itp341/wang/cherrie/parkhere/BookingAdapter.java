@@ -1,12 +1,16 @@
 package itp341.wang.cherrie.parkhere;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+import com.daimajia.androidviewhover.BlurLayout;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -34,7 +38,20 @@ public class BookingAdapter extends ArrayAdapter<Booking>{
 
         if (row == null) {
             row = mLayoutInflater.inflate(R.layout.row_booking_layout, parent, false);
+            //Hover code
+            BlurLayout bookingBlurLayout = (BlurLayout) row.findViewById(R.id.bookingBlurLayout);
+            View hover = LayoutInflater.from(getContext()).inflate(R.layout.hover_booking_layout, null);
+            listeners(hover);
+            bookingBlurLayout.setHoverView(hover);
             holder = new ResultsViewHolder(row);
+            bookingBlurLayout.setBlurDuration(300);
+            bookingBlurLayout.addChildAppearAnimator(hover, R.id.listingDetail, Techniques.FlipInX, 550, 0);
+            bookingBlurLayout.addChildAppearAnimator(hover, R.id.review, Techniques.FlipInX, 550, 250);
+            bookingBlurLayout.addChildAppearAnimator(hover, R.id.cancel, Techniques.FlipInX, 550, 500);
+            bookingBlurLayout.addChildDisappearAnimator(hover, R.id.listingDetail, Techniques.FlipOutX, 550, 500);
+            bookingBlurLayout.addChildDisappearAnimator(hover, R.id.review, Techniques.FlipOutX, 550, 250);
+            bookingBlurLayout.addChildDisappearAnimator(hover, R.id.cancel, Techniques.FlipOutX, 550, 0);
+
             row.setTag(holder);
         }
         else {
@@ -60,6 +77,36 @@ public class BookingAdapter extends ArrayAdapter<Booking>{
             listingOwnerTextView = (TextView) v.findViewById(R.id.listingOwnerTextView);
             listingImageView = (SimpleDraweeView) v.findViewById(R.id.listingImageView);
         }
+    }
+
+    private void listeners(View v){
+        v.findViewById(R.id.listingDetail).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                YoYo.with(Techniques.Wobble).duration(200).playOn(view);
+                Intent i = new Intent(getContext(), ListingDetailActivity.class)
+                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                //pass listing details
+                getContext().startActivity(i);
+            }
+        });
+        v.findViewById(R.id.review).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                YoYo.with(Techniques.Wobble).duration(200).playOn(view);
+                Intent i = new Intent(getContext(), RateReviewActivity.class)
+                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                //pass listing to review
+                getContext().startActivity(i);
+            }
+        });
+        v.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                YoYo.with(Techniques.Wobble).duration(200).playOn(view);
+                //code to cancel or remove booking
+            }
+        });
     }
 
 }
