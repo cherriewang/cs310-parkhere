@@ -86,25 +86,6 @@ public class ListingDetailActivity extends AppCompatActivity{
 
     private void initialize(){
         getSupportActionBar().hide();
-        Log.e("LISTING_DETAIL","in initialize");
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("listings");
-
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                    Listing listing = postSnapshot.getValue(Listing.class);
-                    myListings.add(listing);
-                    Log.e("LISTING_DETAIL","setting dummy listing");
-                    myListing = listing;
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
 
         listingTitleTextView = (TextView)findViewById(R.id.listingTitleTextView);
         listingAddressTextView = (TextView)findViewById(R.id.listingAddressTextView);
