@@ -24,6 +24,16 @@ public class Listing implements Serializable{
     private String location;
     private String about;
     private long price;
+    // regarding times
+    private boolean sunday;
+    private boolean monday;
+    private boolean tuesday;
+    private boolean wednesday;
+    private boolean thursday;
+    private boolean friday;
+    private boolean saturday;
+    private String fromTime;
+    private String toTime;
 
     private List<Review> reviews;
 
@@ -33,6 +43,42 @@ public class Listing implements Serializable{
 
     public String getListingTitle() {
         return listingTitle;
+    }
+
+    public boolean isSunday() {
+        return sunday;
+    }
+
+    public boolean isMonday() {
+        return monday;
+    }
+
+    public boolean isTuesday() {
+        return tuesday;
+    }
+
+    public boolean isWednesday() {
+        return wednesday;
+    }
+
+    public boolean isThursday() {
+        return thursday;
+    }
+
+    public boolean isFriday() {
+        return friday;
+    }
+
+    public boolean isSaturday() {
+        return saturday;
+    }
+
+    public String getFromTime() {
+        return fromTime;
+    }
+
+    public String getToTime() {
+        return toTime;
     }
 
     public boolean isHandicapped() {
@@ -99,6 +145,42 @@ public class Listing implements Serializable{
 
     public void setPrice(long price) {
         this.price = price;
+    }
+
+    public void setSunday(boolean sunday) {
+        this.sunday = sunday;
+    }
+
+    public void setMonday(boolean monday) {
+        this.monday = monday;
+    }
+
+    public void setTuesday(boolean tuesday) {
+        this.tuesday = tuesday;
+    }
+
+    public void setWednesday(boolean wednesday) {
+        this.wednesday = wednesday;
+    }
+
+    public void setThursday(boolean thursday) {
+        this.thursday = thursday;
+    }
+
+    public void setFriday(boolean friday) {
+        this.friday = friday;
+    }
+
+    public void setSaturday(boolean saturday) {
+        this.saturday = saturday;
+    }
+
+    public void setFromTime(String fromTime) {
+        this.fromTime = fromTime;
+    }
+
+    public void setToTime(String toTime) {
+        this.toTime = toTime;
     }
 
     public void addReview(Review r)
