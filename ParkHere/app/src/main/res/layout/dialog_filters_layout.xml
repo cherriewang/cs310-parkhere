@@ -95,6 +95,7 @@
             android:textStyle="bold"/>
 
         <me.zhanghai.android.materialratingbar.MaterialRatingBar
+            android:id="@+id/minListingRatingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -121,6 +122,7 @@
             android:textStyle="bold"/>
 
         <me.zhanghai.android.materialratingbar.MaterialRatingBar
+            android:id="@+id/minOwnerRatingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

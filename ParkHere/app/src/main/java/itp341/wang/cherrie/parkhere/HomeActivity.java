@@ -11,10 +11,18 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.google.android.gms.common.ConnectionResult;
@@ -48,6 +56,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import java.util.ArrayList;
 
 import itp341.wang.cherrie.parkhere.model.User;
+import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 /**
  * Created by glarencezhao on 10/29/16.
@@ -65,6 +74,24 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     //Test markers
     private LatLng glarenceAPT = new LatLng(34.024652, -118.280782);
+
+    //Advanced dialog variables
+    //selected Date
+    //selected Time
+    private boolean isCovered = false;
+    private boolean isSUV = false;
+    private boolean isHandicapped = false;
+    private boolean isTandem = false;
+    //Filter dialog variables
+    private long fromPriceRange = 0;
+    private long toPriceRange = 0;
+    private int distance = 0;
+    private float minListingRating = 0;
+    private float minOwnerRating = 0;
+    //LatLong search dialog variables
+    private float latitude = 0;
+    private float longitude = 0;
+
 
     private PermissionListener permissionListener = new PermissionListener() {
         @Override
@@ -326,19 +353,168 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 int id = item.getItemId();
                 boolean wrapInScrollView = false;
                 if(id == R.id.action_advanced){
-                    new MaterialDialog.Builder(HomeActivity.this).customView(R.layout.dialog_advanced_layout,
-                            wrapInScrollView).positiveText("Set").show();
+                    MaterialDialog advancedDialog = new MaterialDialog.Builder(HomeActivity.this).customView(R.layout.dialog_advanced_layout,
+                            wrapInScrollView).positiveText("Set").onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            // TODO
+                        }
+                    }).show();
+                    dialogListeners(advancedDialog, id);
                 }
                 if(id == R.id.action_filters){
-                    new MaterialDialog.Builder(HomeActivity.this).customView(R.layout.dialog_filters_layout,
-                            wrapInScrollView).positiveText("Set").show();
+                    MaterialDialog filtersDialog = new MaterialDialog.Builder(HomeActivity.this).customView(R.layout.dialog_filters_layout,
+                            wrapInScrollView).positiveText("Set").onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            // TODO
+                        }
+                    }).show();
+                    dialogListeners(filtersDialog, id);
                 }
                 if(id == R.id.action_latlong_search){
-                    new MaterialDialog.Builder(HomeActivity.this).customView(R.layout.dialog_latlong_search_layout,
-                            wrapInScrollView).positiveText("Search").show();
+                    MaterialDialog searchDialog = new MaterialDialog.Builder(HomeActivity.this).customView(R.layout.dialog_latlong_search_layout,
+                            wrapInScrollView).positiveText("Search").onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            // TODO
+                        }
+                    }).show();
+                    dialogListeners(searchDialog, id);
 
                 }
             }
         });
+    }
+
+    private void dialogListeners(MaterialDialog dialog, int id){
+        View view = dialog.getCustomView();
+        if(id == R.id.action_advanced){
+            Button selectDateButton = (Button)view.findViewById(R.id.dateButton);
+            selectDateButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            Button selectTimeButton = (Button)view.findViewById(R.id.timeButton);
+            selectTimeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            CheckBox coveredCheckBox = (CheckBox)view.findViewById(R.id.coveredCheckBox);
+            coveredCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                }
+            });
+            CheckBox suvCheckBox = (CheckBox)view.findViewById(R.id.suvCheckBox);
+            suvCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                }
+            });
+            CheckBox handicappedCheckBox = (CheckBox)view.findViewById(R.id.handicappedCheckBox);
+            handicappedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                }
+            });
+            CheckBox tandemCheckBox = (CheckBox)view.findViewById(R.id.tandemCheckBox);
+            tandemCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                }
+            });
+        }
+        if(id == R.id.action_filters){
+            EditText fromPriceEditText = (EditText)view.findViewById(R.id.fromPriceEditText);
+            fromPriceEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    //save price
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {}
+            });
+            EditText toPriceEditText = (EditText)view.findViewById(R.id.toPriceEditText);
+            fromPriceEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    //save price
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {}
+            });
+            SeekBar distanceSeekBar = (SeekBar)view.findViewById(R.id.distanceSeekBar);
+            distanceSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {}
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    //save distance
+                }
+            });
+            MaterialRatingBar minListingRatingBar = (MaterialRatingBar)view.findViewById(R.id.minListingRatingBar);
+            minListingRatingBar.setOnRatingChangeListener(new MaterialRatingBar.OnRatingChangeListener() {
+                @Override
+                public void onRatingChanged(MaterialRatingBar ratingBar, float rating) {
+                    //save rating
+                }
+            });
+            MaterialRatingBar minOwnerRatingBar = (MaterialRatingBar)view.findViewById(R.id.minOwnerRatingBar);
+            minOwnerRatingBar.setOnRatingChangeListener(new MaterialRatingBar.OnRatingChangeListener() {
+                @Override
+                public void onRatingChanged(MaterialRatingBar ratingBar, float rating) {
+                    //save rating
+                }
+            });
+        }
+        if(id == R.id.action_latlong_search){
+            EditText latitudeEditText = (EditText)view.findViewById(R.id.latitudeEditText);
+            latitudeEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    //save latitude
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {}
+            });
+            EditText longitudeEditText = (EditText)view.findViewById(R.id.longitudeEditText);
+            longitudeEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    //save longitude
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {}
+            });
+        }
     }
 }
