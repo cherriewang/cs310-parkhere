@@ -1,5 +1,7 @@
 package itp341.wang.cherrie.parkhere;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,7 +12,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
@@ -18,15 +19,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.blackcat.currencyedittext.CurrencyEditText;
+import com.borax12.materialdaterangepicker.time.RadialPickerLayout;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -50,12 +54,11 @@ import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import itp341.wang.cherrie.parkhere.model.User;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
@@ -64,7 +67,9 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar;
  * Created by glarencezhao on 10/29/16.
  */
 
-public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, com.borax12.materialdaterangepicker.date.DatePickerDialog.OnDateSetListener,
+        com.borax12.materialdaterangepicker.time.TimePickerDialog.OnTimeSetListener{
 
     private AccountHeader headerResult = null;
     private Drawer navDrawer = null;
@@ -406,14 +411,30 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             selectDateButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Material date picker
+                    Calendar now = Calendar.getInstance();
+                    com.borax12.materialdaterangepicker.date.DatePickerDialog datePickerDialog = com.borax12.materialdaterangepicker.date.DatePickerDialog
+                            .newInstance(
+                            HomeActivity.this,
+                            now.get(Calendar.YEAR),
+                            now.get(Calendar.MONTH),
+                            now.get(Calendar.DAY_OF_MONTH)
+                    );
+                    datePickerDialog.show(getFragmentManager(), "Select the Dates");
                 }
             });
             Button selectTimeButton = (Button)view.findViewById(R.id.timeButton);
             selectTimeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Material time picker
+                    Calendar now = Calendar.getInstance();
+                    com.borax12.materialdaterangepicker.time.TimePickerDialog timePickerDialog = com.borax12.materialdaterangepicker.time.TimePickerDialog
+                            .newInstance(
+                            HomeActivity.this,
+                            now.get(Calendar.HOUR_OF_DAY),
+                            now.get(Calendar.MINUTE),
+                            false
+                    );
+                    timePickerDialog.show(getFragmentManager(), "Select the Time");
                 }
             });
             CheckBox coveredCheckBox = (CheckBox)view.findViewById(R.id.coveredCheckBox);
@@ -534,5 +555,15 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 public void afterTextChanged(Editable s) {}
             });
         }
+    }
+
+    @Override
+    public void onDateSet(com.borax12.materialdaterangepicker.date.DatePickerDialog view, int year, int monthOfYear, int dayOfMonth, int yearEnd, int monthOfYearEnd, int dayOfMonthEnd) {
+
+    }
+
+    @Override
+    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int hourOfDayEnd, int minuteEnd) {
+
     }
 }
