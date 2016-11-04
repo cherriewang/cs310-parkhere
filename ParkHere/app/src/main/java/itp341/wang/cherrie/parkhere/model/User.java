@@ -33,6 +33,7 @@ public class User implements Serializable {
     private List<Listing> mListings;
     private float rating;
     private int numRatings;
+    private double accountBalance;
 
     // CONSTRUCTOR
     public User() {
@@ -77,6 +78,11 @@ public class User implements Serializable {
     public List<Booking> getmBookings() { return mBookings; }
 
     public List<Listing> getmListings() { return mListings; }
+
+    public double getAccountBalance() {
+        return accountBalance;
+    }
+
     // setters
 
     public void setmFirstName(String mFirstName) {
@@ -128,6 +134,9 @@ public class User implements Serializable {
         mBookings.add(b);
     }
 
+    public void setAccountBalance(double accountBalance) {
+        this.accountBalance = accountBalance;
+    }
 
     public float getRating() {
         return rating;
