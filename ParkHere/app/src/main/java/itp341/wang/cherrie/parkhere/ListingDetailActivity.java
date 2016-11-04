@@ -174,7 +174,7 @@ public class ListingDetailActivity extends AppCompatActivity{
         reviewDateTextView.setText("June 2016");
         //reviewContentTextView.setText("");
         availibilityTextView.setText("Yes");
-        cancellationTextView.setText("Must book ahead of time by at least 24 hours and so and so");
+        cancellationTextView.setText(getResources().getString(R.string.cancellation_policy));
 
         setCategoryTags();
     }
