@@ -39,6 +39,7 @@ dependencies {
     //Navigation Drawer
     //Floating Search Bar
     //Material Design Dialog
+    //Google Places
     compile('com.mikepenz:materialdrawer:5.7.0@aar') {
         transitive = true
     }
@@ -67,6 +68,7 @@ dependencies {
     compile 'com.github.arimorty:floatingsearchview:2.0.3'
     compile 'com.afollestad.material-dialogs:core:0.9.0.2'
     compile 'com.borax12.materialdaterangepicker:library:1.9'
+    compile 'com.google.android.gms:play-services-places:9.6.0'
     testCompile 'junit:junit:4.12'
 
     compile 'com.google.android.gms:play-services-appindexing:9.6.0'

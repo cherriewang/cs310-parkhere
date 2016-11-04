@@ -19,6 +19,10 @@ import android.widget.TextView;
 import com.blackcat.currencyedittext.CurrencyEditText;
 import com.borax12.materialdaterangepicker.time.RadialPickerLayout;
 import com.borax12.materialdaterangepicker.time.TimePickerDialog;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity;
@@ -42,7 +46,7 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
     private CheckBox tandemCheckBox;
     private CheckBox suvCheckBox;
     private CheckBox coveredCheckBox;
-    private EditText locationEditText;
+    private TextView locationTextView;
     private EditText aboutEditText;
     private CurrencyEditText priceEditText;
     private Button createListingButton;
@@ -75,8 +79,14 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
     private String fromMinuteString = "";
     private String toHourString = "";
     private String toMinuteString = "";
+
+    private double latitude = 0;
+    private double longitude = 0;
+
     private User myUser;
+
     public final static int CREATE_EDIT_REQUEST_CODE = 0;
+    int PLACE_PICKER_REQUEST = 2;   //request code for google place picker
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +117,7 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
         tandemCheckBox = (CheckBox) findViewById(R.id.tandemCheckBox);
         suvCheckBox = (CheckBox) findViewById(R.id.suvCheckBox);
         coveredCheckBox = (CheckBox) findViewById(R.id.coveredCheckBox);
-        locationEditText = (EditText) findViewById(R.id.locationEditText);
+        locationTextView = (TextView) findViewById(R.id.locationTextView);
         aboutEditText = (EditText) findViewById(R.id.aboutEditText);
         priceEditText = (CurrencyEditText) findViewById(R.id.priceEditText);
         createListingButton = (Button) findViewById(R.id.createListingButton);
@@ -139,7 +149,7 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
         isHandicapped = myListing.isHandicapped();
 
         listingTitleEditText.setText(listingTitle);
-        locationEditText.setText(location);
+        locationTextView.setText(location);
         aboutEditText.setText(about);
         priceEditText.setText(Long.toString(price));
         tandemCheckBox.setChecked(isTandem);
@@ -251,7 +261,19 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
             }
         });
         listingTitleEditText.addTextChangedListener(new EditTextListener(listingTitleEditText.getId()));
-        locationEditText.addTextChangedListener(new EditTextListener(locationEditText.getId()));
+        locationTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                try {
+                    startActivityForResult(builder.build(CreateEditListingActivity.this), PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         aboutEditText.addTextChangedListener(new EditTextListener(aboutEditText.getId()));
     }
 
@@ -263,6 +285,15 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
             ArrayList<Image> images = data.getParcelableArrayListExtra(ImagePickerActivity.INTENT_EXTRA_SELECTED_IMAGES);
             Bitmap image = BitmapFactory.decodeFile(images.get(0).getPath());
             listingImageView.setImageBitmap(image);
+        }
+        else if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(getApplicationContext(), data);
+                longitude = place.getLatLng().longitude;
+                latitude = place.getLatLng().latitude;
+                location = String.valueOf(place.getAddress());
+                locationTextView.setText(place.getName().toString());
+            }
         }
     }
 
@@ -294,7 +325,6 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
         @Override
         public void afterTextChanged(Editable s) {
             if (id == R.id.listingTitleEditText) { listingTitle = s.toString(); }
-            else if (id == R.id.locationEditText) { location = s.toString(); }
             else if (id == R.id.aboutEditText) { about = s.toString(); }
         }
 
