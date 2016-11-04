@@ -9,10 +9,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import org.w3c.dom.Text;
 
 public class SettingsActivity extends AppCompatActivity {
     private Button logoutButton;
+    private Button authorizeButton;
     private TextView savedHome;
     private TextView savedWork;
     private EditText homeEditText;
@@ -24,6 +28,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         logoutButton = (Button) findViewById(R.id.buttonLogout);
+        authorizeButton = (Button) findViewById(R.id.buttonAuthorize);
         savedHome = (TextView) findViewById(R.id.textViewHome);
         savedWork = (TextView) findViewById(R.id.textViewWork);
         homeEditText = (EditText) findViewById(R.id.editTextHome);
@@ -41,6 +46,20 @@ public class SettingsActivity extends AppCompatActivity {
                 Intent welcomeIntent = new Intent(getApplicationContext(), WelcomeActivity.class);
                 setResult(Activity.RESULT_OK, welcomeIntent);
                 finish();
+            }
+        });
+
+        // ALLOW PAYMENTS TO HAPPEN LISTENER
+        authorizeButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            //On click function
+            public void onClick(View view) {
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference ref = database.getReference("transaction-tracker");
+
+                // finds the card object associated with my user email
+                // myCard = that card
+                // myCard.setApproved(true);
             }
         });
     }
