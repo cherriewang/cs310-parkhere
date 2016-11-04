@@ -232,6 +232,8 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
                     myListing.setFromMinuteString(fromMinuteString);
                     myListing.setToHourString(toHourString);
                     myListing.setToMinuteString(toMinuteString);
+                    myListing.setLatitude(latitude);
+                    myListing.setLongitude(longitude);
 
                     // TODO: Listing object now created, need to have to passed to database under the owner
                     myUser.appendListing(myListing);
