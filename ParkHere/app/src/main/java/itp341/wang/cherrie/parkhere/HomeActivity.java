@@ -173,7 +173,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 // DIALOG BOX OPENS IF USER IS NOT AN OWNER
                                 if (myUser.isOwner()) {
                                     Intent i = new Intent(HomeActivity.this, CreateEditListingActivity.class);
-                                    startActivity(i);
+                                    int requestCode = 1;
+                                    startActivityForResult(i, requestCode);
                                 }
                                 else {
                                     showLocationDialog();
@@ -571,6 +572,15 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 @Override
                 public void afterTextChanged(Editable s) {}
             });
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK){
+            Debug.printToast("Added listing!", getApplicationContext());
         }
     }
 

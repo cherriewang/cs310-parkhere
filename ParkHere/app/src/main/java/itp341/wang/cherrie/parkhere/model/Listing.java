@@ -212,9 +212,13 @@ public class Listing implements Serializable{
 
     public float getAverageRating() {
         float sum = 0;
-        for (Review r : getReviews()) {
-            sum += r.getRating();
+        if(getReviews() == null)
+            return 0;
+        else{
+            for (Review r : getReviews()) {
+                sum += r.getRating();
+            }
+            return sum / (float)getReviews().size();
         }
-        return sum / (float)getReviews().size();
     }
 }
