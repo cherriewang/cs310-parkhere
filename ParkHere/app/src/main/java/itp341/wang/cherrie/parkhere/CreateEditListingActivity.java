@@ -211,6 +211,17 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
                     myListing.setHandicapped(isHandicapped);
                     myListing.setSuv(isSUV);
                     myListing.setCovered(isCovered);
+                    myListing.setSunday(isSunday);
+                    myListing.setMonday(isMonday);
+                    myListing.setTuesday(isTuesday);
+                    myListing.setWednesday(isTuesday);
+                    myListing.setThursday(isThursday);
+                    myListing.setFriday(isFriday);
+                    myListing.setSaturday(isSaturday);
+                    myListing.setFromHourString(fromHourString);
+                    myListing.setFromMinuteString(fromMinuteString);
+                    myListing.setToHourString(toHourString);
+                    myListing.setToMinuteString(toMinuteString);
 
                     // TODO: Listing object now created, need to have to passed to database under the owner
                     myUser.appendListing(myListing);
