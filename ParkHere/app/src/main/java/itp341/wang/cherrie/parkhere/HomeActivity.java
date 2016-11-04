@@ -50,8 +50,10 @@ import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -127,14 +129,14 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
         //Setup Navigation Drawer
         // Create a few sample profile
-        //final IProfile profile = new ProfileDrawerItem().withName(myUser.getmFirstName() + " " + myUser.getmLastName()).withEmail(myUser.getmEmail()).withIcon(R.drawable.placeholder_prof_pic);
+        final IProfile profile = new ProfileDrawerItem().withName(myUser.getmFirstName() + " " + myUser.getmLastName()).withEmail(myUser.getmEmail()).withIcon(R.drawable.placeholder_prof_pic);
         // Create the AccountHeader
         headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withCompactStyle(true)
                 .withHeaderBackground(R.drawable.header)
                 .withSelectionListEnabledForSingleProfile(false)
-                //.addProfiles(profile)
+                .addProfiles(profile)
                 .withSavedInstance(savedInstanceState)
                 .build();
         //Create the drawer
