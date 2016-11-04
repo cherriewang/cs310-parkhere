@@ -128,7 +128,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_home);
         myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
         //Setup Navigation Drawer
-        // Create a few sample profile
         final IProfile profile = new ProfileDrawerItem().withName(myUser.getmFirstName() + " " + myUser.getmLastName()).withEmail(myUser.getmEmail()).withIcon(R.drawable.placeholder_prof_pic);
         // Create the AccountHeader
         headerResult = new AccountHeaderBuilder()
@@ -270,13 +269,17 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        //Instead of title, put price for marker title
-        // Create an Icon object for the marker to use
-        mMap.addMarker(new MarkerOptions().position(glarenceAPT).title("Shrine Habitat")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+        //example
+        addListingMarker(glarenceAPT, "Shrine Habitat");
         mMap.moveCamera(CameraUpdateFactory.newLatLng(glarenceAPT));
         mMap.getUiSettings().setIndoorLevelPickerEnabled(false);
         enableMyLocation();
+    }
+
+    private void addListingMarker(LatLng latLng, String listingTitle){
+        //Instead of title, put price for marker title
+        mMap.addMarker(new MarkerOptions().position(latLng).title(listingTitle)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
     }
 
     @Override
