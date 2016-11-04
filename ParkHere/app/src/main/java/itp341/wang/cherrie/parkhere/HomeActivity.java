@@ -20,11 +20,13 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.arlib.floatingsearchview.FloatingSearchView;
+import com.blackcat.currencyedittext.CurrencyEditText;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -357,7 +359,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             wrapInScrollView).positiveText("Set").onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            // TODO
+                            //print selected date
+                            //print selected time
+                            Debug.printToast("Is covered? " + isCovered, getApplicationContext());
+                            Debug.printToast("Is SUV? " + isSUV, getApplicationContext());
+                            Debug.printToast("Is tandem? " + isTandem, getApplicationContext());
+                            Debug.printToast("Is handicapped? " + isHandicapped, getApplicationContext());
                         }
                     }).show();
                     dialogListeners(advancedDialog, id);
@@ -367,7 +374,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             wrapInScrollView).positiveText("Set").onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            // TODO
+                            Debug.printToast("From price is: " + (double)fromPriceRange/100, getApplicationContext());
+                            Debug.printToast("To price rating is: " + (double)toPriceRange/100, getApplicationContext());
+                            Debug.printToast("Distance is: " + distance, getApplicationContext());
+                            Debug.printToast("Min listing rating is: " + minListingRating, getApplicationContext());
+                            Debug.printToast("Min owner rating is: " + minOwnerRating, getApplicationContext());
                         }
                     }).show();
                     dialogListeners(filtersDialog, id);
@@ -377,7 +388,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             wrapInScrollView).positiveText("Search").onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            // TODO
+                            Debug.printToast("Latitude is " + latitude, getApplicationContext());
+                            Debug.printToast("Longitude is " + longitude, getApplicationContext());
                         }
                     }).show();
                     dialogListeners(searchDialog, id);
@@ -388,73 +400,75 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void dialogListeners(MaterialDialog dialog, int id){
-        View view = dialog.getCustomView();
+        final View view = dialog.getCustomView();
         if(id == R.id.action_advanced){
             Button selectDateButton = (Button)view.findViewById(R.id.dateButton);
             selectDateButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    //Material date picker
                 }
             });
             Button selectTimeButton = (Button)view.findViewById(R.id.timeButton);
             selectTimeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    //Material time picker
                 }
             });
             CheckBox coveredCheckBox = (CheckBox)view.findViewById(R.id.coveredCheckBox);
             coveredCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                    isCovered = isChecked;
                 }
             });
             CheckBox suvCheckBox = (CheckBox)view.findViewById(R.id.suvCheckBox);
             suvCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                    isSUV = isChecked;
                 }
             });
             CheckBox handicappedCheckBox = (CheckBox)view.findViewById(R.id.handicappedCheckBox);
             handicappedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                    isHandicapped = isChecked;
                 }
             });
             CheckBox tandemCheckBox = (CheckBox)view.findViewById(R.id.tandemCheckBox);
             tandemCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                    isTandem = isChecked;
                 }
             });
         }
         if(id == R.id.action_filters){
-            EditText fromPriceEditText = (EditText)view.findViewById(R.id.fromPriceEditText);
+            final CurrencyEditText fromPriceEditText = (CurrencyEditText)view.findViewById(R.id.fromPriceEditText);
             fromPriceEditText.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    //save price
+                    if(count != 0)
+                        fromPriceRange = fromPriceEditText.getRawValue();
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {}
             });
-            EditText toPriceEditText = (EditText)view.findViewById(R.id.toPriceEditText);
-            fromPriceEditText.addTextChangedListener(new TextWatcher() {
+            final CurrencyEditText toPriceEditText = (CurrencyEditText) view.findViewById(R.id.toPriceEditText);
+            toPriceEditText.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    //save price
+                    if(count != 0)
+                        toPriceRange = toPriceEditText.getRawValue();
                 }
 
                 @Override
@@ -463,28 +477,30 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             SeekBar distanceSeekBar = (SeekBar)view.findViewById(R.id.distanceSeekBar);
             distanceSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {}
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    distance = progress;
+                    TextView distanceSeekBarTextView = (TextView)view.findViewById(R.id.distanceSeekBarTextView);
+                    distanceSeekBarTextView.setText(distance + "");
+                }
 
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {}
 
                 @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-                    //save distance
-                }
+                public void onStopTrackingTouch(SeekBar seekBar) {}
             });
             MaterialRatingBar minListingRatingBar = (MaterialRatingBar)view.findViewById(R.id.minListingRatingBar);
             minListingRatingBar.setOnRatingChangeListener(new MaterialRatingBar.OnRatingChangeListener() {
                 @Override
                 public void onRatingChanged(MaterialRatingBar ratingBar, float rating) {
-                    //save rating
+                    minListingRating = rating;
                 }
             });
-            MaterialRatingBar minOwnerRatingBar = (MaterialRatingBar)view.findViewById(R.id.minOwnerRatingBar);
+            final MaterialRatingBar minOwnerRatingBar = (MaterialRatingBar)view.findViewById(R.id.minOwnerRatingBar);
             minOwnerRatingBar.setOnRatingChangeListener(new MaterialRatingBar.OnRatingChangeListener() {
                 @Override
                 public void onRatingChanged(MaterialRatingBar ratingBar, float rating) {
-                    //save rating
+                    minOwnerRating = rating;
                 }
             });
         }
@@ -496,7 +512,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    //save latitude
+                    if(count != 0)
+                        latitude = Float.parseFloat(s.toString());
                 }
 
                 @Override
@@ -509,7 +526,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    //save longitude
+                    if(count != 0)
+                        longitude = Float.parseFloat(s.toString());
                 }
 
                 @Override
