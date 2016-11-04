@@ -46,6 +46,10 @@ public class RatingAdapter extends ArrayAdapter<Review>{
 
         Review results = getItem(position);
 
+        //review person picture
+        //review person name
+        //review listing rating
+        //review owner rating
         holder.reviewTextView.setText(results.getReviewText());
         return row;
     }
