@@ -85,7 +85,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private int toYear = 0;
     private int toMonthOfYear = 0;
     private int toDayOfMonth = 0;
-    //selected toDate
     private String fromHourString = "";
     private String fromMinuteString = "";
     private String toHourString = "";

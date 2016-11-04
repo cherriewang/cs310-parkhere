@@ -77,6 +77,134 @@
 
             </LinearLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="19dp"
+                android:layout_marginEnd="16dp"
+                android:textSize="18sp"
+                android:text="Availibility"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"/>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_horizontal">
+
+                <CheckBox
+                    android:id="@+id/mondayCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorAccent"
+                    android:text="Monday"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="5dp"/>
+
+                <CheckBox
+                    android:id="@+id/tuesdayCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorAccent"
+                    android:text="Tuesday"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="5dp"/>
+
+                <CheckBox
+                    android:id="@+id/wednesdayCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorAccent"
+                    android:text="Wednesday"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="5dp"/>
+
+                <CheckBox
+                    android:id="@+id/thursdayCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorAccent"
+                    android:text="Thursday"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="5dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:gravity="center_horizontal">
+
+                <CheckBox
+                    android:id="@+id/fridayCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorAccent"
+                    android:text="Friday"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="5dp"/>
+
+                <CheckBox
+                    android:id="@+id/saturdayCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorAccent"
+                    android:text="Saturday"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="5dp"/>
+
+                <CheckBox
+                    android:id="@+id/sundayCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorAccent"
+                    android:text="Sunday"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="5dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center_horizontal">
+
+                <Button
+                    android:id="@+id/timeButton"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_button"
+                    android:textColor="@color/white"
+                    android:text="Select Time"/>
+
+                <TextView
+                    android:id="@+id/fromTimeTextView"
+                    android:layout_width="90dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="11:59 PM"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"/>
+
+                <TextView
+                    android:id="@+id/toTimeTextView"
+                    android:layout_width="90dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="11:59 PM"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"/>
+
+            </LinearLayout>
+
             <EditText
                 android:id="@+id/locationEditText"
                 android:layout_width="match_parent"

@@ -14,14 +14,18 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.blackcat.currencyedittext.CurrencyEditText;
+import com.borax12.materialdaterangepicker.time.RadialPickerLayout;
+import com.borax12.materialdaterangepicker.time.TimePickerDialog;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity;
 import com.nguyenhoanglam.imagepicker.model.Image;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import itp341.wang.cherrie.parkhere.model.Listing;
 import itp341.wang.cherrie.parkhere.model.User;
@@ -30,7 +34,7 @@ import itp341.wang.cherrie.parkhere.model.User;
  * Created by glarencezhao on 10/24/16.
  */
 
-public class CreateEditListingActivity extends AppCompatActivity {
+public class CreateEditListingActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
 
     private ImageView listingImageView;
     private EditText listingTitleEditText;
@@ -43,6 +47,14 @@ public class CreateEditListingActivity extends AppCompatActivity {
     private CurrencyEditText priceEditText;
     private Button createListingButton;
     private Listing myListing;
+    private CheckBox mondayCheckBox;
+    private CheckBox tuesdayCheckBox;
+    private CheckBox wednesdayCheckBox;
+    private CheckBox thursdayCheckBox;
+    private CheckBox fridayCheckBox;
+    private CheckBox saturdayCheckBox;
+    private CheckBox sundayCheckBox;
+    private Button timeButton;
 
     private String listingTitle = "";
     private String location = "";
@@ -52,6 +64,17 @@ public class CreateEditListingActivity extends AppCompatActivity {
     private boolean isHandicapped = false;
     private boolean isSUV = false;
     private boolean isCovered = false;
+    private boolean isMonday = false;
+    private boolean isTuesday = false;
+    private boolean isWednesday = false;
+    private boolean isThursday = false;
+    private boolean isFriday = false;
+    private boolean isSaturday = false;
+    private boolean isSunday = false;
+    private String fromHourString = "";
+    private String fromMinuteString = "";
+    private String toHourString = "";
+    private String toMinuteString = "";
     private User myUser;
     public final static int CREATE_EDIT_REQUEST_CODE = 0;
 
@@ -88,6 +111,14 @@ public class CreateEditListingActivity extends AppCompatActivity {
         aboutEditText = (EditText) findViewById(R.id.aboutEditText);
         priceEditText = (CurrencyEditText) findViewById(R.id.priceEditText);
         createListingButton = (Button) findViewById(R.id.createListingButton);
+        mondayCheckBox = (CheckBox) findViewById(R.id.mondayCheckBox);
+        tuesdayCheckBox = (CheckBox) findViewById(R.id.tuesdayCheckBox);
+        wednesdayCheckBox = (CheckBox) findViewById(R.id.wednesdayCheckBox);
+        thursdayCheckBox = (CheckBox) findViewById(R.id.thursdayCheckBox);
+        fridayCheckBox = (CheckBox) findViewById(R.id.fridayCheckBox);
+        saturdayCheckBox = (CheckBox) findViewById(R.id.saturdayCheckBox);
+        sundayCheckBox = (CheckBox) findViewById(R.id.sundayCheckBox);
+        timeButton = (Button) findViewById(R.id.timeButton);
 
         if (myListing == null) {
             myListing = new Listing();
@@ -163,6 +194,13 @@ public class CreateEditListingActivity extends AppCompatActivity {
                     isHandicapped = handicappedCheckBox.isChecked();
                     isSUV = suvCheckBox.isChecked();
                     isCovered = coveredCheckBox.isChecked();
+                    isMonday = mondayCheckBox.isChecked();
+                    isTuesday = tuesdayCheckBox.isChecked();
+                    isWednesday = wednesdayCheckBox.isChecked();
+                    isThursday = thursdayCheckBox.isChecked();
+                    isFriday = fridayCheckBox.isChecked();
+                    isSaturday = saturdayCheckBox.isChecked();
+                    isSunday = sundayCheckBox.isChecked();
 
                     // CREATE LISTING OBJECT
                     myListing.setListingTitle(listingTitle);
@@ -187,10 +225,23 @@ public class CreateEditListingActivity extends AppCompatActivity {
                 }
             }
         });
+        timeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar now = Calendar.getInstance();
+                com.borax12.materialdaterangepicker.time.TimePickerDialog timePickerDialog = com.borax12.materialdaterangepicker.time.TimePickerDialog
+                        .newInstance(
+                                CreateEditListingActivity.this,
+                                now.get(Calendar.HOUR_OF_DAY),
+                                now.get(Calendar.MINUTE),
+                                false
+                        );
+                timePickerDialog.show(getFragmentManager(), "Select the Time");
+            }
+        });
         listingTitleEditText.addTextChangedListener(new EditTextListener(listingTitleEditText.getId()));
         locationEditText.addTextChangedListener(new EditTextListener(locationEditText.getId()));
         aboutEditText.addTextChangedListener(new EditTextListener(aboutEditText.getId()));
-
     }
 
     @Override
@@ -206,6 +257,19 @@ public class CreateEditListingActivity extends AppCompatActivity {
 
     private boolean isPriceEditTextEmpty(){
         return priceEditText.getText().toString().isEmpty();
+    }
+
+    @Override
+    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int hourOfDayEnd, int minuteEnd) {
+        fromHourString = hourOfDay < 10 ? "0"+hourOfDay : ""+hourOfDay;
+        fromMinuteString = minute < 10 ? "0"+minute : ""+minute;
+        toHourString = hourOfDayEnd < 10 ? "0"+hourOfDayEnd : ""+hourOfDayEnd;
+        toMinuteString = minuteEnd < 10 ? "0"+minuteEnd : ""+minuteEnd;
+
+        TextView fromDateTextView = (TextView) findViewById(R.id.fromTimeTextView);
+        fromDateTextView.setText(fromHourString + ":" + fromMinuteString);
+        TextView toDateTextView = (TextView) findViewById(R.id.toTimeTextView);
+        toDateTextView.setText(toHourString + ":" + toMinuteString);
     }
 
     class EditTextListener implements TextWatcher{
