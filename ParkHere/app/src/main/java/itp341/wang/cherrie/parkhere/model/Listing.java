@@ -37,6 +37,11 @@ public class Listing implements Serializable{
     private String toHourString;
     private String toMinuteString;
 
+    // lat long
+    private double Latitude;
+    private double Longitude;
+
+
     private List<Review> reviews;
 
     public String getListingOwner() {
@@ -45,6 +50,14 @@ public class Listing implements Serializable{
 
     public String getListingTitle() {
         return listingTitle;
+    }
+
+    public double getLatitude() {
+        return Latitude;
+    }
+
+    public double getLongitude() {
+        return Longitude;
     }
 
     public boolean isSunday() {
@@ -199,6 +212,14 @@ public class Listing implements Serializable{
 
     public void setToMinuteString(String toMinuteString) {
         this.toMinuteString = toMinuteString;
+    }
+
+    public void setLatitude(double latitude) {
+        Latitude = latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        Longitude = longitude;
     }
 
     public void addReview(Review r)
