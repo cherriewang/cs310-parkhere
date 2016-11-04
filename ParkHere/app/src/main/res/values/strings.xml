@@ -32,6 +32,7 @@
     <string name="confirm_booking_string">Confirm Booking</string>
     <string name="total_price_string">Total $11</string>
     <string name="cancellation_string">Cancellation Policy</string>
+    <string name="cancellation_policy">For a full refund of associated fees, cancellation must be made a full 24 hours prior to listing’s local start time (or 3:00 PM if not specified) on the start time of reserved day. If the Seeker cancels less than 24 hours before the start time, the costs are non-refundable.</string>
     <string name="availibility_string">Availibility</string>
     <string name="review_string_example">This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. This is a review. </string>
 
