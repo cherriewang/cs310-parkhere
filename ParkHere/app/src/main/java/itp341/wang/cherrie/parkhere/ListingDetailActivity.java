@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,8 +13,13 @@ import android.widget.TextView;
 import com.cunoraz.tagview.Tag;
 import com.cunoraz.tagview.TagView;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.List;
 
 import itp341.wang.cherrie.parkhere.model.Booking;
 import itp341.wang.cherrie.parkhere.model.Card;
@@ -47,7 +53,8 @@ public class ListingDetailActivity extends AppCompatActivity{
     private TextView availibilityTextView;
     private TextView cancellationTextView;
 
-    private Listing myListing;
+    private List<Listing> myListings;
+    private Listing myListing = new Listing();
     private User myUser;
 
     public static final int SELECT_PAYMENT_REQUEST_CODE = 0;
@@ -57,25 +64,47 @@ public class ListingDetailActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listing_detail);
-
         if (savedInstanceState == null) {
+            Log.e("LISTING_DETAIL","do we crash 1");
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
+                Log.e("LISTING_DETAIL","do we crash 1");
                 myListing = null;
             } else {
+                Log.e("LISTING_DETAIL","do we crash 2");
                 myListing = (Listing)extras.getSerializable("LISTING");
             }
         } else {
+            Log.e("LISTING_DETAIL","do we crash 3");
             myListing = (Listing) savedInstanceState.getSerializable("LISTING");
         }
-
         myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
+        Log.e("LISTING_DETAIL","do we crash 4");
         initialize();
         listeners();
     }
 
     private void initialize(){
         getSupportActionBar().hide();
+        Log.e("LISTING_DETAIL","in initialize");
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("listings");
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    Listing listing = postSnapshot.getValue(Listing.class);
+                    myListings.add(listing);
+                    Log.e("LISTING_DETAIL","setting dummy listing");
+                    myListing = listing;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
 
         listingTitleTextView = (TextView)findViewById(R.id.listingTitleTextView);
         listingAddressTextView = (TextView)findViewById(R.id.listingAddressTextView);
@@ -164,6 +193,29 @@ public class ListingDetailActivity extends AppCompatActivity{
     }
 
     private void populate(){
+        if (myListing == null){
+            myListing = new Listing();
+            // CREATE LISTING OBJECT
+            myListing.setListingTitle("Placeholder Listing");
+            myListing.setListingOwner(myUser.getmNormalizedEmail()); // should have a global user here
+            myListing.setAbout("This is a placeholder listing");
+            myListing.setPrice((long)20.0);
+            myListing.setTandem(true);
+            myListing.setHandicapped(false);
+            myListing.setSuv(false);
+            myListing.setCovered(false);
+            myListing.setSunday(false);
+            myListing.setMonday(false);
+            myListing.setTuesday(false);
+            myListing.setWednesday(true);
+            myListing.setThursday(false);
+            myListing.setFriday(false);
+            myListing.setSaturday(false);
+            myListing.setFromHourString("3");
+            myListing.setFromMinuteString("00");
+            myListing.setToHourString("5");
+            myListing.setToMinuteString("30");
+        }
         //Populate details
         listingTitleTextView.setText(myListing.getListingTitle());
 //        listingAddressTextView.setText(myListing.ge);
