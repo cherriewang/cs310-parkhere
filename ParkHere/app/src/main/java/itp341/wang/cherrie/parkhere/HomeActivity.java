@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -35,14 +36,19 @@ import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.blackcat.currencyedittext.CurrencyEditText;
 import com.borax12.materialdaterangepicker.time.RadialPickerLayout;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.common.data.DataBufferUtils;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.AutocompletePredictionBuffer;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -131,6 +137,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private Location mLastLocation;
 
+    private int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+
     private PermissionListener permissionListener = new PermissionListener() {
         @Override
         public void onPermissionGranted() {
@@ -164,33 +172,47 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .withActivity(this)
                 .withAccountHeader(headerResult) //set the AccountHeader we created earlier for the header
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName(R.string.home_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_home).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(1),
-                        new PrimaryDrawerItem().withName(R.string.bookings_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_align_left).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(2),
-                        new PrimaryDrawerItem().withName(R.string.listings_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_align_right).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(3),
-                        new PrimaryDrawerItem().withName(R.string.create_listing_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_pencil_square).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(4),
-                        new PrimaryDrawerItem().withName(R.string.payment_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_credit_card_alt).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(5),
+                        new PrimaryDrawerItem().withName("Search").withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_search).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(1),
+                        new PrimaryDrawerItem().withName(R.string.home_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_home).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(2),
+                        new PrimaryDrawerItem().withName(R.string.bookings_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_align_left).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(3),
+                        new PrimaryDrawerItem().withName(R.string.listings_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_align_right).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(4),
+                        new PrimaryDrawerItem().withName(R.string.create_listing_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_pencil_square).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(5),
+                        new PrimaryDrawerItem().withName(R.string.payment_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_credit_card_alt).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(6),
                         new DividerDrawerItem(),
-                        new SecondaryDrawerItem().withName(R.string.settings_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_cog).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(6),
-                        new SecondaryDrawerItem().withName(R.string.help_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_question).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(7)
+                        new SecondaryDrawerItem().withName(R.string.settings_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_cog).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(7),
+                        new SecondaryDrawerItem().withName(R.string.help_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_question).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(8)
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         if (drawerItem != null) {
+                            //Search
+                            if(drawerItem.getIdentifier() == 1){
+                                try {
+                                    Intent intent =
+                                            new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                                                    .build(HomeActivity.this);
+                                    startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+                                } catch (GooglePlayServicesRepairableException e) {
+                                    // TODO: Handle the error.
+                                } catch (GooglePlayServicesNotAvailableException e) {
+                                    // TODO: Handle the error.
+                                }
+                            }
                             //Home
-                            if(drawerItem.getIdentifier() == 1){}
+                            if(drawerItem.getIdentifier() == 2){}
                             //List of Bookings
-                            else if(drawerItem.getIdentifier() == 2){
+                            else if(drawerItem.getIdentifier() == 3){
                                 Intent i = new Intent(HomeActivity.this, ListOfBookingsActivity.class);
                                 startActivity(i);
                             }
                             //List of Listings
-                            else if(drawerItem.getIdentifier() == 3){
+                            else if(drawerItem.getIdentifier() == 4){
                                 Intent i = new Intent(HomeActivity.this, ListOfListingsActivity.class);
                                 startActivity(i);
                             }
                             //Create Listing
-                            else if(drawerItem.getIdentifier() == 4){
+                            else if(drawerItem.getIdentifier() == 5){
                                 // DIALOG BOX OPENS IF USER IS NOT AN OWNER
                                 if (myUser.isOwner()) {
                                     Intent i = new Intent(HomeActivity.this, CreateEditListingActivity.class);
@@ -202,13 +224,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 }
                             }
                             //Payment
-                            else if(drawerItem.getIdentifier() == 5){
+                            else if(drawerItem.getIdentifier() == 6){
                                 Intent i = new Intent(HomeActivity.this, ListOfPaymentsActivity.class);
                                 i.putExtra(ListingDetailActivity.SELECTING_PAYMENT, false);
                                 startActivity(i);
                             }
                             //Settings
-                            else if(drawerItem.getIdentifier() == 6){
+                            else if(drawerItem.getIdentifier() == 7){
                                 Intent i = new Intent(HomeActivity.this, SettingsActivity.class);
                                 startActivity(i);
                             }
@@ -225,9 +247,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .withSavedInstance(savedInstanceState)
                 .build();
 
-        // set the selection to the item with the identifier 5
+        // set the selection to the item with the identifier 2 for home
         if (savedInstanceState == null) {
-            navDrawer.setSelection(1, false);
+            navDrawer.setSelection(2, false);
         }
 
         //Set up floating search bar
@@ -293,7 +315,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap = googleMap;
 
         //example
-        addListingMarker(glarenceAPT, "Shrine Habitat");
+        //addListingMarker(glarenceAPT, "Shrine Habitat");
         mMap.moveCamera(CameraUpdateFactory.newLatLng(glarenceAPT));
         mMap.getUiSettings().setIndoorLevelPickerEnabled(false);
         enableMyLocation();
@@ -303,6 +325,24 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         //Instead of title, put price for marker title
         mMap.addMarker(new MarkerOptions().position(latLng).title(listingTitle)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+    }
+
+    private void addSearchMarker(LatLng latLng, String listingTitle){
+        mMap.clear();
+        mMap.addMarker(new MarkerOptions().position(latLng).title(listingTitle)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+
+        //Update to search marker
+        CameraPosition currentPosition = new CameraPosition.Builder()
+                //.target(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()))
+                .target(latLng)
+                .zoom(16) // this is the zoom level
+                .bearing(35)   // this is the rotation angle
+                .tilt(40)   // this is the degree of elevation
+                .build();
+
+        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(currentPosition));
+        mMap.animateCamera(CameraUpdateFactory.scrollBy(-100,-50));
     }
 
     @Override
@@ -621,7 +661,17 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == RESULT_OK){
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(this, data);
+                addSearchMarker(place.getLatLng(), place.getName().toString());
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                Status status = PlaceAutocomplete.getStatus(this, data);
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+        }
+        else if(resultCode == RESULT_OK){
             Debug.printToast("Added listing!", getApplicationContext());
         }
     }
