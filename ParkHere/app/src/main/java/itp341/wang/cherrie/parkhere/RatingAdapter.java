@@ -14,6 +14,7 @@ import java.util.List;
 
 import itp341.wang.cherrie.parkhere.model.Booking;
 import itp341.wang.cherrie.parkhere.model.Review;
+import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 /**
  * Created by Glarence Zhao on 11/2/2016.
@@ -35,7 +36,7 @@ public class RatingAdapter extends ArrayAdapter<Review>{
         ResultsViewHolder holder;
 
         if (row == null) {
-            row = mLayoutInflater.inflate(R.layout.row_booking_layout, parent, false);
+            row = mLayoutInflater.inflate(R.layout.row_rating_layout, parent, false);
             holder = new ResultsViewHolder(row);
             row.setTag(holder);
         }
@@ -45,19 +46,23 @@ public class RatingAdapter extends ArrayAdapter<Review>{
 
         Review results = getItem(position);
 
-        holder.listingTitleTextView.setText(results.getReviewText());
+        holder.reviewTextView.setText(results.getReviewText());
         return row;
     }
 
     static final class ResultsViewHolder {
-        TextView listingTitleTextView;
-        TextView listingOwnerTextView;
-        SimpleDraweeView listingImageView;
+        TextView reviewNameTextView;
+        SimpleDraweeView reviewPersonImageView;
+        MaterialRatingBar ownerReviewRatingBar;
+        MaterialRatingBar listingReviewRatingBar;
+        TextView reviewTextView;
 
         public ResultsViewHolder(View v) {
-            listingTitleTextView = (TextView) v.findViewById(R.id.listingTitleTextView);
-            listingOwnerTextView = (TextView) v.findViewById(R.id.listingOwnerTextView);
-            listingImageView = (SimpleDraweeView) v.findViewById(R.id.listingImageView);
+            reviewNameTextView = (TextView) v.findViewById(R.id.reviewNameTextView);
+            reviewPersonImageView = (SimpleDraweeView) v.findViewById(R.id.reviewPersonImageView);
+            ownerReviewRatingBar = (MaterialRatingBar) v.findViewById(R.id.ownerReviewRatingBar);
+            listingReviewRatingBar = (MaterialRatingBar) v.findViewById(R.id.listingReviewRatingBar);
+            reviewTextView = (TextView) v.findViewById(R.id.reviewTextView);
         }
     }
 

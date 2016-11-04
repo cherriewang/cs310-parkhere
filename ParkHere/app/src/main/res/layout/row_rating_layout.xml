@@ -1,32 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="140dp">
+        android:layout_height="180dp"
+        android:background="@drawable/rounded_button"
+        android:elevation="20dp">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/reviewPersonImageView"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            fresco:placeholderImageScaleType="centerCrop"
+            fresco:placeholderImage="@drawable/placeholder_prof_pic"
+            fresco:roundAsCircle="true"
+            fresco:roundingBorderWidth="1dp"
+            fresco:roundingBorderColor="@color/grey"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="10dp"
+            android:layout_alignParentStart="true" />
 
         <TextView
-            android:id="@+id/ratingTextView"
-            android:layout_width="wrap_content"
+            android:id="@+id/reviewNameTextView"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:text="@string/owner_name_string"
+            android:text="Name"
             android:textColor="@color/white"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_marginStart="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_alignParentBottom="true"/>
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/reviewPersonImageView"/>
 
-        <TextView
-            android:id="@+id/card_main_inner_simple_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/rating_title_string"
-            android:textColor="@color/white"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_marginStart="10dp"
-            android:layout_above="@id/ratingTextView"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:padding="16dp"
+            android:layout_toRightOf="@id/reviewPersonImageView">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="Owner"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"/>
+
+                <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                    android:id="@+id/ownerReviewRatingBar"
+                    android:layout_marginStart="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:rating="3"
+                    android:isIndicator="true"
+                    style="@style/Widget.MaterialRatingBar.RatingBar"
+                    app:mrb_progressTint="@color/rating_color"
+                    app:mrb_secondaryProgressTint="@color/rating_color"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="Listing"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"/>
+
+                <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                    android:id="@+id/listingReviewRatingBar"
+                    android:layout_marginStart="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:rating="3"
+                    android:isIndicator="true"
+                    style="@style/Widget.MaterialRatingBar.RatingBar"
+                    app:mrb_progressTint="@color/rating_color"
+                    app:mrb_secondaryProgressTint="@color/rating_color"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/reviewTextView"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent" />
+
+        </LinearLayout>
 
     </RelativeLayout>
 

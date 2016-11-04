@@ -41,7 +41,8 @@ public class ListOfRatingsActivity extends AppCompatActivity {
     }
 
     private void initialize(){
-        getSupportActionBar().setTitle(myListing.getListingTitle());
+        //getSupportActionBar().setTitle(myListing.getListingTitle());
+        getSupportActionBar().setTitle("Test");
         ratingsListView = (ListView) findViewById(R.id.ratingsListView);
 
         myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
@@ -70,7 +71,12 @@ public class ListOfRatingsActivity extends AppCompatActivity {
     }
 
     private void createCards() {
-        mRatingAdapter = new RatingAdapter(getApplicationContext(), 0, (ArrayList<Review>) myListing.getReviews());
+        //mRatingAdapter = new RatingAdapter(getApplicationContext(), 0, (ArrayList<Review>) myListing.getReviews());
+        ArrayList<Review> test = new ArrayList<Review>();
+        Review testReview = new Review();
+        testReview.setReviewText("");
+        test.add(testReview);
+        mRatingAdapter = new RatingAdapter(getApplicationContext(), 0, test);
         ratingsListView.setAdapter(mRatingAdapter);
     }
 
