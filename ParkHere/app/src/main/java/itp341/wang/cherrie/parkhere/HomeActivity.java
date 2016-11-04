@@ -83,8 +83,17 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LatLng glarenceAPT = new LatLng(34.024652, -118.280782);
 
     //Advanced dialog variables
-    //selected Date
-    //selected Time
+    private int fromYear = 0;
+    private int fromMonthOfYear = 0;
+    private int fromDayOfMonth = 0;
+    private int toYear = 0;
+    private int toMonthOfYear = 0;
+    private int toDayOfMonth = 0;
+    //selected toDate
+    private String fromHourString = "";
+    private String fromMinuteString = "";
+    private String toHourString = "";
+    private String toMinuteString = "";
     private boolean isCovered = false;
     private boolean isSUV = false;
     private boolean isHandicapped = false;
@@ -98,6 +107,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     //LatLong search dialog variables
     private float latitude = 0;
     private float longitude = 0;
+    //Dialogs
+    private MaterialDialog advancedDialog;
+    private MaterialDialog filtersDialog;
+    private MaterialDialog searchDialog;
 
 
     private PermissionListener permissionListener = new PermissionListener() {
@@ -360,22 +373,24 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 int id = item.getItemId();
                 boolean wrapInScrollView = false;
                 if(id == R.id.action_advanced){
-                    MaterialDialog advancedDialog = new MaterialDialog.Builder(HomeActivity.this).customView(R.layout.dialog_advanced_layout,
+                    advancedDialog = new MaterialDialog.Builder(HomeActivity.this).customView(R.layout.dialog_advanced_layout,
                             wrapInScrollView).positiveText("Set").onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            //print selected date
-                            //print selected time
+                            Debug.printToast("From " + fromMonthOfYear + "/" + fromDayOfMonth + "/" + fromYear
+                                    + " to " + toMonthOfYear + "/" + toDayOfMonth + "/" + toYear , getApplicationContext());
+                            Debug.printToast("From " + fromHourString + ":" + fromMinuteString
+                            + " to " + toHourString + ":" + toMinuteString, getApplicationContext());
                             Debug.printToast("Is covered? " + isCovered, getApplicationContext());
                             Debug.printToast("Is SUV? " + isSUV, getApplicationContext());
                             Debug.printToast("Is tandem? " + isTandem, getApplicationContext());
                             Debug.printToast("Is handicapped? " + isHandicapped, getApplicationContext());
                         }
                     }).show();
-                    dialogListeners(advancedDialog, id);
+                    dialogListeners(id);
                 }
                 if(id == R.id.action_filters){
-                    MaterialDialog filtersDialog = new MaterialDialog.Builder(HomeActivity.this).customView(R.layout.dialog_filters_layout,
+                    filtersDialog = new MaterialDialog.Builder(HomeActivity.this).customView(R.layout.dialog_filters_layout,
                             wrapInScrollView).positiveText("Set").onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -386,10 +401,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             Debug.printToast("Min owner rating is: " + minOwnerRating, getApplicationContext());
                         }
                     }).show();
-                    dialogListeners(filtersDialog, id);
+                    dialogListeners(id);
                 }
                 if(id == R.id.action_latlong_search){
-                    MaterialDialog searchDialog = new MaterialDialog.Builder(HomeActivity.this).customView(R.layout.dialog_latlong_search_layout,
+                    searchDialog = new MaterialDialog.Builder(HomeActivity.this).customView(R.layout.dialog_latlong_search_layout,
                             wrapInScrollView).positiveText("Search").onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -397,16 +412,16 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             Debug.printToast("Longitude is " + longitude, getApplicationContext());
                         }
                     }).show();
-                    dialogListeners(searchDialog, id);
+                    dialogListeners(id);
 
                 }
             }
         });
     }
 
-    private void dialogListeners(MaterialDialog dialog, int id){
-        final View view = dialog.getCustomView();
+    private void dialogListeners(int id){
         if(id == R.id.action_advanced){
+            final View view = advancedDialog.getCustomView();
             Button selectDateButton = (Button)view.findViewById(R.id.dateButton);
             selectDateButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -467,6 +482,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             });
         }
         if(id == R.id.action_filters){
+            final View view = filtersDialog.getCustomView();
             final CurrencyEditText fromPriceEditText = (CurrencyEditText)view.findViewById(R.id.fromPriceEditText);
             fromPriceEditText.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -500,7 +516,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     distance = progress;
-                    TextView distanceSeekBarTextView = (TextView)view.findViewById(R.id.distanceSeekBarTextView);
+                    TextView distanceSeekBarTextView = (TextView) view.findViewById(R.id.distanceSeekBarTextView);
                     distanceSeekBarTextView.setText(distance + "");
                 }
 
@@ -526,6 +542,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             });
         }
         if(id == R.id.action_latlong_search){
+            final View view = searchDialog.getCustomView();
             EditText latitudeEditText = (EditText)view.findViewById(R.id.latitudeEditText);
             latitudeEditText.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -559,11 +576,33 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onDateSet(com.borax12.materialdaterangepicker.date.DatePickerDialog view, int year, int monthOfYear, int dayOfMonth, int yearEnd, int monthOfYearEnd, int dayOfMonthEnd) {
+        View dialogView = advancedDialog.getCustomView();
 
+        fromYear = year;
+        fromMonthOfYear = ++monthOfYear;
+        fromDayOfMonth = dayOfMonth;
+        toYear = yearEnd;
+        toMonthOfYear = ++monthOfYearEnd;
+        toDayOfMonth = dayOfMonthEnd;
+
+        TextView fromTimeTextView = (TextView) dialogView.findViewById(R.id.fromDateTextView);
+        fromTimeTextView.setText(fromMonthOfYear + "/" + fromDayOfMonth + "/" + fromYear);
+        TextView toTimeTextView = (TextView) dialogView.findViewById(R.id.toDateTextView);
+        toTimeTextView.setText(toMonthOfYear + "/" + toDayOfMonth + "/" + toYear);
     }
 
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int hourOfDayEnd, int minuteEnd) {
+        View dialogView = advancedDialog.getCustomView();
 
+        fromHourString = hourOfDay < 10 ? "0"+hourOfDay : ""+hourOfDay;
+        fromMinuteString = minute < 10 ? "0"+minute : ""+minute;
+        toHourString = hourOfDayEnd < 10 ? "0"+hourOfDayEnd : ""+hourOfDayEnd;
+        toMinuteString = minuteEnd < 10 ? "0"+minuteEnd : ""+minuteEnd;
+
+        TextView fromDateTextView = (TextView) dialogView.findViewById(R.id.fromTimeTextView);
+        fromDateTextView.setText(fromHourString + ":" + fromMinuteString);
+        TextView toDateTextView = (TextView) dialogView.findViewById(R.id.toTimeTextView);
+        toDateTextView.setText(toHourString + ":" + toMinuteString);
     }
 }
