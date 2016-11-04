@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import itp341.wang.cherrie.parkhere.model.Booking;
+import itp341.wang.cherrie.parkhere.model.Card;
 import itp341.wang.cherrie.parkhere.model.Listing;
 import itp341.wang.cherrie.parkhere.model.User;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
@@ -149,10 +150,17 @@ public class ListingDetailActivity extends AppCompatActivity{
         Booking b = new Booking(myListing);
         myUser.appendBooking(b);
 
+        Card c = new Card();
+        c.setBalance(myListing.getPrice());
+        c.setListingOwner(myListing.getListingOwner());
+        c.setPayer(myUser.getmNormalizedEmail());
+        c.setApproved(false);
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
         myRef.child("users").child(myUser.getmNormalizedEmail()).setValue(myUser);
         myRef.child("bookings").child(b.getBookingTitle()).setValue(b);
+        myRef.child("transaction-tracker").child(c.getListingOwner()).setValue(c); // HELP
     }
 
     private void populate(){

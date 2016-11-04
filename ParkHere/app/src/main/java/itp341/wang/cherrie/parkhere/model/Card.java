@@ -8,6 +8,7 @@ public class Card {
 
     String payer;
     String listingOwner;
+    boolean approved;
     double balance = 0.0;
 
     // CONSTRUCTOR
@@ -16,6 +17,11 @@ public class Card {
     }
 
     // GETTERS
+
+    public boolean isApproved() {
+        return approved;
+    }
+
     public double getBalance() {
         return balance;
     }
@@ -27,6 +33,11 @@ public class Card {
     }
 
     // SETTERS
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+
     public void setListingOwner(String listingOwner) {
         this.listingOwner = listingOwner;
     }
