@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -323,11 +324,18 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onActionMenuItemSelected(MenuItem item) {
                 int id = item.getItemId();
+                boolean wrapInScrollView = false;
                 if(id == R.id.action_advanced){
+                    new MaterialDialog.Builder(HomeActivity.this).customView(R.layout.dialog_advanced_layout,
+                            wrapInScrollView).positiveText("Set").show();
                 }
                 if(id == R.id.action_filters){
+                    new MaterialDialog.Builder(HomeActivity.this).customView(R.layout.dialog_filters_layout,
+                            wrapInScrollView).positiveText("Set").show();
                 }
                 if(id == R.id.action_latlong_search){
+                    new MaterialDialog.Builder(HomeActivity.this).customView(R.layout.dialog_latlong_search_layout,
+                            wrapInScrollView).positiveText("Search").show();
 
                 }
             }
