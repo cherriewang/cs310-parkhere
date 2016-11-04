@@ -473,6 +473,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             wrapInScrollView).positiveText("Search").onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            addSearchMarker(new LatLng(latitude, longitude), "Lat Long Search");
                             Debug.printToast("Latitude is " + latitude, getApplicationContext());
                             Debug.printToast("Longitude is " + longitude, getApplicationContext());
                         }
@@ -633,8 +634,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if(count != 0)
-                        latitude = Float.parseFloat(s.toString());
+                    if(count != 0) {
+                        if(s.charAt(0) != '-'){
+                            latitude = Float.parseFloat(s.toString());
+                        }
+                        else if(count >= 2)
+                            latitude = Float.parseFloat(s.toString().substring(1))*-1;
+                    }
                 }
 
                 @Override
@@ -647,8 +653,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if(count != 0)
-                        longitude = Float.parseFloat(s.toString());
+                    if(count != 0) {
+                        if(s.charAt(0) != '-'){
+                            longitude = Float.parseFloat(s.toString());
+                        }
+                        else if(count >= 2)
+                            longitude = Float.parseFloat(s.toString().substring(1))*-1;
+                    }
                 }
 
                 @Override
