@@ -58,7 +58,11 @@
                 android:id="@+id/textViewWork"
                 android:layout_weight="1" />
         </LinearLayout>
-
+        <Button
+            android:text="Authorize Pending Payments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonAuthorize" />
         <Button
             android:text="Logout"
             android:layout_width="match_parent"

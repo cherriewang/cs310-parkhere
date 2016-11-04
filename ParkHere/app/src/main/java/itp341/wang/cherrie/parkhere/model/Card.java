@@ -8,6 +8,7 @@ public class Card {
 
     String payer;
     String listingOwner;
+    String listingName;
     boolean approved;
     double balance = 0.0;
 
@@ -20,6 +21,10 @@ public class Card {
 
     public boolean isApproved() {
         return approved;
+    }
+
+    public String getListingName() {
+        return listingName;
     }
 
     public double getBalance() {
@@ -36,6 +41,10 @@ public class Card {
 
     public void setApproved(boolean approved) {
         this.approved = approved;
+    }
+
+    public void setListingName(String listingName) {
+        this.listingName = listingName;
     }
 
     public void setListingOwner(String listingOwner) {
