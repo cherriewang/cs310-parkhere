@@ -256,6 +256,16 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         mSearchView = (FloatingSearchView)findViewById(R.id.floating_search_view);
         mSearchView.attachNavigationDrawerToMenuButton(navDrawer.getDrawerLayout());
 
+        mSearchView.setOnSearchListener(new FloatingSearchView.OnSearchListener() {
+            @Override
+            public void onSuggestionClicked(SearchSuggestion searchSuggestion) {}
+
+            @Override
+            public void onSearchAction(String currentQuery) {
+                Debug.printToast(currentQuery, getApplicationContext());
+            }
+        });
+
         initialize();
         listeners();
     }
