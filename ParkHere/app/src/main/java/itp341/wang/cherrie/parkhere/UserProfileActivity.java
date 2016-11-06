@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import itp341.wang.cherrie.parkhere.model.User;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 /**
@@ -21,10 +22,16 @@ public class UserProfileActivity extends AppCompatActivity {
     private MaterialRatingBar ownerRatingBar;
     private TextView reviewsLinkTextView;
 
+    private User myUser = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owner_profile);
+
+        Intent i = getIntent();
+        if(i != null)
+            myUser = (User) i.getSerializableExtra(HomeActivity.USER_PROFILE_INTENT_KEY);
 
         initialize();
         listeners();
@@ -40,9 +47,9 @@ public class UserProfileActivity extends AppCompatActivity {
 
         //change picture
         //change first name
-        ownerNameTextView.setText("Glarence");
+        ownerNameTextView.setText(myUser.getmFirstName());
         //set rating
-        ownerRatingBar.setRating((float)3.5);
+        ownerRatingBar.setRating(myUser.getAverageRating());
     }
 
     private void listeners(){

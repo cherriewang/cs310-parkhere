@@ -140,6 +140,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private int CREATE_LISTING_REQUEST_CODE = 2;
 
+    public final static String USER_PROFILE_INTENT_KEY = "Sending user object to detail user profile activity";
+
     private PermissionListener permissionListener = new PermissionListener() {
         @Override
         public void onPermissionGranted() {
@@ -167,6 +169,21 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .withSelectionListEnabledForSingleProfile(false)
                 .addProfiles(profile)
                 .withSavedInstance(savedInstanceState)
+                .withOnAccountHeaderProfileImageListener(new AccountHeader.OnAccountHeaderProfileImageListener() {
+                    @Override
+                    public boolean onProfileImageClick(View view, IProfile profile, boolean current) {
+                        Intent i = new Intent(HomeActivity.this, UserProfileActivity.class);
+                        i.putExtra(USER_PROFILE_INTENT_KEY, myUser);
+                        startActivity(i);
+
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onProfileImageLongClick(View view, IProfile profile, boolean current) {
+                        return false;
+                    }
+                })
                 .build();
         //Create the drawer
         navDrawer = new DrawerBuilder()
