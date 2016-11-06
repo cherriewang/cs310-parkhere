@@ -167,30 +167,6 @@ public class ListingDetailActivity extends AppCompatActivity{
     }
 
     private void populate(){
-        if (myListing == null){
-            myListing = new Listing();
-            // CREATE LISTING OBJECT
-            myListing.setListingTitle("My New Listing");
-            myListing.setLocation("Blank location");
-            myListing.setListingOwner(myUser.getmNormalizedEmail()); // should have a global user here
-            myListing.setAbout("This is a fabulous listing in a quiet area");
-            myListing.setPrice((long)20.0);
-            myListing.setTandem(true);
-            myListing.setHandicapped(false);
-            myListing.setSuv(false);
-            myListing.setCovered(false);
-            myListing.setSunday(false);
-            myListing.setMonday(false);
-            myListing.setTuesday(false);
-            myListing.setWednesday(true);
-            myListing.setThursday(false);
-            myListing.setFriday(false);
-            myListing.setSaturday(false);
-            myListing.setFromHourString("3");
-            myListing.setFromMinuteString("00");
-            myListing.setToHourString("5");
-            myListing.setToMinuteString("30");
-        }
         //Populate details
         listingTitleTextView.setText(myListing.getListingTitle());
         listingAddressTextView.setText(myListing.getLocation());

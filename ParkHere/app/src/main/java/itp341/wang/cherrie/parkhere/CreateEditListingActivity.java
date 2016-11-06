@@ -214,13 +214,16 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
 
                     // CREATE LISTING OBJECT
                     myListing.setListingTitle(listingTitle);
-                    myListing.setListingOwner(myUser.getmNormalizedEmail()); // should have a global user here
+                    myListing.setListingOwner(myUser.getmFirstName()); // should have a global user here
+                    myListing.setLocation(location);
                     myListing.setAbout(about);
                     myListing.setPrice(price);
+                    //Setting listing categories
                     myListing.setTandem(isTandem);
                     myListing.setHandicapped(isHandicapped);
                     myListing.setSuv(isSUV);
                     myListing.setCovered(isCovered);
+                    //Setting listing availibilities
                     myListing.setSunday(isSunday);
                     myListing.setMonday(isMonday);
                     myListing.setTuesday(isTuesday);
@@ -232,10 +235,10 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
                     myListing.setFromMinuteString(fromMinuteString);
                     myListing.setToHourString(toHourString);
                     myListing.setToMinuteString(toMinuteString);
+                    //Setting Lat Lng for markers
                     myListing.setLatitude(latitude);
                     myListing.setLongitude(longitude);
 
-                    // TODO: Listing object now created, need to have to passed to database under the owner
                     myUser.appendListing(myListing);
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
