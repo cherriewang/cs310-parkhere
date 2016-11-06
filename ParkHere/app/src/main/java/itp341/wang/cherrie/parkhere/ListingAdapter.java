@@ -28,6 +28,8 @@ public class ListingAdapter extends ArrayAdapter<Listing>{
 
     private final LayoutInflater mLayoutInflater;
 
+    public static final String LISTING_DETAIL_INTENT_KEY = "Passing selected listing for detail";
+
     public ListingAdapter(Context context, int resource, ArrayList<Listing> objects){
         super(context, resource, objects);
         mLayoutInflater = LayoutInflater.from(context);
@@ -44,7 +46,7 @@ public class ListingAdapter extends ArrayAdapter<Listing>{
             BlurLayout listingBlurLayout = (BlurLayout) row.findViewById(R.id.listingBlurLayout);
             View hover = LayoutInflater.from(getContext()).inflate(R.layout.hover_listing_layout, null);
             setHoverIcons(hover);
-            listeners(hover);
+            listeners(hover, position);
             listingBlurLayout.setHoverView(hover);
             holder = new ResultsViewHolder(row);
             listingBlurLayout.setBlurDuration(100);
@@ -76,14 +78,15 @@ public class ListingAdapter extends ArrayAdapter<Listing>{
         }
     }
 
-    private void listeners(View v){
+    private void listeners(View v, final int position){
         v.findViewById(R.id.listingDetail).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 YoYo.with(Techniques.Wobble).duration(200).playOn(view);
                 Intent i = new Intent(getContext(), ListingDetailActivity.class)
                         .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                //pass listing details
+                Listing selectedListing = getItem(position);
+                i.putExtra(LISTING_DETAIL_INTENT_KEY, selectedListing);
                 getContext().startActivity(i);
             }
         });
@@ -105,6 +108,8 @@ public class ListingAdapter extends ArrayAdapter<Listing>{
             }
         });
     }
+
+
 
     private void setHoverIcons(View v){
         ImageView listingDetail = (ImageView)v.findViewById(R.id.listingDetail);

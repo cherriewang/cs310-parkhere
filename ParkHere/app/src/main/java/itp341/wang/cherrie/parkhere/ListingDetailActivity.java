@@ -64,7 +64,7 @@ public class ListingDetailActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listing_detail);
-        if (savedInstanceState == null) {
+        /*f (savedInstanceState == null) {
             Log.e("LISTING_DETAIL","do we crash 1");
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
@@ -77,7 +77,14 @@ public class ListingDetailActivity extends AppCompatActivity{
         } else {
             Log.e("LISTING_DETAIL","do we crash 3");
             myListing = (Listing) savedInstanceState.getSerializable("LISTING");
-        }
+        }*/
+
+        Intent i = getIntent();
+        if(i.getExtras() != null)
+            myListing = (Listing)i.getSerializableExtra(ListingAdapter.LISTING_DETAIL_INTENT_KEY);
+        else
+            myListing = null;
+
         myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
         Log.e("LISTING_DETAIL","do we crash 4");
         initialize();
@@ -178,6 +185,7 @@ public class ListingDetailActivity extends AppCompatActivity{
             myListing = new Listing();
             // CREATE LISTING OBJECT
             myListing.setListingTitle("My New Listing");
+            myListing.setLocation("Blank location");
             myListing.setListingOwner(myUser.getmNormalizedEmail()); // should have a global user here
             myListing.setAbout("This is a fabulous listing in a quiet area");
             myListing.setPrice((long)20.0);
@@ -199,13 +207,13 @@ public class ListingDetailActivity extends AppCompatActivity{
         }
         //Populate details
         listingTitleTextView.setText(myListing.getListingTitle());
-//        listingAddressTextView.setText(myListing.ge);
+        listingAddressTextView.setText(myListing.getLocation());
         priceTextView.setText("" + myListing.getPrice());
         ownerTextView.setText(myListing.getListingOwner());
-        //aboutTextView.setText("");
-        //totalPriceTextView.setText("");
-        listingRatingBar.setRating(myListing.getAverageRating());
-        ownerRatingBar.setRating((float)3.0);
+        aboutTextView.setText(myListing.getAbout());
+        //totalPriceTextView.setText(myListing.getPrice() + "");
+        //listingRatingBar.setRating(myListing.getAverageRating());
+        //ownerRatingBar.setRating((float)3.0);
         paymentMethodTextView.setText("");
         //To display review user image, same code for listing detail image
         //Uri uri = Uri.parse("https://raw.githubusercontent.com/facebook/fresco/gh-pages/static/logo.png");
