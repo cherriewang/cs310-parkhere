@@ -484,7 +484,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 if(id == R.id.action_filters){
                     filtersDialog = new MaterialDialog.Builder(HomeActivity.this).customView(R.layout.dialog_filters_layout,
-                            wrapInScrollView).positiveText("Set").onPositive(new MaterialDialog.SingleButtonCallback() {
+                            wrapInScrollView).positiveText("Display Results").onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             Debug.printToast("From price is: " + (double)fromPriceRange/100, getApplicationContext());
