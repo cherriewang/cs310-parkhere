@@ -16,7 +16,8 @@ public class Review {
     private Bitmap ownerReviewImage;
     private Bitmap listingImage;
     private String title;
-    private float rating;
+    private float listingRating;
+    private float ownerRating;
 
     // CONSTRUCTOR
     public Review() {
@@ -74,11 +75,17 @@ public class Review {
         this.title = title;
     }
 
-    public float getRating() {
-        return rating;
+    public float getListingRating() {
+        return listingRating;
     }
 
-    public void setRating(float rating) {
-        this.rating = rating;
+    public void setListingRating(float listingRating) {
+        this.listingRating = listingRating;
     }
+
+    public float getOwnerRating() {
+        return ownerRating;
+    }
+
+    public void setOwnerRating(float ownerRating) { this.ownerRating = ownerRating; }
 }
