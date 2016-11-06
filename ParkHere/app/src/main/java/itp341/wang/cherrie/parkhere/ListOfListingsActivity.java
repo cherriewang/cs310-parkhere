@@ -71,15 +71,6 @@ public class ListOfListingsActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-
-        listingsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Listing l = (Listing)parent.getItemAtPosition(position);
-                Debug.printToast(l.getListingTitle(), getApplicationContext());
-            }
-
-        });
     }
 
     private void updateCardUi() {
