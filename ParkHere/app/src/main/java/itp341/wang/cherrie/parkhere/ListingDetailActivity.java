@@ -177,7 +177,7 @@ public class ListingDetailActivity extends AppCompatActivity{
         aboutTextView.setText(myListing.getAbout());
         //totalPriceTextView.setText(myListing.getPrice() + "");
         listingRatingBar.setRating(myListing.getAverageRating());
-        //ownerRatingBar.setRating((float)3.0);
+        ownerRatingBar.setRating(myUser.getAverageRating());
         paymentMethodTextView.setText("");
         //To display review user image, same code for listing detail image
         //Uri uri = Uri.parse("https://raw.githubusercontent.com/facebook/fresco/gh-pages/static/logo.png");

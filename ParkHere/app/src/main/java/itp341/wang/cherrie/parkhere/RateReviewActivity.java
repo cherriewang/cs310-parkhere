@@ -133,12 +133,10 @@ public class RateReviewActivity extends AppCompatActivity {
         public void onRatingChanged(MaterialRatingBar ratingBar, float rating) {
             int id = ratingBar.getId();
             if(id == R.id.ownerRatingBar){
-                Debug.printToast("Rating is: " + rating, getApplicationContext());
-                myUser.addRating(rating);
+                myReview.setOwnerRating(rating);
             }
             if(id == R.id.listingRatingBar){
-                Debug.printToast("Rating is: " + rating, getApplicationContext());
-                myReview.setRating(rating);
+                myReview.setListingRating(rating);
             }
         }
     }

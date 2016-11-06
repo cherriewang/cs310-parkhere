@@ -138,20 +138,25 @@ public class User implements Serializable {
         this.accountBalance = accountBalance;
     }
 
-    public float getRating() {
-        return rating;
-    }
+    public float getAverageRating() {
+        float sum = 0;
+        float numReviews = 0;
+        for(Listing listing : mListings){
+            if(listing.getReviews() == null) {
+                sum += 0;
+                numReviews += 0;
+            }
+            else{
+                for (Review r : listing.getReviews()) {
+                    sum += r.getOwnerRating();
+                }
+                numReviews += listing.getReviews().size();
+            }
+        }
 
-    public int getNumRatings() {
-        return numRatings;
-    }
-
-    public void setNumRatings(int numRatings) {
-        this.numRatings = numRatings;
-    }
-
-    public void addRating(float rating) {
-        this.rating = (rating * numRatings) + rating;
-        this.rating /= numRatings++;
+        if(numReviews != 0)
+            return sum / (float)numReviews;
+        else
+            return 0;
     }
 }

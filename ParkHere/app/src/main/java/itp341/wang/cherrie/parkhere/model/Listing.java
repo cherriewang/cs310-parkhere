@@ -237,7 +237,7 @@ public class Listing implements Serializable{
             return 0;
         else{
             for (Review r : getReviews()) {
-                sum += r.getRating();
+                sum += r.getListingRating();
             }
             return sum / (float)getReviews().size();
         }
