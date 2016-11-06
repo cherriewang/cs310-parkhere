@@ -68,4 +68,11 @@ public class ListOfBookingsActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        HomeActivity.setNavDrawerToHome();
+    }
 }

@@ -96,7 +96,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         com.borax12.materialdaterangepicker.time.TimePickerDialog.OnTimeSetListener{
 
     private AccountHeader headerResult = null;
-    private Drawer navDrawer = null;
+    private static Drawer navDrawer = null;
     private FloatingSearchView mSearchView = null;
 
     private GoogleMap mMap;
@@ -138,6 +138,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Location mLastLocation;
 
     private int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+    private int CREATE_LISTING_REQUEST_CODE = 2;
 
     private PermissionListener permissionListener = new PermissionListener() {
         @Override
@@ -216,8 +217,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 // DIALOG BOX OPENS IF USER IS NOT AN OWNER
                                 if (myUser.isOwner()) {
                                     Intent i = new Intent(HomeActivity.this, CreateEditListingActivity.class);
-                                    int requestCode = 1;
-                                    startActivityForResult(i, requestCode);
+                                    startActivityForResult(i, CREATE_LISTING_REQUEST_CODE);
                                 }
                                 else {
                                     showLocationDialog();
@@ -235,7 +235,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 startActivity(i);
                             }
                             //Help
-                            else if(drawerItem.getIdentifier() == 7){
+                            else if(drawerItem.getIdentifier() == 8){
                                 Intent i = new Intent(HomeActivity.this, HelpActivity.class);
                                 startActivity(i);
                             }
@@ -314,9 +314,15 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        //example
-        //addListingMarker(glarenceAPT, "Shrine Habitat");
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(glarenceAPT));
+        CameraPosition defaultPosition = new CameraPosition.Builder()
+                //.target(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()))
+                .target(glarenceAPT)
+                .zoom(16) // this is the zoom level
+                .bearing(35)   // this is the rotation angle
+                .tilt(40)   // this is the degree of elevation
+                .build();
+
+        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(defaultPosition));
         mMap.getUiSettings().setIndoorLevelPickerEnabled(false);
         enableMyLocation();
     }
@@ -375,6 +381,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         } else {
             super.onBackPressed();
         }
+    }
+
+    public static void setNavDrawerToHome(){
+        //Back to home activity so highlight home nav drawer item
+        navDrawer.setSelection(2, false);
     }
 
     protected void onStart() {
@@ -690,9 +701,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             } else if (resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.
             }
+            setNavDrawerToHome();
         }
-        else if(resultCode == RESULT_OK){
-            Debug.printToast("Added listing!", getApplicationContext());
+        if (requestCode == CREATE_LISTING_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Debug.printToast("Added listing!", getApplicationContext());
+            }
         }
     }
 

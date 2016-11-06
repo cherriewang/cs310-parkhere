@@ -10,4 +10,11 @@ public class HelpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        HomeActivity.setNavDrawerToHome();
+    }
 }

@@ -145,4 +145,11 @@ public class ListOfPaymentsActivity extends AppCompatActivity{
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        HomeActivity.setNavDrawerToHome();
+    }
+
 }

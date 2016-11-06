@@ -85,4 +85,11 @@ public class ListOfListingsActivity extends AppCompatActivity {
     private void updateCardUi() {
         createCards();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        HomeActivity.setNavDrawerToHome();
+    }
 }

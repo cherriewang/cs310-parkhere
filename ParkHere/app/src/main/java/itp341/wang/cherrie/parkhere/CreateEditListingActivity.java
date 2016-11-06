@@ -340,4 +340,11 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
 
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        HomeActivity.setNavDrawerToHome();
+    }
 }
