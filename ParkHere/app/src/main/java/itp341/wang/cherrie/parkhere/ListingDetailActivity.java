@@ -64,20 +64,6 @@ public class ListingDetailActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listing_detail);
-        /*f (savedInstanceState == null) {
-            Log.e("LISTING_DETAIL","do we crash 1");
-            Bundle extras = getIntent().getExtras();
-            if(extras == null) {
-                Log.e("LISTING_DETAIL","do we crash 1");
-                myListing = null;
-            } else {
-                Log.e("LISTING_DETAIL","do we crash 2");
-                myListing = (Listing)extras.getSerializable("LISTING");
-            }
-        } else {
-            Log.e("LISTING_DETAIL","do we crash 3");
-            myListing = (Listing) savedInstanceState.getSerializable("LISTING");
-        }*/
 
         Intent i = getIntent();
         if(i.getExtras() != null)
