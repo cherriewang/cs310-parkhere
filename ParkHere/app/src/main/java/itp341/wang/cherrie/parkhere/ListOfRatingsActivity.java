@@ -1,5 +1,6 @@
 package itp341.wang.cherrie.parkhere;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
@@ -25,24 +26,16 @@ public class ListOfRatingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_ratings);
 
-        if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            if(extras == null) {
-                myListing = null;
-            } else {
-                myListing = (Listing)extras.getSerializable("LISTING");
-            }
-        } else {
-            myListing = (Listing) savedInstanceState.getSerializable("LISTING");
-        }
+        Intent i = getIntent();
+        if(i != null)
+            myListing = (Listing) i.getSerializableExtra(ListingDetailActivity.MORE_REVIEWS_INTENT_KEY);
 
         initialize();
         listeners();
     }
 
     private void initialize(){
-        //getSupportActionBar().setTitle(myListing.getListingTitle());
-        getSupportActionBar().setTitle("Test");
+        getSupportActionBar().hide();
         ratingsListView = (ListView) findViewById(R.id.ratingsListView);
 
         myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
@@ -71,12 +64,10 @@ public class ListOfRatingsActivity extends AppCompatActivity {
     }
 
     private void createCards() {
-        //mRatingAdapter = new RatingAdapter(getApplicationContext(), 0, (ArrayList<Review>) myListing.getReviews());
-        ArrayList<Review> test = new ArrayList<Review>();
-        Review testReview = new Review();
-        testReview.setReviewText("");
-        test.add(testReview);
-        mRatingAdapter = new RatingAdapter(getApplicationContext(), 0, test);
+        ArrayList<Review> listOfReviews = new ArrayList<>();
+        if(myListing.getReviews() != null)
+            listOfReviews = (ArrayList<Review>) myListing.getReviews();
+        mRatingAdapter = new RatingAdapter(getApplicationContext(), 0, listOfReviews);
         ratingsListView.setAdapter(mRatingAdapter);
     }
 

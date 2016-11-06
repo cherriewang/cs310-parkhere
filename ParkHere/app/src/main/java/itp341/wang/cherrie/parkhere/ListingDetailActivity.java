@@ -61,6 +61,7 @@ public class ListingDetailActivity extends AppCompatActivity{
 
     public static final int SELECT_PAYMENT_REQUEST_CODE = 0;
     public static final String SELECTING_PAYMENT = "Selecting Payment";
+    public static final String MORE_REVIEWS_INTENT_KEY = "Sending selected listing to display more reviews";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -128,7 +129,7 @@ public class ListingDetailActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(ListingDetailActivity.this, ListOfRatingsActivity.class);
-                //put listing in i
+                i.putExtra(MORE_REVIEWS_INTENT_KEY, myListing);
                 getIntent().putExtra("LISTING", myListing);
                 startActivity(i);
             }
