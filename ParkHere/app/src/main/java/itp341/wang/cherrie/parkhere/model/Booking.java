@@ -37,7 +37,7 @@ public class Booking {
     private boolean covered;
     private String location;
     private String about;
-    private long price;
+    private double price;
 
     public String getBookingOwner() {
         return bookingOwner;
@@ -75,7 +75,7 @@ public class Booking {
         return about;
     }
 
-    public long getPrice() {
+    public double getPrice() {
         return price;
     }
 
@@ -115,7 +115,7 @@ public class Booking {
         this.about = about;
     }
 
-    public void setPrice(long price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 }

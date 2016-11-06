@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import itp341.wang.cherrie.parkhere.model.Booking;
@@ -170,11 +171,12 @@ public class ListingDetailActivity extends AppCompatActivity{
         //Populate details
         listingTitleTextView.setText(myListing.getListingTitle());
         listingAddressTextView.setText(myListing.getLocation());
-        priceTextView.setText("" + myListing.getPrice());
+        DecimalFormat decimalFormat = new DecimalFormat("#.00");
+        priceTextView.setText("$" + decimalFormat.format(myListing.getPrice()) + "/hr");
         ownerTextView.setText(myListing.getListingOwner());
         aboutTextView.setText(myListing.getAbout());
         //totalPriceTextView.setText(myListing.getPrice() + "");
-        //listingRatingBar.setRating(myListing.getAverageRating());
+        listingRatingBar.setRating(myListing.getAverageRating());
         //ownerRatingBar.setRating((float)3.0);
         paymentMethodTextView.setText("");
         //To display review user image, same code for listing detail image

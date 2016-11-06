@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity;
 import com.nguyenhoanglam.imagepicker.model.Image;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -63,7 +64,7 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
     private String listingTitle = "";
     private String location = "";
     private String about = "";
-    private long price = 0;
+    private double price = 0;
     private boolean isTandem = false;
     private boolean isHandicapped = false;
     private boolean isSUV = false;
@@ -151,7 +152,7 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
         listingTitleEditText.setText(listingTitle);
         locationTextView.setText(location);
         aboutEditText.setText(about);
-        priceEditText.setText(Long.toString(price));
+        priceEditText.setText(Double.toString(price));
         tandemCheckBox.setChecked(isTandem);
         handicappedCheckBox.setChecked(isHandicapped);
     }
@@ -199,7 +200,7 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
             public void onClick(View v) {
                 if(!listingTitle.isEmpty() && !location.isEmpty() && !about.isEmpty() && !isPriceEditTextEmpty()){
                     // getting all values from the input fields
-                    price = priceEditText.getRawValue();
+                    price = priceEditText.getRawValue()/100;
                     isTandem = tandemCheckBox.isChecked();
                     isHandicapped = handicappedCheckBox.isChecked();
                     isSUV = suvCheckBox.isChecked();
@@ -217,7 +218,8 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
                     myListing.setListingOwner(myUser.getmFirstName()); // should have a global user here
                     myListing.setLocation(location);
                     myListing.setAbout(about);
-                    myListing.setPrice(price);
+                    DecimalFormat decimalFormat = new DecimalFormat("#.00");
+                    myListing.setPrice(Double.parseDouble(decimalFormat.format(price)));
                     //Setting listing categories
                     myListing.setTandem(isTandem);
                     myListing.setHandicapped(isHandicapped);

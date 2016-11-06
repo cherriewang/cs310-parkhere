@@ -23,7 +23,7 @@ public class Listing implements Serializable{
     private boolean covered;
     private String location;
     private String about;
-    private long price;
+    private double price;
     // regarding times
     private boolean sunday;
     private boolean monday;
@@ -128,7 +128,7 @@ public class Listing implements Serializable{
         return about;
     }
 
-    public long getPrice() {
+    public double getPrice() {
         return price;
     }
 
@@ -166,7 +166,7 @@ public class Listing implements Serializable{
         this.about = about;
     }
 
-    public void setPrice(long price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

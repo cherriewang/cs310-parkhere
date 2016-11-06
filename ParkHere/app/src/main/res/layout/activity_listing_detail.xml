@@ -14,7 +14,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            
+
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/listingImageView"
                 android:layout_width="match_parent"
@@ -29,20 +29,8 @@
                 android:layout_alignParentStart="true">
 
                 <TextView
-                    android:id="@+id/listingTitleTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/listing_title_string"
-                    android:textColor="#FFFFFF"
-                    android:textStyle="bold"
-                    android:textSize="24sp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginBottom="40dp"
-                    android:layout_alignParentBottom="true"/>
-
-                <TextView
                     android:id="@+id/listingAddressTextView"
-                    android:layout_width="wrap_content"
+                    android:layout_width="220dp"
                     android:layout_height="wrap_content"
                     android:text="@string/listing_address_string"
                     android:textColor="#FFFFFF"
@@ -50,6 +38,18 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginStart="16dp"
                     android:layout_marginBottom="16dp"/>
+
+                <TextView
+                    android:id="@+id/listingTitleTextView"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/listing_title_string"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:textSize="24sp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_above="@id/listingAddressTextView"/>
 
                 <TextView
                     android:id="@+id/priceTextView"
@@ -154,7 +154,7 @@
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="12dp"/>
-                
+
                 <me.zhanghai.android.materialratingbar.MaterialRatingBar
                     android:id="@+id/listingRatingBar"
                     android:layout_width="wrap_content"
