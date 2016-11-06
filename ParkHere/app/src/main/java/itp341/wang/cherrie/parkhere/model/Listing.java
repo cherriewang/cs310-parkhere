@@ -231,6 +231,13 @@ public class Listing implements Serializable{
         reviews.add(r);
     }
 
+    public Review getLatestReview(){
+        if(getReviews() != null)
+            return reviews.get(reviews.size()-1);
+        else
+            return null;
+    }
+
     public float getAverageRating() {
         float sum = 0;
         if(getReviews() == null)

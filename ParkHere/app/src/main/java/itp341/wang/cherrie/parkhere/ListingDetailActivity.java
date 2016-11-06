@@ -25,6 +25,7 @@ import java.util.List;
 import itp341.wang.cherrie.parkhere.model.Booking;
 import itp341.wang.cherrie.parkhere.model.Card;
 import itp341.wang.cherrie.parkhere.model.Listing;
+import itp341.wang.cherrie.parkhere.model.Review;
 import itp341.wang.cherrie.parkhere.model.User;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
@@ -179,15 +180,24 @@ public class ListingDetailActivity extends AppCompatActivity{
         listingRatingBar.setRating(myListing.getAverageRating());
         ownerRatingBar.setRating(myUser.getAverageRating());
         paymentMethodTextView.setText("");
+        Review latestReview = myListing.getLatestReview();
+        if(latestReview == null){
+            reviewUserNameTextView.setText("N/A");
+            reviewDateTextView.setText("N/A");
+            reviewContentTextView.setText("N/A");
+        }
+        else{
+            reviewUserNameTextView.setText(latestReview.getReviewer());
+            //reviewDateTextView.setText(latestReview.getDate);
+            reviewContentTextView.setText(latestReview.getReviewText());
+        }
+        availibilityTextView.setText("Yes");
+        cancellationTextView.setText(getResources().getString(R.string.cancellation_policy));
+
         //To display review user image, same code for listing detail image
         //Uri uri = Uri.parse("https://raw.githubusercontent.com/facebook/fresco/gh-pages/static/logo.png");
         //SimpleDraweeView draweeView = (SimpleDraweeView) findViewById(R.id.my_image_view);
         //draweeView.setImageURI(uri);
-        reviewUserNameTextView.setText("Justin");
-        reviewDateTextView.setText("June 2016");
-        //reviewContentTextView.setText("");
-        availibilityTextView.setText("Yes");
-        cancellationTextView.setText(getResources().getString(R.string.cancellation_policy));
 
         setCategoryTags();
     }
