@@ -19,8 +19,8 @@
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/userProfPicView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
             fresco:placeholderImageScaleType="centerCrop"
             fresco:placeholderImage="@drawable/placeholder_prof_pic"
@@ -91,20 +91,24 @@
             android:inputType="textPassword"
             android:ems="10"
             android:id="@+id/editTextPass" />
+
         <RadioGroup
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
             <RadioButton android:id="@+id/radio_seeker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/seeker"
                 android:onClick="onRadioButtonClicked"
+                android:buttonTint="@color/colorAccent"
                 android:layout_weight="1"/>
             <RadioButton android:id="@+id/radio_owner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/owner"
+                android:buttonTint="@color/colorAccent"
                 android:onClick="onRadioButtonClicked"
                 android:layout_weight="1"/>
         </RadioGroup>
