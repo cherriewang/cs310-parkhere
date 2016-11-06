@@ -1,6 +1,7 @@
 package itp341.wang.cherrie.parkhere;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -9,6 +10,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText emailEditText;
     private EditText passwordEditText;
     private TextView forgotPassword;
+    private CheckBox rememberCheckBox;
     private User candidateUser;
     private User myUser;
     private FirebaseAuth mAuth;
@@ -48,6 +52,11 @@ public class LoginActivity extends AppCompatActivity {
      */
     private GoogleApiClient client;
 
+    private boolean isRemember = false;
+
+    public static final String PREFS_NAME = "MyPrefsFile";
+    private static final String PREF_USERNAME = "username";
+    private static final String PREF_PASSWORD = "password";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +76,18 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText = (EditText) findViewById(R.id.editTextPass);
         forgotPassword = (TextView) findViewById(R.id.textForgotPassword);
         enterButton = (Button) findViewById(R.id.buttonEnter);
+        rememberCheckBox = (CheckBox) findViewById(R.id.rememberCheckBox);
         FirebaseAuth.getInstance().signOut();
+
+        SharedPreferences pref = getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
+        String username = pref.getString(PREF_USERNAME, null);
+        String password = pref.getString(PREF_PASSWORD, null);
+
+        if (username != null || password != null) {
+            emailEditText.setText(username);
+            passwordEditText.setText(password);
+            rememberCheckBox.setChecked(true);
+        }
     }
 
     private void listeners() {
@@ -98,7 +118,12 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         };
-
+        rememberCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isRemember = isChecked;
+            }
+        });
         SetEnterButtonListener();
         SetForgotPasswordListener();
     }
@@ -120,6 +145,20 @@ public class LoginActivity extends AppCompatActivity {
             //On click function
             public void onClick(View view) {
                 signIn();
+                if(isRemember){
+                    getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+                            .edit()
+                            .putString(PREF_USERNAME, emailEditText.getText().toString())
+                            .putString(PREF_PASSWORD, passwordEditText.getText().toString())
+                            .commit();
+                }
+                else{
+                    getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+                            .edit()
+                            .putString(PREF_USERNAME, null)
+                            .putString(PREF_PASSWORD, null)
+                            .commit();
+                }
             }
         });
     }

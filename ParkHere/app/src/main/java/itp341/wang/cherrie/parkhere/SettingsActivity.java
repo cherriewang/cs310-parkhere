@@ -66,7 +66,8 @@ public class SettingsActivity extends AppCompatActivity {
                 // set intent to return to welcome activity
                 Intent welcomeIntent = new Intent(getApplicationContext(), WelcomeActivity.class);
                 setResult(Activity.RESULT_OK, welcomeIntent);
-                finish();
+                //log out code
+                startActivity(welcomeIntent);
             }
         });
 
