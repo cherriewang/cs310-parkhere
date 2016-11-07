@@ -96,7 +96,7 @@ import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, com.borax12.materialdaterangepicker.date.DatePickerDialog.OnDateSetListener,
-        com.borax12.materialdaterangepicker.time.TimePickerDialog.OnTimeSetListener{
+        com.borax12.materialdaterangepicker.time.TimePickerDialog.OnTimeSetListener, GoogleMap.OnInfoWindowClickListener{
 
     private AccountHeader headerResult = null;
     private static Drawer navDrawer = null;
@@ -367,6 +367,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(defaultPosition));
         mMap.getUiSettings().setIndoorLevelPickerEnabled(false);
         mMap.setPadding(0, 180, 0, 0);
+        mMap.setOnInfoWindowClickListener(this);
         enableMyLocation();
     }
 
@@ -592,6 +593,16 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Listing listingSelected = markerListingHashmap.get(marker);
+
+        Intent i = new Intent(HomeActivity.this, ListingDetailActivity.class);
+        i.putExtra(ListingAdapter.LISTING_DETAIL_INTENT_KEY, listingSelected);
+        startActivity(i);
+    }
+
+    //for calculating bounds of user's location for autocompletion predictions
     public LatLngBounds toBounds(LatLng center, double radius) {
         LatLng southwest = SphericalUtil.computeOffset(center, radius * Math.sqrt(2.0), 225);
         LatLng northeast = SphericalUtil.computeOffset(center, radius * Math.sqrt(2.0), 45);
