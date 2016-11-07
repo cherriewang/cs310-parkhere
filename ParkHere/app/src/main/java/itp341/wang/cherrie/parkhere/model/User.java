@@ -134,6 +134,16 @@ public class User implements Serializable {
         mBookings.add(b);
     }
 
+    public void removeListing(Listing l) {
+        if(mListings != null)
+            mListings.remove(l);
+    }
+
+    public void removeBooking(Booking b) {
+        if (mBookings != null)
+            mBookings.remove(b);
+    }
+
     public void setAccountBalance(double accountBalance) {
         this.accountBalance = accountBalance;
     }

@@ -178,7 +178,7 @@ public class ListingDetailActivity extends AppCompatActivity{
         aboutTextView.setText(myListing.getAbout());
         //totalPriceTextView.setText(myListing.getPrice() + "");
         listingRatingBar.setRating(myListing.getAverageRating());
-        ownerRatingBar.setRating(myUser.getAverageRating());
+        //ownerRatingBar.setRating(myListing.getOwner().getAverageRating()); //need to fix so we can retrieve owner's rating
         paymentMethodTextView.setText("");
         Review latestReview = myListing.getLatestReview();
         if(latestReview == null){

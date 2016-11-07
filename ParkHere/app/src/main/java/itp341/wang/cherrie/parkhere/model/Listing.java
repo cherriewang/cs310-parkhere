@@ -38,12 +38,15 @@ public class Listing implements Serializable{
     private String fromMinuteString;
     private String toHourString;
     private String toMinuteString;
+    private User owner;
 
     // lat long
     private double Latitude;
     private double Longitude;
 
     private List<Review> reviews;
+
+    public User getOwner() { return owner; }
 
     public String getListingOwner() {
         return listingOwner;
@@ -134,6 +137,8 @@ public class Listing implements Serializable{
     }
 
     public List<Review> getReviews() { return reviews; }
+
+    public void setOwner(User owner) { this.owner = owner; }
 
     public void setListingTitle(String listingTitle) {
         this.listingTitle = listingTitle;

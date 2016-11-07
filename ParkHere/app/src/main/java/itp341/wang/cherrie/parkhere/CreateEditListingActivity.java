@@ -240,6 +240,8 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
                     // CREATE LISTING OBJECT
                     myListing.setListingTitle(listingTitle);
                     myListing.setListingOwner(myUser.getmFirstName()); // should have a global user here
+                    //Setting user object for owner
+                    //myListing.setOwner(myUser);
                     myListing.setLocation(location);
                     myListing.setAbout(about);
                     DecimalFormat decimalFormat = new DecimalFormat("#.00");
@@ -265,12 +267,10 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
                     myListing.setLatitude(latitude);
                     myListing.setLongitude(longitude);
 
-                    myUser.appendListing(myListing);
-
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference myRef = database.getReference();
-                    myRef.child("users").child(myUser.getmNormalizedEmail()).setValue(myUser);
                     myRef.child("listings").child(listingTitle).setValue(myListing);
+                    myRef.child("users").child(myUser.getmNormalizedEmail()).child("mListings").child(listingTitle).setValue(myListing);
 
                     setResult(RESULT_OK);
                     finish();
