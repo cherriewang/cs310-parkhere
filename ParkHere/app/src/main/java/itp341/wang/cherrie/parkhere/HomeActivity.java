@@ -576,10 +576,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public void onSearchTextChanged(String oldQuery, String newQuery) {
-                PendingResult<AutocompletePredictionBuffer> result = Places.GeoDataApi.getAutocompletePredictions(mGoogleApiClient, newQuery, bounds,
+                /*PendingResult<AutocompletePredictionBuffer> result = Places.GeoDataApi.getAutocompletePredictions(mGoogleApiClient, newQuery, bounds,
                                                                                 new AutocompleteFilter.Builder()
                                                                                 .setTypeFilter(AutocompleteFilter.TYPE_FILTER_NONE)
-                                                                                .build());
+                                                                                .build());*/
             }
         });
         mSearchView.setOnSearchListener(new FloatingSearchView.OnSearchListener() {
