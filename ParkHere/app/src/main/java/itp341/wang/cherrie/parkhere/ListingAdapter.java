@@ -28,8 +28,8 @@ public class ListingAdapter extends ArrayAdapter<Listing>{
 
     private final LayoutInflater mLayoutInflater;
 
-    public static final String LISTING_DETAIL_INTENT_KEY = "Passing selected listing for detail";
-
+    public static final String LISTING_DETAIL_INTENT_KEY = "Passing selected listing to populate details";
+    public static final String LISTING_EDIT_INTENT_KEY = "Passing selected listing to edit";
     public ListingAdapter(Context context, int resource, ArrayList<Listing> objects){
         super(context, resource, objects);
         mLayoutInflater = LayoutInflater.from(context);
@@ -96,7 +96,8 @@ public class ListingAdapter extends ArrayAdapter<Listing>{
                 YoYo.with(Techniques.Wobble).duration(200).playOn(view);
                 Intent i = new Intent(getContext(), CreateEditListingActivity.class)
                         .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                //pass listing to edit
+                Listing selectedListing = getItem(position);
+                i.putExtra(LISTING_EDIT_INTENT_KEY, selectedListing);
                 getContext().startActivity(i);
             }
         });

@@ -86,6 +86,8 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
 
     private User myUser;
 
+    private Listing listingToEdit = new Listing();
+
     public final static int CREATE_EDIT_REQUEST_CODE = 0;
     int PLACE_PICKER_REQUEST = 2;   //request code for google place picker
 
@@ -94,16 +96,11 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_edit_listing);
 
-        if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            if(extras == null) {
-                myListing = null;
-            } else {
-                myListing = (Listing)extras.getSerializable("LISTING");
-            }
-        } else {
-            myListing = (Listing) savedInstanceState.getSerializable("LISTING");
-        }
+        Intent i = getIntent();
+        if(i.getExtras() != null)
+            listingToEdit = (Listing)i.getSerializableExtra(ListingAdapter.LISTING_EDIT_INTENT_KEY);
+        else
+            listingToEdit = null;
 
         initialize();
         listeners();
@@ -131,30 +128,50 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
         sundayCheckBox = (CheckBox) findViewById(R.id.sundayCheckBox);
         timeButton = (Button) findViewById(R.id.timeButton);
 
-        if (myListing == null) {
-            myListing = new Listing();
-        } else {
-            populate();
-        }
+        populate();
 
         myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
     }
 
     //Used to fill up info if editing a listing
     private void populate(){
-        listingTitle = myListing.getListingTitle();
-        location = myListing.getLocation();
-        about = myListing.getAbout();
-        price = myListing.getPrice();
-        isTandem = myListing.isTandem();
-        isHandicapped = myListing.isHandicapped();
+        if (myListing == null) {
+            Debug.printToast("Listing is null", getApplicationContext());
+        } else {
+            Debug.printToast("Listing will be populated!", getApplicationContext());
+            listingTitle = myListing.getListingTitle();
+            location = myListing.getLocation();
+            about = myListing.getAbout();
+            price = myListing.getPrice();
+            isTandem = myListing.isTandem();
+            isHandicapped = myListing.isHandicapped();
+            isSUV = myListing.isSuv();
+            isCovered = myListing.isCovered();
+            isMonday = myListing.isMonday();
+            isTuesday = myListing.isTuesday();
+            isWednesday = myListing.isWednesday();
+            isThursday = myListing.isThursday();
+            isFriday = myListing.isFriday();
+            isSaturday = myListing.isSaturday();
+            isSunday = myListing.isSunday();
 
-        listingTitleEditText.setText(listingTitle);
-        locationTextView.setText(location);
-        aboutEditText.setText(about);
-        priceEditText.setText(Double.toString(price));
-        tandemCheckBox.setChecked(isTandem);
-        handicappedCheckBox.setChecked(isHandicapped);
+            listingTitleEditText.setText(listingTitle);
+            locationTextView.setText(location);
+            aboutEditText.setText(about);
+            DecimalFormat decimalFormat = new DecimalFormat("#.00");
+            priceEditText.setText(decimalFormat.format(price));
+            tandemCheckBox.setChecked(isTandem);
+            handicappedCheckBox.setChecked(isHandicapped);
+            suvCheckBox.setChecked(isSUV);
+            coveredCheckBox.setChecked(isCovered);
+            mondayCheckBox.setChecked(isMonday);
+            tuesdayCheckBox.setChecked(isTuesday);
+            wednesdayCheckBox.setChecked(isWednesday);
+            thursdayCheckBox.setChecked(isThursday);
+            fridayCheckBox.setChecked(isFriday);
+            saturdayCheckBox.setChecked(isSaturday);
+            sundayCheckBox.setChecked(isSunday);
+        }
     }
 
     private void listeners(){

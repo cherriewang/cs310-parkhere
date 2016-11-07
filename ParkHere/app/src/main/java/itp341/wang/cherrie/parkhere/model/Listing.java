@@ -10,6 +10,8 @@ import java.util.List;
 
 public class Listing implements Serializable{
 
+    private static final long serialVersionUID = 1L;
+
     // CONSTRUCTOR
     public Listing() {
         super();
@@ -40,7 +42,6 @@ public class Listing implements Serializable{
     // lat long
     private double Latitude;
     private double Longitude;
-
 
     private List<Review> reviews;
 

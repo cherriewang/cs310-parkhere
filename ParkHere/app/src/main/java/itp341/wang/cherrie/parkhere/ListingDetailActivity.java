@@ -75,7 +75,6 @@ public class ListingDetailActivity extends AppCompatActivity{
             myListing = null;
 
         myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
-        Log.e("LISTING_DETAIL","do we crash 4");
         initialize();
         listeners();
     }
@@ -101,7 +100,6 @@ public class ListingDetailActivity extends AppCompatActivity{
         reviewContentTextView = (TextView)findViewById(R.id.reviewContentTextView);
         availibilityTextView = (TextView)findViewById(R.id.availibilityTextView);
         cancellationTextView = (TextView)findViewById(R.id.cancellationTextView);
-
 
         populate();
     }
