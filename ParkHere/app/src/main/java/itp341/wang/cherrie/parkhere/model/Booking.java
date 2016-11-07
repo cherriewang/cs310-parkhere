@@ -1,6 +1,6 @@
 package itp341.wang.cherrie.parkhere.model;
 
-/**
+/*
  * Created by Cherrie on 11/1/16.
  */
 
