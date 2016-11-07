@@ -48,7 +48,7 @@ public class ListOfListingsActivity extends AppCompatActivity {
 
     private void createCards() {
         List<Listing> currentListings = myListings;
-        mListingAdapter = new ListingAdapter(getApplicationContext(), 0, (ArrayList<Listing>) currentListings);
+        mListingAdapter = new ListingAdapter(getApplicationContext(), 0, (ArrayList<Listing>) currentListings, this);
         listingsListView.setAdapter(mListingAdapter);
     }
 
