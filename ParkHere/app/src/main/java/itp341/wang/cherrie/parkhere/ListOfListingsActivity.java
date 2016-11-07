@@ -54,7 +54,8 @@ public class ListOfListingsActivity extends AppCompatActivity {
 
     private void listeners(){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference refMyListings = database.getReference("users").child("mListings").getRef();
+        DatabaseReference myRef = database.getReference();
+        DatabaseReference refMyListings = myRef.child("users").child(myUser.getmNormalizedEmail()).child("mListings");
 
         refMyListings.addValueEventListener(new ValueEventListener() {
             @Override
