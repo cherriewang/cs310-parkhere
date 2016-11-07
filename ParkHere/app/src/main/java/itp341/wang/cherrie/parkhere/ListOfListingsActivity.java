@@ -54,11 +54,12 @@ public class ListOfListingsActivity extends AppCompatActivity {
 
     private void listeners(){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("listings");
+        DatabaseReference refMyListings = database.getReference("users").child("mListings").getRef();
 
-        ref.addValueEventListener(new ValueEventListener() {
+        refMyListings.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                myListings.clear();
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     Listing listing = postSnapshot.getValue(Listing.class);
                     myListings.add(listing);
