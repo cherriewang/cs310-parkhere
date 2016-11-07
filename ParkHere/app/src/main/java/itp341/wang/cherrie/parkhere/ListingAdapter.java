@@ -116,9 +116,10 @@ public class ListingAdapter extends ArrayAdapter<Listing>{
             public void onClick(View view) {
                 YoYo.with(Techniques.Wobble).duration(200).playOn(view);
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                Listing selectedListing = getItem(position);
                 DatabaseReference myRef = database.getReference();
+                Listing selectedListing = getItem(position);
                 myRef.child("listings").child(selectedListing.getListingTitle()).removeValue();
+                myRef.child("users").child(myUser.getmNormalizedEmail()).child("mListings").child(position + "").removeValue();
             }
         });
     }
