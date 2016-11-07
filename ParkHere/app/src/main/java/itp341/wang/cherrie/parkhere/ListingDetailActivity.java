@@ -69,7 +69,7 @@ public class ListingDetailActivity extends AppCompatActivity{
         setContentView(R.layout.activity_listing_detail);
 
         Intent i = getIntent();
-        if(i.getExtras() != null)
+        if(i.hasExtra(ListingAdapter.LISTING_DETAIL_INTENT_KEY))
             myListing = (Listing)i.getSerializableExtra(ListingAdapter.LISTING_DETAIL_INTENT_KEY);
         else
             myListing = null;

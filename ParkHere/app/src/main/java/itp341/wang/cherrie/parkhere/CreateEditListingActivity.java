@@ -51,7 +51,6 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
     private EditText aboutEditText;
     private CurrencyEditText priceEditText;
     private Button createListingButton;
-    private Listing myListing;
     private CheckBox mondayCheckBox;
     private CheckBox tuesdayCheckBox;
     private CheckBox wednesdayCheckBox;
@@ -60,6 +59,8 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
     private CheckBox saturdayCheckBox;
     private CheckBox sundayCheckBox;
     private Button timeButton;
+    private TextView fromTimeTextView;
+    private TextView toTimeTextView;
 
     private String listingTitle = "";
     private String location = "";
@@ -86,7 +87,7 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
 
     private User myUser;
 
-    private Listing listingToEdit = new Listing();
+    private Listing myListing;
 
     public final static int CREATE_EDIT_REQUEST_CODE = 0;
     int PLACE_PICKER_REQUEST = 2;   //request code for google place picker
@@ -97,10 +98,8 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
         setContentView(R.layout.activity_create_edit_listing);
 
         Intent i = getIntent();
-        if(i.getExtras() != null)
-            listingToEdit = (Listing)i.getSerializableExtra(ListingAdapter.LISTING_EDIT_INTENT_KEY);
-        else
-            listingToEdit = null;
+        if(i.hasExtra(ListingAdapter.LISTING_EDIT_INTENT_KEY))
+            myListing = (Listing)i.getSerializableExtra(ListingAdapter.LISTING_EDIT_INTENT_KEY);
 
         initialize();
         listeners();
@@ -127,6 +126,8 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
         saturdayCheckBox = (CheckBox) findViewById(R.id.saturdayCheckBox);
         sundayCheckBox = (CheckBox) findViewById(R.id.sundayCheckBox);
         timeButton = (Button) findViewById(R.id.timeButton);
+        fromTimeTextView = (TextView) findViewById(R.id.fromTimeTextView);
+        toTimeTextView = (TextView) findViewById(R.id.toTimeTextView);
 
         populate();
 
@@ -135,9 +136,7 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
 
     //Used to fill up info if editing a listing
     private void populate(){
-        if (myListing == null) {
-            Debug.printToast("Listing is null", getApplicationContext());
-        } else {
+        if (myListing != null) {
             Debug.printToast("Listing will be populated!", getApplicationContext());
             listingTitle = myListing.getListingTitle();
             location = myListing.getLocation();
@@ -154,6 +153,10 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
             isFriday = myListing.isFriday();
             isSaturday = myListing.isSaturday();
             isSunday = myListing.isSunday();
+            fromHourString = myListing.getFromHourString();
+            fromMinuteString = myListing.getFromMinuteString();
+            toHourString = myListing.getToHourString();
+            toMinuteString = myListing.getToMinuteString();
 
             listingTitleEditText.setText(listingTitle);
             locationTextView.setText(location);
@@ -171,7 +174,11 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
             fridayCheckBox.setChecked(isFriday);
             saturdayCheckBox.setChecked(isSaturday);
             sundayCheckBox.setChecked(isSunday);
+            fromTimeTextView.setText(fromHourString + ":" + fromHourString);
+            toTimeTextView.setText(toHourString + ":" + toMinuteString);
         }
+        else
+            myListing = new Listing();
     }
 
     private void listeners(){
