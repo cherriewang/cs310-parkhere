@@ -671,18 +671,20 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
                 @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if(count != 0) {
-                        if(s.charAt(0) != '-'){
-                            latitude = Float.parseFloat(s.toString());
-                        }
-                        else if(count >= 2)
-                            latitude = Float.parseFloat(s.toString().substring(1))*-1;
-                    }
-                }
+                public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
                 @Override
-                public void afterTextChanged(Editable s) {}
+                public void afterTextChanged(Editable s) {
+                    String latitudeString = s.toString();
+                    if(latitudeString.charAt(0) == '-'){
+                        if(latitudeString.length() > 1) {
+                            latitude = Float.parseFloat(latitudeString.substring(1));
+                            latitude *= -1;
+                        }
+                    }
+                    else
+                        latitude = Float.parseFloat(latitudeString);
+                }
             });
             EditText longitudeEditText = (EditText)view.findViewById(R.id.longitudeEditText);
             longitudeEditText.addTextChangedListener(new TextWatcher() {
@@ -690,18 +692,20 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
                 @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if(count != 0) {
-                        if(s.charAt(0) != '-'){
-                            longitude = Float.parseFloat(s.toString());
-                        }
-                        else if(count >= 2)
-                            longitude = Float.parseFloat(s.toString().substring(1))*-1;
-                    }
-                }
+                public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
                 @Override
-                public void afterTextChanged(Editable s) {}
+                public void afterTextChanged(Editable s) {
+                    String longitudeString = s.toString();
+                    if(longitudeString.charAt(0) == '-'){
+                        if(longitudeString.length() > 1) {
+                            longitude = Float.parseFloat(longitudeString.substring(1));
+                            longitude *= -1;
+                        }
+                    }
+                    else
+                        longitude = Float.parseFloat(longitudeString);
+                }
             });
         }
     }
