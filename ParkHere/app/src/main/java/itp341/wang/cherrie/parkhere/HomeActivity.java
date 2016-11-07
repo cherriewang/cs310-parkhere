@@ -59,8 +59,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.SphericalUtil;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -136,6 +139,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private MaterialDialog searchDialog;
 
     private Location mLastLocation;
+
+    private DatabaseReference refListings;
+    private ArrayList<Listing> allListingsInFireBase = new ArrayList<>();
+    private ArrayList<Listing> allListingsToDisplay = new ArrayList<>();
+    private HashMap<Marker, Listing> markerListingHashmap = new HashMap<>();
 
     private int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private int CREATE_LISTING_REQUEST_CODE = 2;
@@ -292,6 +300,23 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapFragment);
         mapFragment.getMapAsync(this);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+        DatabaseReference refListings = myRef.child("listings");
+        refListings.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                allListingsInFireBase.clear();
+                for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                    Listing listing = postSnapshot.getValue(Listing.class);
+                    allListingsInFireBase.add(listing);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
     }
 
     private void showLocationDialog() {
@@ -345,10 +370,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         enableMyLocation();
     }
 
-    private void addListingMarker(LatLng latLng, String listingTitle){
+    private Marker addListingMarker(LatLng latLng, String listingTitle){
         //Instead of title, put price for marker title
-        mMap.addMarker(new MarkerOptions().position(latLng).title(listingTitle)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+        return mMap.addMarker(new MarkerOptions().position(latLng).title(listingTitle)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
     }
 
     private void addSearchMarker(LatLng latLng, String listingTitle){
@@ -367,6 +392,38 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(currentPosition));
         mMap.animateCamera(CameraUpdateFactory.scrollBy(-100,-50));
+
+        populateListings(latLng);
+    }
+
+    private void populateListings(LatLng searchMarker){
+        //clear everything and populate
+        allListingsToDisplay.clear();
+        for(Marker marker : markerListingHashmap.keySet())
+            marker.remove();
+        markerListingHashmap.clear();
+
+        Location searchLocation = new Location("Search marker");
+        searchLocation.setLatitude(searchMarker.latitude);
+        searchLocation.setLongitude(searchMarker.longitude);
+
+        for(Listing listing : allListingsInFireBase){
+            Location listingLocation = new Location("Listing Location");
+            listingLocation.setLatitude(listing.getLatitude());
+            listingLocation.setLongitude(listing.getLongitude());
+
+            float distance = searchLocation.distanceTo(listingLocation);
+
+            //Returned results must be less than three miles
+            if(distance <= (1609.34*3))
+                allListingsToDisplay.add(listing);
+        }
+
+        for(Listing listing : allListingsToDisplay){
+            LatLng listingLatLng = new LatLng(listing.getLatitude(), listing.getLongitude());
+            Marker listingMarker = addListingMarker(listingLatLng, listing.getListingTitle());
+            markerListingHashmap.put(listingMarker, listing);
+        }
     }
 
     @Override
@@ -728,6 +785,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (requestCode == CREATE_LISTING_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Debug.printToast("Added listing!", getApplicationContext());
+                setNavDrawerToHome();
             }
         }
     }
