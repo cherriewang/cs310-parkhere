@@ -341,6 +341,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(defaultPosition));
         mMap.getUiSettings().setIndoorLevelPickerEnabled(false);
+        mMap.setPadding(0, 180, 0, 0);
         enableMyLocation();
     }
 
