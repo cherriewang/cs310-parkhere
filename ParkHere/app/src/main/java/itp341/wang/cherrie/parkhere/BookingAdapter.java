@@ -19,6 +19,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 import java.util.ArrayList;
 
 import itp341.wang.cherrie.parkhere.model.Booking;
+import itp341.wang.cherrie.parkhere.model.Listing;
 
 /**
  * Created by Glarence Zhao on 11/2/2016.
@@ -27,6 +28,8 @@ import itp341.wang.cherrie.parkhere.model.Booking;
 public class BookingAdapter extends ArrayAdapter<Booking>{
 
     private final LayoutInflater mLayoutInflater;
+
+    public static final String BOOKING_REVIEW_INTENT_KEY = "Sending listing for user to review";
 
     public BookingAdapter(Context context, int resource, ArrayList<Booking> objects){
         super(context, resource, objects);
@@ -45,7 +48,7 @@ public class BookingAdapter extends ArrayAdapter<Booking>{
             BlurLayout bookingBlurLayout = (BlurLayout) row.findViewById(R.id.bookingBlurLayout);
             View hover = LayoutInflater.from(getContext()).inflate(R.layout.hover_booking_layout, null);
             setHoverIcons(hover);
-            listeners(hover);
+            listeners(hover, position);
             bookingBlurLayout.setHoverView(hover);
             holder = new ResultsViewHolder(row);
             bookingBlurLayout.setBlurDuration(100);
@@ -83,14 +86,15 @@ public class BookingAdapter extends ArrayAdapter<Booking>{
         }
     }
 
-    private void listeners(View v){
+    private void listeners(View v, final int position){
         v.findViewById(R.id.listingDetail).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 YoYo.with(Techniques.Wobble).duration(200).playOn(view);
                 Intent i = new Intent(getContext(), ListingDetailActivity.class)
                         .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                //pass listing details
+                Listing listingToDetail = getItem(position).getOwner();
+                i.putExtra(ListingAdapter.LISTING_DETAIL_INTENT_KEY, listingToDetail);
                 getContext().startActivity(i);
             }
         });
@@ -100,7 +104,8 @@ public class BookingAdapter extends ArrayAdapter<Booking>{
                 YoYo.with(Techniques.Wobble).duration(200).playOn(view);
                 Intent i = new Intent(getContext(), RateReviewActivity.class)
                         .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                //pass listing to review
+                Listing listingToReview = getItem(position).getOwner();
+                i.putExtra(BOOKING_REVIEW_INTENT_KEY, listingToReview);
                 getContext().startActivity(i);
             }
         });

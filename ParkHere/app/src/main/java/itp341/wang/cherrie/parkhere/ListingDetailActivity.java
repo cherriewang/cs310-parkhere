@@ -92,6 +92,7 @@ public class ListingDetailActivity extends AppCompatActivity{
         paymentMethodTextView = (TextView)findViewById(R.id.paymentMethodTextView);
         totalPriceTextView = (TextView)findViewById(R.id.totalPriceTextView);
         confirmBookingButton = (Button)findViewById(R.id.confirmBookingButton);
+        confirmBookingButton.setEnabled(false);
         listingRatingBar = (MaterialRatingBar)findViewById(R.id.listingRatingBar);
         ownerRatingBar = (MaterialRatingBar)findViewById(R.id.ownerRatingBar);
         reviewProfPicView = (SimpleDraweeView)findViewById(R.id.reviewProfPicView);
