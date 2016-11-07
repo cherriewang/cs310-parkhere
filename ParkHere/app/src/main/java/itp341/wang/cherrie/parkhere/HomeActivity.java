@@ -354,8 +354,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void addSearchMarker(LatLng latLng, String listingTitle){
         mMap.clear();
         mMap.addMarker(new MarkerOptions().position(latLng).title(listingTitle)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
-
+                .icon(BitmapDescriptorFactory.fromBitmap(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_map_pin).
+                        sizeDp(30).color(getResources().getColor(R.color.colorAccent)).toBitmap())));
         //Update to search marker
         CameraPosition currentPosition = new CameraPosition.Builder()
                 //.target(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()))
