@@ -1,7 +1,9 @@
 package itp341.wang.cherrie.parkhere;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,10 +11,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
+
+import itp341.wang.cherrie.parkhere.model.Card;
+import itp341.wang.cherrie.parkhere.model.User;
 
 public class SettingsActivity extends AppCompatActivity {
     private Button logoutButton;
@@ -22,6 +30,9 @@ public class SettingsActivity extends AppCompatActivity {
     private TextView savedWork;
     private EditText homeEditText;
     private EditText workEditText;
+    private User myUser;
+    private Card myCard;
+    private double amountDue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +52,7 @@ public class SettingsActivity extends AppCompatActivity {
         // TODO: set listeners for EditText to update the TextViews
         listeners();
 
+        myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
     }
 
     private void listeners(){
@@ -91,6 +103,68 @@ public class SettingsActivity extends AppCompatActivity {
         super.onBackPressed();
 
         HomeActivity.setNavDrawerToHome();
+    }
+
+    private void notSeekerDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this, R.style.MyDialogTheme);
+        builder.setTitle(getString(R.string.dialog_title_payment));
+        builder.setMessage(getString(R.string.dialog_message_payment));
+
+        String positiveText = getString(android.R.string.ok);
+        builder.setPositiveButton(positiveText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // get the balance due from transaction tracker under username
+
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference myRef = database.getReference();
+                        // update the accountBalance of person to be paid
+                        // reset firebase with new users
+                        // delete transaction on transaction tracker
+                        Debug.printToast("Your pending payments have been authorized", getApplicationContext());
+                        myRef.child("transaction-tracker").child(myUser.getmNormalizedEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                // Get user information
+                                myCard  = dataSnapshot.getValue(Card.class);
+                                amountDue = myCard.getBalance();
+                                System.out.println(myCard.getBalance());
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                            }
+                        });
+                        myRef.child("users").child(myCard.getListingOwner()).child("accountBalance").setValue(amountDue);
+//                        myRef.child("users").child(myCard.getListingOwner).addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(DataSnapshot dataSnapshot) {
+//                                // Get user information
+//                                myCard  = dataSnapshot.getValue(Card.class);
+//                                amountDue = myCard.getBalance();
+//                                System.out.println(myCard.getBalance());
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(DatabaseError databaseError) {
+//                            }
+//                        });
+                    }
+                });
+
+        String negativeText = getString(android.R.string.cancel);
+        builder.setNegativeButton(negativeText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // negative button logic
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        // display dialog
+        dialog.show();
     }
 
 }

@@ -86,4 +86,8 @@
     <string name="menu_advanced_string">Advanced</string>
     <string name="menu_filters_string">Filters</string>
     <string name="menu_latlong_string">LatLong Search</string>
+
+    <!-- Settings strings-->
+    <string name="dialog_title_payment">Authorize Payment</string>
+    <string name="dialog_message_payment">Are you sure you would like to authorize your pending payments to go through?</string>
 </resources>

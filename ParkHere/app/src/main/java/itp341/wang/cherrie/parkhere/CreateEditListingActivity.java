@@ -254,7 +254,7 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
 
                     // CREATE LISTING OBJECT
                     myListing.setListingTitle(listingTitle);
-                    myListing.setListingOwner(myUser.getmFirstName()); // should have a global user here
+                    myListing.setListingOwner(myUser.getmNormalizedEmail()); // should have a global user here
                     //Setting user object for owner
                     //myListing.setOwner(myUser);
                     myListing.setLocation(location);
