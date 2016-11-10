@@ -5,6 +5,7 @@ import android.util.Base64;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -29,8 +30,8 @@ public class User implements Serializable {
 
     private boolean isOwner;
     private boolean isSeeker;
-    private List<Booking> mBookings;
-    private List<Listing> mListings;
+    private HashMap<String, Booking> mBookings;
+    private HashMap<String, Listing> mListings;
     private float rating;
     private int numRatings;
     private double accountBalance;
@@ -75,9 +76,9 @@ public class User implements Serializable {
         return isSeeker;
     }
 
-    public List<Booking> getmBookings() { return mBookings; }
+    public HashMap<String, Booking> getmBookings() { return mBookings; }
 
-    public List<Listing> getmListings() { return mListings; }
+    public HashMap<String, Listing> getmListings() { return mListings; }
 
     public double getAccountBalance() {
         return accountBalance;
@@ -118,30 +119,30 @@ public class User implements Serializable {
         isSeeker = seeker;
     }
 
-    public void appendListing(Listing l) {
+    /*public void appendListing(Listing l) {
         if (mListings == null) {
             mListings = new ArrayList<Listing>();
         }
 
         mListings.add(l);
-    }
+    }*/
 
-    public void appendBooking(Booking b) {
+    /*public void appendBooking(Booking b) {
         if (mBookings == null) {
             mBookings = new ArrayList<Booking>();
         }
 
         mBookings.add(b);
-    }
+    }*/
 
     public void removeListing(Listing l) {
         if(mListings != null)
-            mListings.remove(l);
+            mListings.remove(l.getListingTitle());
     }
 
     public void removeBooking(Booking b) {
         if (mBookings != null)
-            mBookings.remove(b);
+            mBookings.remove(b.getBookingTitle());
     }
 
     public void setAccountBalance(double accountBalance) {
@@ -152,7 +153,8 @@ public class User implements Serializable {
         float sum = 0;
         float numReviews = 0;
         if(mListings != null){
-            for(Listing listing : mListings){
+            List<Listing> listings = (List) mListings.values();
+            for(Listing listing : listings){
                 if(listing.getReviews() == null) {
                     sum += 0;
                     numReviews += 0;
