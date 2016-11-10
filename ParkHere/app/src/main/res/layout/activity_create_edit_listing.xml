@@ -229,6 +229,46 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="12dp"/>
 
+             <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_horizontal">
+                 <TextView
+                     android:id="@+id/cancellationTextView"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginStart="20dp"
+                     android:layout_marginEnd="16dp"
+                     android:textSize="18sp"
+                     android:text="Select Cancellation Policy"
+                     android:layout_marginTop="12dp"
+                     android:layout_marginBottom="12dp"/>
+                 <Spinner
+                     android:id="@+id/spinnerCancellation"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_marginStart="16dp"
+                     android:layout_marginEnd="16dp"
+                     android:textSize="18sp"
+                     android:layout_marginTop="12dp"
+                     android:layout_marginBottom="12dp"
+                     android:entries = "@array/policies"></Spinner>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/cancelDetailsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="16dp"
+                android:textSize="12sp"
+                android:text="Cancellation Policy Details"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"/>
+
             <com.blackcat.currencyedittext.CurrencyEditText
                 android:id="@+id/priceEditText"
                 android:layout_width="match_parent"
