@@ -27,7 +27,8 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    //Stripe API
+    //Firebase
+    //App compat
     //Credit card UI
     //Low memory image loading
     //Category tags UI
@@ -40,6 +41,10 @@ dependencies {
     //Floating Search Bar
     //Material Design Dialog
     //Google Places
+    //Android Map Utils
+    //JUnit
+    //Espresso
+    //Play services
     compile('com.mikepenz:materialdrawer:5.7.0@aar') {
         transitive = true
     }
@@ -48,7 +53,6 @@ dependencies {
     compile 'com.google.firebase:firebase-database:9.6.0'
     compile 'com.google.firebase:firebase-auth:9.6.0'
     compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.stripe:stripe-android:+'
     compile 'com.github.cooltechworks:CreditCardView:v1.0.2'
     compile 'com.facebook.fresco:fresco:0.14.1'
     compile 'com.github.Cutta:TagView:1.3'

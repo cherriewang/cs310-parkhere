@@ -83,6 +83,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -120,10 +121,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private String fromMinuteString = "";
     private String toHourString = "";
     private String toMinuteString = "";
-    private boolean isCovered = false;
-    private boolean isSUV = false;
-    private boolean isHandicapped = false;
-    private boolean isTandem = false;
+    //Filter parking spot booleans
+    private boolean searchCovered = false;
+    private boolean searchSUV = false;
+    private boolean searchHandicapped = false;
+    private boolean searchTandem = false;
     //Filter dialog variables
     private long fromPriceRange = 0;
     private long toPriceRange = 0;
@@ -139,6 +141,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private MaterialDialog searchDialog;
 
     private Location mLastLocation;
+    private LatLng searchLatLng;
 
     private final float THREE_MILES = (float)4828.03;
 
@@ -436,17 +439,31 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         populateListings(latLng);
     }
 
-    private void populateListings(LatLng searchMarker){
+    private void clearMarkers(){
         //clear everything and populate
         allListingsToDisplay.clear();
         for(Marker marker : markerListingHashmap.keySet())
             marker.remove();
         markerListingHashmap.clear();
+    }
+
+    private void addMarkers(){
+        //add markers
+        for(Listing listing : allListingsToDisplay){
+            LatLng listingLatLng = new LatLng(listing.getLatitude(), listing.getLongitude());
+            Marker listingMarker = addListingMarker(listingLatLng, listing.getListingTitle());
+            markerListingHashmap.put(listingMarker, listing);
+        }
+    }
+
+    private void populateListings(LatLng searchMarker){
+        clearMarkers();
 
         Location searchLocation = new Location("Search marker");
         searchLocation.setLatitude(searchMarker.latitude);
         searchLocation.setLongitude(searchMarker.longitude);
 
+        //find listings to display
         for(Listing listing : allListingsInFireBase){
             Location listingLocation = new Location("Listing Location");
             listingLocation.setLatitude(listing.getLatitude());
@@ -455,14 +472,45 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             float distance = searchLocation.distanceTo(listingLocation);
 
             //Returned results must be less than three miles
-            if(distance <= THREE_MILES)
+            if(distance <= THREE_MILES) {
                 allListingsToDisplay.add(listing);
+            }
         }
 
-        for(Listing listing : allListingsToDisplay){
-            LatLng listingLatLng = new LatLng(listing.getLatitude(), listing.getLongitude());
-            Marker listingMarker = addListingMarker(listingLatLng, listing.getListingTitle());
-            markerListingHashmap.put(listingMarker, listing);
+        advancedSearch();
+
+        addMarkers();
+    }
+
+    private void advancedSearch(){
+        for(Iterator<Listing> iterator = allListingsToDisplay.iterator(); iterator.hasNext();){
+            Listing listingToCheck = iterator.next();
+
+            //Parking spot types check
+            if(searchSUV){
+                if(!listingToCheck.isSuv()) {
+                    iterator.remove();
+                    continue;
+                }
+            }
+            if(searchTandem){
+                if(!listingToCheck.isTandem()) {
+                    iterator.remove();
+                    continue;
+                }
+            }
+            if(searchCovered){
+                if(!listingToCheck.isCovered()) {
+                    iterator.remove();
+                    continue;
+                }
+            }
+            if(searchHandicapped){
+                if(!listingToCheck.isHandicapped()) {
+                    iterator.remove();
+                    continue;
+                }
+            }
         }
     }
 
@@ -572,10 +620,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                     + " to " + toMonthOfYear + "/" + toDayOfMonth + "/" + toYear , getApplicationContext());
                             Debug.printToast("From " + fromHourString + ":" + fromMinuteString
                             + " to " + toHourString + ":" + toMinuteString, getApplicationContext());
-                            Debug.printToast("Is covered? " + isCovered, getApplicationContext());
-                            Debug.printToast("Is SUV? " + isSUV, getApplicationContext());
-                            Debug.printToast("Is tandem? " + isTandem, getApplicationContext());
-                            Debug.printToast("Is handicapped? " + isHandicapped, getApplicationContext());
+
+                            populateListings(searchLatLng);
                         }
                     }).show();
                     dialogListeners(id);
@@ -601,7 +647,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 wrapInScrollView).positiveText("Search").onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                addSearchMarker(new LatLng(latitude, longitude), "Lat Long Search");
+                                searchLatLng = new LatLng(latitude, longitude);
+                                addSearchMarker(searchLatLng, "Lat Long Search");
                                 Debug.printToast("Latitude is " + latitude, getApplicationContext());
                                 Debug.printToast("Longitude is " + longitude, getApplicationContext());
                             }
@@ -689,31 +736,35 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             });
             CheckBox coveredCheckBox = (CheckBox)view.findViewById(R.id.coveredCheckBox);
+            coveredCheckBox.setChecked(searchCovered);
             coveredCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    isCovered = isChecked;
+                    searchCovered = isChecked;
                 }
             });
             CheckBox suvCheckBox = (CheckBox)view.findViewById(R.id.suvCheckBox);
+            suvCheckBox.setChecked(searchSUV);
             suvCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    isSUV = isChecked;
+                    searchSUV = isChecked;
                 }
             });
             CheckBox handicappedCheckBox = (CheckBox)view.findViewById(R.id.handicappedCheckBox);
+            handicappedCheckBox.setChecked(searchHandicapped);
             handicappedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    isHandicapped = isChecked;
+                    searchHandicapped = isChecked;
                 }
             });
             CheckBox tandemCheckBox = (CheckBox)view.findViewById(R.id.tandemCheckBox);
+            tandemCheckBox.setChecked(searchTandem);
             tandemCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    isTandem = isChecked;
+                    searchTandem = isChecked;
                 }
             });
         }
@@ -831,7 +882,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
-                addSearchMarker(place.getLatLng(), place.getName().toString());
+                searchLatLng = place.getLatLng();
+                addSearchMarker(searchLatLng, place.getName().toString());
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
             } else if (resultCode == RESULT_CANCELED) {
