@@ -70,6 +70,7 @@ dependencies {
     compile 'com.borax12.materialdaterangepicker:library:1.9'
     compile 'com.google.android.gms:play-services-places:9.6.0'
     compile 'com.google.maps.android:android-maps-utils:0.3+'
+    testCompile 'junit:junit:4.10'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     compile 'com.google.android.gms:play-services-appindexing:9.6.0'
 }
