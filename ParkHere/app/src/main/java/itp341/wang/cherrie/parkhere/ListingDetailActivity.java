@@ -153,7 +153,7 @@ public class ListingDetailActivity extends AppCompatActivity{
 
     private void BookListing() {
         Booking b = new Booking(myListing);
-        myUser.appendBooking(b);
+        //myUser.appendBooking(b);
 
         Card c = new Card();
         c.setBalance(myListing.getPrice());
