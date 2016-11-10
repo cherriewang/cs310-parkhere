@@ -215,10 +215,14 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             //Search
                             if(drawerItem.getIdentifier() == 1){
                                 try {
-                                    Intent intent =
-                                            new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                                                    .build(HomeActivity.this);
-                                    startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+                                    if(myUser.isSeeker()) {
+                                        Intent intent =
+                                                new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                                                        .build(HomeActivity.this);
+                                        startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+                                    } else {
+                                        notSeekerDialog();
+                                    }
                                 } catch (GooglePlayServicesRepairableException e) {
                                     // TODO: Handle the error.
                                 } catch (GooglePlayServicesNotAvailableException e) {
