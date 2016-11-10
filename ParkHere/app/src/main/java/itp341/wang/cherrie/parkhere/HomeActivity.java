@@ -140,6 +140,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private Location mLastLocation;
 
+    private final float THREE_MILES = (float)4828.03;
+
     private DatabaseReference refListings;
     private ArrayList<Listing> allListingsInFireBase = new ArrayList<>();
     private ArrayList<Listing> allListingsToDisplay = new ArrayList<>();
@@ -453,7 +455,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             float distance = searchLocation.distanceTo(listingLocation);
 
             //Returned results must be less than three miles
-            if(distance <= (1609.34*3))
+            if(distance <= THREE_MILES)
                 allListingsToDisplay.add(listing);
         }
 
