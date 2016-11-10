@@ -34,6 +34,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.blackcat.currencyedittext.CurrencyEditText;
+import com.borax12.materialdaterangepicker.date.DatePickerDialog;
 import com.borax12.materialdaterangepicker.time.RadialPickerLayout;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -80,8 +81,10 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -145,7 +148,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private final float THREE_MILES = (float)4828.03;
 
-    private DatabaseReference refListings;
     private ArrayList<Listing> allListingsInFireBase = new ArrayList<>();
     private ArrayList<Listing> allListingsToDisplay = new ArrayList<>();
     private HashMap<Marker, Listing> markerListingHashmap = new HashMap<>();
@@ -326,6 +328,28 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
+
+        initializeDateAndTime();
+    }
+
+    private void initializeDateAndTime(){
+        final Calendar c = Calendar.getInstance();
+
+        //Both today
+        fromYear = c.get(Calendar.YEAR);
+        fromMonthOfYear = c.get(Calendar.MONTH) + 1; //indexed from 0
+        Debug.printToast("Month integer is " + fromMonthOfYear, getApplicationContext());
+        fromDayOfMonth = c.get(Calendar.DAY_OF_MONTH);
+        toYear = fromYear;
+        toMonthOfYear = fromMonthOfYear;
+        toDayOfMonth = fromDayOfMonth;
+
+        //Default one hour apart
+        fromHourString = Integer.toString(c.get(Calendar.HOUR_OF_DAY));
+        fromMinuteString = Integer.toString(c.get(Calendar.MINUTE));
+        //account for 23 to 00
+        toHourString = Integer.toString(c.get(Calendar.HOUR_OF_DAY) + 1);
+        toMinuteString = fromMinuteString;
     }
 
     private void showLocationDialog() {
@@ -457,34 +481,38 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void populateListings(LatLng searchMarker){
-        clearMarkers();
+        if(searchMarker != null){
+            clearMarkers();
 
-        Location searchLocation = new Location("Search marker");
-        searchLocation.setLatitude(searchMarker.latitude);
-        searchLocation.setLongitude(searchMarker.longitude);
+            Location searchLocation = new Location("Search marker");
+            searchLocation.setLatitude(searchMarker.latitude);
+            searchLocation.setLongitude(searchMarker.longitude);
 
-        //find listings to display
-        for(Listing listing : allListingsInFireBase){
-            Location listingLocation = new Location("Listing Location");
-            listingLocation.setLatitude(listing.getLatitude());
-            listingLocation.setLongitude(listing.getLongitude());
+            //find listings to display
+            for(Listing listing : allListingsInFireBase){
+                Location listingLocation = new Location("Listing Location");
+                listingLocation.setLatitude(listing.getLatitude());
+                listingLocation.setLongitude(listing.getLongitude());
 
-            float distance = searchLocation.distanceTo(listingLocation);
+                float distance = searchLocation.distanceTo(listingLocation);
 
-            //Returned results must be less than three miles
-            if(distance <= THREE_MILES) {
-                allListingsToDisplay.add(listing);
+                //Returned results must be less than three miles
+                if(distance <= THREE_MILES) {
+                    allListingsToDisplay.add(listing);
+                }
             }
+
+            advancedSearch();
+
+            addMarkers();
         }
-
-        advancedSearch();
-
-        addMarkers();
     }
 
     private void advancedSearch(){
         for(Iterator<Listing> iterator = allListingsToDisplay.iterator(); iterator.hasNext();){
             Listing listingToCheck = iterator.next();
+
+            //Short term date and time check
 
             //Parking spot types check
             if(searchSUV){
@@ -616,11 +644,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             wrapInScrollView).positiveText("Set").onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            Debug.printToast("From " + fromMonthOfYear + "/" + fromDayOfMonth + "/" + fromYear
-                                    + " to " + toMonthOfYear + "/" + toDayOfMonth + "/" + toYear , getApplicationContext());
-                            Debug.printToast("From " + fromHourString + ":" + fromMinuteString
-                            + " to " + toHourString + ":" + toMinuteString, getApplicationContext());
-
                             populateListings(searchLatLng);
                         }
                     }).show();
@@ -705,6 +728,16 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void dialogListeners(int id){
         if(id == R.id.action_advanced){
             final View view = advancedDialog.getCustomView();
+            //populate time
+            TextView fromDateTextView = (TextView)view.findViewById(R.id.fromDateTextView);
+            fromDateTextView.setText(fromMonthOfYear + "/" + fromDayOfMonth + "/" + fromYear);
+            TextView toDateTextView = (TextView)view.findViewById(R.id.toDateTextView);
+            toDateTextView.setText(toMonthOfYear + "/" + toDayOfMonth + "/" + toYear);
+            TextView fromTimeTextView = (TextView)view.findViewById(R.id.fromTimeTextView);
+            fromTimeTextView.setText(fromHourString + ":" + fromMinuteString);
+            TextView toTimeTextView = (TextView)view.findViewById(R.id.toTimeTextView);
+            toTimeTextView.setText(toHourString + ":" + toMinuteString);
+
             Button selectDateButton = (Button)view.findViewById(R.id.dateButton);
             selectDateButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -732,6 +765,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             now.get(Calendar.MINUTE),
                             false
                     );
+                    timePickerDialog.setEndTime(Integer.parseInt(toHourString), Integer.parseInt(toMinuteString));
                     timePickerDialog.show(getFragmentManager(), "Select the Time");
                 }
             });

@@ -14,7 +14,7 @@
 
         <Button
             android:id="@+id/dateButton"
-            android:layout_width="130dp"
+            android:layout_width="115dp"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_button"
             android:textColor="@color/white"
@@ -22,20 +22,20 @@
 
         <TextView
             android:id="@+id/fromDateTextView"
-            android:layout_width="90dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="11/03/16"
+            android:text="11/03/2016"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_gravity="center_vertical"/>
 
         <TextView
             android:id="@+id/toDateTextView"
-            android:layout_width="90dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="11/03/16"
+            android:text="11/03/2016"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_gravity="center_vertical"/>
@@ -51,7 +51,7 @@
 
         <Button
             android:id="@+id/timeButton"
-            android:layout_width="130dp"
+            android:layout_width="115dp"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_button"
             android:textColor="@color/white"
@@ -59,7 +59,7 @@
 
         <TextView
             android:id="@+id/fromTimeTextView"
-            android:layout_width="90dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="11:59 PM"
@@ -69,7 +69,7 @@
 
         <TextView
             android:id="@+id/toTimeTextView"
-            android:layout_width="90dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="11:59 PM"
