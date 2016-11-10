@@ -1,5 +1,8 @@
 package itp341.wang.cherrie.parkhere;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import org.junit.Test;
 
 import itp341.wang.cherrie.parkhere.model.Booking;
@@ -96,22 +99,5 @@ public class ExampleUnitTest {
         listing.addReview(review3);
         assertEquals(listing.getLatestReview().getReviewText(), "third review");
     }
-
-    @Test
-    public void ListingToBookingPrice() throws Exception {
-        Listing listing = new Listing();
-        listing.setPrice(1.0);
-        Booking booking = new Booking(listing);
-        assertEquals(listing.getPrice(), 1.0, 0);
-    }
-
-    @Test
-    public void ListingToBookingTandem() throws Exception {
-        Listing listing = new Listing();
-        listing.setTandem(true);
-        Booking booking = new Booking(listing);
-        assertEquals(listing.isTandem(), true);
-    }
-
 }
 

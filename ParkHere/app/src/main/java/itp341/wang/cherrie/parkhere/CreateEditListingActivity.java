@@ -266,6 +266,7 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
                     //Setting Lat Lng for markers
                     myListing.setLatitude(latitude);
                     myListing.setLongitude(longitude);
+                    myUser.appendListing(myListing);
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference myRef = database.getReference();
