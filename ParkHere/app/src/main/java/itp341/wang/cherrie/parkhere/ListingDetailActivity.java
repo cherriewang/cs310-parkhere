@@ -192,7 +192,14 @@ public class ListingDetailActivity extends AppCompatActivity{
             reviewContentTextView.setText(latestReview.getReviewText());
         }
         availibilityTextView.setText("Yes");
-        cancellationTextView.setText(getResources().getString(R.string.cancellation_policy));
+
+        if(myListing.getCancellationPolicy() == 0){ // Strict
+            cancellationTextView.setText(getResources().getString(R.string.cancel_string_strict));
+        } else if (myListing.getCancellationPolicy() == 1){ // Moderate
+            cancellationTextView.setText(getResources().getString(R.string.cancel_string_moderate));
+        } else if (myListing.getCancellationPolicy() == 2) { // Flexible
+            cancellationTextView.setText(getResources().getString(R.string.cancel_string_flexible));
+        }
 
         //To display review user image, same code for listing detail image
         //Uri uri = Uri.parse("https://raw.githubusercontent.com/facebook/fresco/gh-pages/static/logo.png");

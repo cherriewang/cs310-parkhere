@@ -50,12 +50,14 @@ public class Card {
     public void setListingOwner(String listingOwner) {
         this.listingOwner = listingOwner;
     }
+
     public void setPayer(String payer) {
         this.payer = payer;
     }
     public void setBalance(double balance) {
         this.balance = balance;
     }
+
 
 
 }
