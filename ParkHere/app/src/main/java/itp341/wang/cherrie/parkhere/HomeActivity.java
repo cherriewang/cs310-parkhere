@@ -330,7 +330,40 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         myUser.setOwner(true);
-                        Debug.printToast("Signed up as owner", getApplicationContext());
+                        Debug.printToast("Signed up as Owner", getApplicationContext());
+
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference myRef = database.getReference();
+                        myRef.child("users").child(myUser.getmNormalizedEmail()).setValue(myUser);
+                    }
+                });
+
+        String negativeText = getString(android.R.string.cancel);
+        builder.setNegativeButton(negativeText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // negative button logic
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        // display dialog
+        dialog.show();
+    }
+
+    private void notSeekerDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this, R.style.MyDialogTheme);
+        builder.setTitle(getString(R.string.dialog_title_seeker));
+        builder.setMessage(getString(R.string.dialog_message_seeker));
+
+        String positiveText = getString(android.R.string.ok);
+        builder.setPositiveButton(positiveText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        myUser.setSeeker(true);
+                        Debug.printToast("Signed up as Seeker", getApplicationContext());
 
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference myRef = database.getReference();
@@ -556,15 +589,22 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     dialogListeners(id);
                 }
                 if(id == R.id.action_latlong_search){
-                    searchDialog = new MaterialDialog.Builder(HomeActivity.this).customView(R.layout.dialog_latlong_search_layout,
-                            wrapInScrollView).positiveText("Search").onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            addSearchMarker(new LatLng(latitude, longitude), "Lat Long Search");
-                            Debug.printToast("Latitude is " + latitude, getApplicationContext());
-                            Debug.printToast("Longitude is " + longitude, getApplicationContext());
-                        }
-                    }).show();
+
+                    if(myUser.isSeeker()){
+                        searchDialog = new MaterialDialog.Builder(HomeActivity.this).customView(R.layout.dialog_latlong_search_layout,
+                                wrapInScrollView).positiveText("Search").onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                addSearchMarker(new LatLng(latitude, longitude), "Lat Long Search");
+                                Debug.printToast("Latitude is " + latitude, getApplicationContext());
+                                Debug.printToast("Longitude is " + longitude, getApplicationContext());
+                            }
+                        }).show();
+                    } else {
+                        // Display a Dialog that asks if they would like to sign up as a Seeker
+                        notSeekerDialog();
+
+                    }
                     dialogListeners(id);
 
                 }
