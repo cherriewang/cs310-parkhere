@@ -5,6 +5,7 @@ import android.util.Base64;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -119,21 +120,21 @@ public class User implements Serializable {
         isSeeker = seeker;
     }
 
-    /*public void appendListing(Listing l) {
+    public void appendListing(Listing l) {
         if (mListings == null) {
-            mListings = new ArrayList<Listing>();
+            mListings = new HashMap<>();
         }
 
-        mListings.add(l);
-    }*/
+        mListings.put(l.getListingTitle(), l);
+    }
 
-    /*public void appendBooking(Booking b) {
+    public void appendBooking(Booking b) {
         if (mBookings == null) {
-            mBookings = new ArrayList<Booking>();
+            mBookings = new HashMap<>();
         }
 
-        mBookings.add(b);
-    }*/
+        mBookings.put(b.getBookingTitle(), b);
+    }
 
     public void removeListing(Listing l) {
         if(mListings != null)
@@ -153,7 +154,7 @@ public class User implements Serializable {
         float sum = 0;
         float numReviews = 0;
         if(mListings != null){
-            List<Listing> listings = (List) mListings.values();
+            Collection<Listing> listings =  mListings.values();
             for(Listing listing : listings){
                 if(listing.getReviews() == null) {
                     sum += 0;
@@ -169,7 +170,7 @@ public class User implements Serializable {
         }
 
         if(numReviews != 0)
-            return sum / (float)numReviews;
+            return (float)sum / (float)numReviews;
         else
             return 0;
     }

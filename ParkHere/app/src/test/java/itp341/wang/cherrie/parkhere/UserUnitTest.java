@@ -22,6 +22,7 @@ public class UserUnitTest {
         User user = new User();
         Booking booking1 = new Booking(new Listing());
         Booking booking2 = new Booking(new Listing());
+        booking2.setBookingTitle("Title");
         user.appendBooking(booking1);
         user.appendBooking(booking2);
         assertEquals(user.getmBookings().size(), 2);
@@ -32,6 +33,7 @@ public class UserUnitTest {
         User user = new User();
         Listing listing1 = new Listing();
         Listing listing2 = new Listing();
+        listing1.setListingTitle("title");
         user.appendListing(listing1);
         user.appendListing(listing2);
         assertEquals(user.getmListings().size(), 2);
@@ -65,6 +67,7 @@ public class UserUnitTest {
     public void AvgRatingCorrect2() throws Exception {
         User user = new User();
         Listing listing1 = new Listing();
+        listing1.setListingTitle("title");
         Review review1 = new Review();
         review1.setOwnerRating(5);
         Listing listing2 = new Listing();
