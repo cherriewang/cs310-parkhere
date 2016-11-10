@@ -189,7 +189,7 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
             fridayCheckBox.setChecked(isFriday);
             saturdayCheckBox.setChecked(isSaturday);
             sundayCheckBox.setChecked(isSunday);
-            fromTimeTextView.setText(fromHourString + ":" + fromHourString);
+            fromTimeTextView.setText(fromHourString + ":" + fromMinuteString);
             toTimeTextView.setText(toHourString + ":" + toMinuteString);
         }
         else
