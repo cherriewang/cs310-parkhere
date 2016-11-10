@@ -45,6 +45,9 @@
     <string name="location_hint_string">Location</string>
     <string name="about_hint_string">About</string>
     <string name="create_button_string">Create</string>
+    <string name="cancel_string_moderate">For a full refund of associated fees, cancellation must be made a full 5 days prior to listing’s local start time (or 3:00 PM if not specified) on the start time of reserved day. If the Seeker cancels less than 5 days before the start time, the costs are non-refundable.</string>
+    <string name="cancel_string_flexible">For a full refund of associated fees, cancellation must be made a full 24 hours prior to listing’s local start time (or 3:00 PM if not specified) on the start time of reserved day. If the Seeker cancels less than 24 hours before the start time, the costs are non-refundable.</string>
+    <string name="cancel_string_strict">For a full refund of associated fees, cancellation must be made a full 7 days prior to listing’s local start time (or 3:00 PM if not specified) on the start time of reserved day. If the Seeker cancels less than 7 days before the start time, the costs are non-refundable.</string>
 
     <!--RateReview strings-->
     <string name="review_hint_string">Please leave a review about your parking experience. Please note that your review will be moderated and published publicly for other users to see.</string>
@@ -75,7 +78,9 @@
     <string name="help_drawer_item_string">Help</string>
     <string name="title_activity_maps">Map</string>
     <string name="dialog_title">Warning: You are not registered as an Owner</string>
+    <string name="dialog_title_seeker">Warning: You are not registered as an Seeker</string>
     <string name="dialog_message">Only registered Owners can create listings. Would you like to sign up as an Owner?</string>
+    <string name="dialog_message_seeker">Only registered Seekers can search and make bookings. Would you like to sign up as an Seekers?</string>
 
     <!--Floating Search Bar strings-->
     <string name="menu_advanced_string">Advanced</string>

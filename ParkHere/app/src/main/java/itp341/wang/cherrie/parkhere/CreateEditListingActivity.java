@@ -10,10 +10,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.blackcat.currencyedittext.CurrencyEditText;
@@ -27,6 +29,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity;
 import com.nguyenhoanglam.imagepicker.model.Image;
+
+import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -61,6 +65,8 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
     private Button timeButton;
     private TextView fromTimeTextView;
     private TextView toTimeTextView;
+    private TextView policyTextView;
+    private Spinner spinner;
 
     private String listingTitle = "";
     private String location = "";
@@ -81,9 +87,12 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
     private String fromMinuteString = "";
     private String toHourString = "";
     private String toMinuteString = "";
+    private int cancellationTracker = 0;
 
     private double latitude = 0;
     private double longitude = 0;
+
+    private boolean isEditing = false;
 
     private User myUser;
 
@@ -98,8 +107,10 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
         setContentView(R.layout.activity_create_edit_listing);
 
         Intent i = getIntent();
-        if(i.hasExtra(ListingAdapter.LISTING_EDIT_INTENT_KEY))
-            myListing = (Listing)i.getSerializableExtra(ListingAdapter.LISTING_EDIT_INTENT_KEY);
+        if(i.hasExtra(ListingAdapter.LISTING_EDIT_INTENT_KEY)) {
+            myListing = (Listing) i.getSerializableExtra(ListingAdapter.LISTING_EDIT_INTENT_KEY);
+            isEditing = true;
+        }
 
         initialize();
         listeners();
@@ -118,6 +129,8 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
         aboutEditText = (EditText) findViewById(R.id.aboutEditText);
         priceEditText = (CurrencyEditText) findViewById(R.id.priceEditText);
         createListingButton = (Button) findViewById(R.id.createListingButton);
+        if(isEditing)
+            createListingButton.setText("Edit");
         mondayCheckBox = (CheckBox) findViewById(R.id.mondayCheckBox);
         tuesdayCheckBox = (CheckBox) findViewById(R.id.tuesdayCheckBox);
         wednesdayCheckBox = (CheckBox) findViewById(R.id.wednesdayCheckBox);
@@ -128,6 +141,8 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
         timeButton = (Button) findViewById(R.id.timeButton);
         fromTimeTextView = (TextView) findViewById(R.id.fromTimeTextView);
         toTimeTextView = (TextView) findViewById(R.id.toTimeTextView);
+        spinner = (Spinner) findViewById(R.id.spinnerCancellation);
+        policyTextView = (TextView) findViewById(R.id.cancelDetailsTextView);
 
         populate();
 
@@ -267,6 +282,7 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
                     myListing.setLatitude(latitude);
                     myListing.setLongitude(longitude);
                     myUser.appendListing(myListing);
+                    myListing.setCancellationPolicy(cancellationTracker);
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference myRef = database.getReference();
@@ -307,6 +323,37 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
             }
         });
         aboutEditText.addTextChangedListener(new EditTextListener(aboutEditText.getId()));
+
+
+        // Change listener for the Spinner deciding how things get split
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                switch (position) {
+                    case 0:
+                        cancellationTracker = 0;
+                        // change text to Strict
+                        policyTextView.setText(getResources().getString(R.string.cancel_string_strict));
+                        break;
+                    case 1:
+                        cancellationTracker = 1;
+                        // change text to Moderate
+                        policyTextView.setText(getResources().getString(R.string.cancel_string_moderate));
+                        break;
+                    case 2:
+                        cancellationTracker = 2;
+                        // change text ot Flexible
+                        policyTextView.setText(getResources().getString(R.string.cancel_string_flexible));
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // sometimes you need nothing here
+            }
+        });
     }
 
     @Override

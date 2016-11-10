@@ -44,6 +44,9 @@ public class Listing implements Serializable{
     private double Latitude;
     private double Longitude;
 
+    // cancellation
+    private int cancellationPolicy;
+
     private List<Review> reviews;
 
     public User getOwner() { return owner; }
@@ -136,6 +139,10 @@ public class Listing implements Serializable{
         return price;
     }
 
+    public int getCancellationPolicy() {
+        return cancellationPolicy;
+    }
+
     public List<Review> getReviews() { return reviews; }
 
     public void setOwner(User owner) { this.owner = owner; }
@@ -210,6 +217,10 @@ public class Listing implements Serializable{
 
     public void setFromMinuteString(String fromMinuteString) {
         this.fromMinuteString = fromMinuteString;
+    }
+
+    public void setCancellationPolicy(int cancellationPolicy) {
+        this.cancellationPolicy = cancellationPolicy;
     }
 
     public void setToHourString(String toHourString) {

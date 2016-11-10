@@ -151,16 +151,18 @@ public class User implements Serializable {
     public float getAverageRating() {
         float sum = 0;
         float numReviews = 0;
-        for(Listing listing : mListings){
-            if(listing.getReviews() == null) {
-                sum += 0;
-                numReviews += 0;
-            }
-            else{
-                for (Review r : listing.getReviews()) {
-                    sum += r.getOwnerRating();
+        if(mListings != null){
+            for(Listing listing : mListings){
+                if(listing.getReviews() == null) {
+                    sum += 0;
+                    numReviews += 0;
                 }
-                numReviews += listing.getReviews().size();
+                else{
+                    for (Review r : listing.getReviews()) {
+                        sum += r.getOwnerRating();
+                    }
+                    numReviews += listing.getReviews().size();
+                }
             }
         }
 
