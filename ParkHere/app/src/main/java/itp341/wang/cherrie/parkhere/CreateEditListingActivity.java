@@ -85,6 +85,8 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
     private double latitude = 0;
     private double longitude = 0;
 
+    private boolean isEditing = false;
+
     private User myUser;
 
     private Listing myListing;
@@ -98,8 +100,10 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
         setContentView(R.layout.activity_create_edit_listing);
 
         Intent i = getIntent();
-        if(i.hasExtra(ListingAdapter.LISTING_EDIT_INTENT_KEY))
-            myListing = (Listing)i.getSerializableExtra(ListingAdapter.LISTING_EDIT_INTENT_KEY);
+        if(i.hasExtra(ListingAdapter.LISTING_EDIT_INTENT_KEY)) {
+            myListing = (Listing) i.getSerializableExtra(ListingAdapter.LISTING_EDIT_INTENT_KEY);
+            isEditing = true;
+        }
 
         initialize();
         listeners();
@@ -118,6 +122,8 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
         aboutEditText = (EditText) findViewById(R.id.aboutEditText);
         priceEditText = (CurrencyEditText) findViewById(R.id.priceEditText);
         createListingButton = (Button) findViewById(R.id.createListingButton);
+        if(isEditing)
+            createListingButton.setText("Edit");
         mondayCheckBox = (CheckBox) findViewById(R.id.mondayCheckBox);
         tuesdayCheckBox = (CheckBox) findViewById(R.id.tuesdayCheckBox);
         wednesdayCheckBox = (CheckBox) findViewById(R.id.wednesdayCheckBox);
