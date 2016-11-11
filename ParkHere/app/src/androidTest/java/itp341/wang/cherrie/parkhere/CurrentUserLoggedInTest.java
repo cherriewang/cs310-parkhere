@@ -28,10 +28,13 @@ import static android.support.test.espresso.contrib.RecyclerViewActions.actionOn
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
+import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
@@ -84,7 +87,9 @@ public class CurrentUserLoggedInTest {
 //        recyclerView.perform(actionOnItemAtPosition(7, click()));
 
         // Check that User matches here
-
+        onView(withText("Signing in"))
+                .inRoot(withDecorView(not(is(mActivityTestRule.getActivity()
+                        .getWindow().getDecorView())))).check(matches(isDisplayed()));
 
     }
 
