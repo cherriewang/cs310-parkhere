@@ -76,6 +76,8 @@ dependencies {
     compile 'com.google.maps.android:android-maps-utils:0.3+'
     testCompile 'junit:junit:4.10'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    // include espresso-intents
+    androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2'
     compile 'com.google.android.gms:play-services-appindexing:9.6.0'
     androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
