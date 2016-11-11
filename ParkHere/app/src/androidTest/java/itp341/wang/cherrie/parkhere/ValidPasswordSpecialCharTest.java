@@ -1,5 +1,9 @@
 package itp341.wang.cherrie.parkhere;
 
+/**
+ * Created by Cherrie on 11/10/16.
+ */
+
 
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
@@ -31,72 +35,58 @@ import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
+import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class CreateListingTest {
+public class ValidPasswordSpecialCharTest {
 
     @Rule
     public ActivityTestRule<WelcomeActivity> mActivityTestRule = new ActivityTestRule<>(WelcomeActivity.class);
 
     @Test
-    public void createListingTest() {
+    public void validPasswordSpecialCharTest() {
         ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.buttonSignup), withText("Signup"),
+                allOf(withId(R.id.buttonSignup), withText("Register"),
                         withParent(allOf(withId(R.id.activity_welcome),
                                 withParent(withId(android.R.id.content)))),
                         isDisplayed()));
         appCompatButton.perform(click());
 
         ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.editTextEmail), isDisplayed()));
-        appCompatEditText.perform(click());
+                allOf(withId(R.id.editTextFirst), isDisplayed()));
+        appCompatEditText.perform(replaceText("James"), closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText1 = onView(
+                allOf(withId(R.id.editTextLast), isDisplayed()));
+        appCompatEditText.perform(replaceText("Harper"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.editTextEmail), isDisplayed()));
         appCompatEditText2.perform(replaceText("jamesharper@gmail.com"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.editTextPass), isDisplayed()));
+                allOf(withId(R.id.editTextPhone), isDisplayed()));
         appCompatEditText3.perform(replaceText("123456"), closeSoftKeyboard());
 
-        pressBack();
-
         ViewInteraction appCompatEditText4 = onView(
-                allOf(withId(R.id.editTextPass), withText("123456"), isDisplayed()));
-        appCompatEditText4.perform(replaceText("12345678910!"), closeSoftKeyboard());
+                allOf(withId(R.id.editTextPass), isDisplayed()));
+        appCompatEditText4.perform(replaceText("1234567891011"), closeSoftKeyboard());
 
-        ViewInteraction appCompatCheckBox = onView(
-                allOf(withId(R.id.rememberCheckBox), withText("Remember Me"), isDisplayed()));
-        appCompatCheckBox.perform(click());
+        ViewInteraction appCompatRadioButton1 = onView(
+                allOf(withId(R.id.radio_seeker), withText("Seeker")));
+        appCompatRadioButton1.perform(scrollTo(), click());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.buttonEnter), withText("Login"), isDisplayed()));
+                allOf(withId(R.id.buttonEnter), withText("Register"), isDisplayed()));
         appCompatButton2.perform(click());
 
-
-
-
-        ViewInteraction appCompatButton5 = onView(
-                allOf(withId(R.id.createListingButton), withText("Create")));
-        appCompatButton5.perform(scrollTo(), click());
-
-        ViewInteraction recyclerView2 = onView(
-                allOf(withId(R.id.material_drawer_recycler_view),
-                        withParent(allOf(withId(R.id.material_drawer_slider_layout),
-                                withParent(withId(R.id.material_drawer_layout)))),
-                        isDisplayed()));
-        recyclerView2.perform(actionOnItemAtPosition(4, click()));
-
-        ViewInteraction imageView = onView(
-                allOf(withId(R.id.listingImageView),
-                        childAtPosition(
-                                allOf(withId(R.id.listingBlurLayout),
-                                        childAtPosition(
-                                                IsInstanceOf.<View>instanceOf(android.widget.RelativeLayout.class),
-                                                0)),
-                                0),
-                        isDisplayed()));
-        imageView.check(matches(isDisplayed()));
+        onView(withText(R.string.password_invalid_signup))
+                .inRoot(withDecorView(not(is(mActivityTestRule.getActivity()
+                        .getWindow().getDecorView())))).check(matches(isDisplayed()));
 
     }
 
