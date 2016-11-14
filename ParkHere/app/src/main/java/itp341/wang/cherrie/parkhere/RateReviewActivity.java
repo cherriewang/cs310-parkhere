@@ -55,11 +55,9 @@ public class RateReviewActivity extends AppCompatActivity {
 
         //Create a Review Card
         Card reviewCard = new Card(this, R.layout.card_review_inner_layout);
-        //Set listing title
         reviewCard.setTitle(listingToReview.getListingTitle());
         //Set listing picture
         //Set listing owner picture
-        //Set card in the cardView
         CardView cardView = (CardView) findViewById(R.id.reviewCard);
         cardView.setCard(reviewCard);
 
@@ -79,26 +77,31 @@ public class RateReviewActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Debug.printToast("Submit Button clicked", getApplicationContext());
+                myReview.setReviewer(myUser.getmNormalizedEmail());
+                if(!reviewEditText.getText().toString().isEmpty())
+                    myReview.setReviewText(reviewEditText.getText().toString());
+                //myReview Listing Image
+                //myReview Owner Image
+                myReview.setTitle(reviewTitleEditText.getText().toString());
+                myReview.setOwner(listingToReview);
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference();
+                myRef.child("listings").child(listingToReview.getListingTitle()).child("reviews").child(myReview.getReviewer()).setValue(myReview);
+                finish();
+
+                Debug.printToast("Booking reviewed!", getApplicationContext());
             }
         });
         RatingBarListener RBListener = new RatingBarListener();
         ownerRatingBar.setOnRatingChangeListener(RBListener);
         listingRatingBar.setOnRatingChangeListener(RBListener);
 
-        // CREATE REVIEW
-        myReview.setReviewer(myUser.getmEmail());
-        if(!reviewEditText.getText().toString().isEmpty())
-            myReview.setReviewText(reviewEditText.getText().toString());
+        /*// CREATE REVIEW
+
         myReview.setListingImage(listingImageView.getDrawingCache());
         myReview.setOwnerReviewImage(ownerReviewProfPic.getDrawingCache());
-        myReview.setTitle(reviewTitleEditText.getText().toString());
-        listingToReview.addReview(myReview);
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
-        myRef.child("listings").child(listingToReview.getListingTitle()).setValue(listingToReview);
-        myRef.child("reviews").child(myReview.getTitle()).setValue(myReview);
+        listingToReview.addReview(myReview);*/
     }
 
     class RatingBarListener implements MaterialRatingBar.OnRatingChangeListener {
