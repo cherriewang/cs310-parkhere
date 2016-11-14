@@ -3,6 +3,8 @@ package itp341.wang.cherrie.parkhere;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,13 +13,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity;
+import com.nguyenhoanglam.imagepicker.model.Image;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 import itp341.wang.cherrie.parkhere.model.Card;
 import itp341.wang.cherrie.parkhere.model.User;
@@ -26,10 +33,9 @@ public class SettingsActivity extends AppCompatActivity {
     private Button logoutButton;
     private Button authorizeButton;
     private Button saveButton;
-    private TextView savedHome;
-    private TextView savedWork;
-    private EditText homeEditText;
-    private EditText workEditText;
+    private SimpleDraweeView userProfPicView;
+    private EditText firstNameEditText;
+    private EditText lastNameEditText;
     private User myUser;
     private Card myCard;
     private double amountDue;
@@ -39,20 +45,26 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        logoutButton = (Button) findViewById(R.id.buttonLogout);
-        authorizeButton = (Button) findViewById(R.id.buttonAuthorize);
-        saveButton = (Button) findViewById(R.id.buttonSave);
-        savedHome = (TextView) findViewById(R.id.textViewHome);
-        savedWork = (TextView) findViewById(R.id.textViewWork);
-        homeEditText = (EditText) findViewById(R.id.editTextHome);
-        workEditText = (EditText) findViewById(R.id.editTextWork);
-        savedWork = (TextView) findViewById(R.id.textViewWork);
-        savedHome = (TextView) findViewById(R.id.textViewHome);
-
-        // TODO: set listeners for EditText to update the TextViews
+        initialize();
         listeners();
 
         myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
+    }
+
+    private void initialize(){
+        logoutButton = (Button) findViewById(R.id.buttonLogout);
+        authorizeButton = (Button) findViewById(R.id.buttonAuthorize);
+        saveButton = (Button) findViewById(R.id.buttonSave);
+        userProfPicView = (SimpleDraweeView) findViewById(R.id.userProfPicView);
+        firstNameEditText = (EditText) findViewById(R.id.firstNameEditText);
+        lastNameEditText = (EditText) findViewById(R.id.lastNameEditText);
+
+        populate();
+    }
+
+    private void populate(){
+        //firstNameEditText.setHint(myUser.getmFirstName());
+        //lastNameEditText.setHint(myUser.getmLastName());
     }
 
     private void listeners(){
@@ -63,8 +75,6 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // log the user out
                 // set intent to return to welcome activity
-                savedHome.setText(homeEditText.getText().toString());
-                savedWork.setText(workEditText.getText().toString());
 
             }
         });
@@ -94,6 +104,26 @@ public class SettingsActivity extends AppCompatActivity {
                 // finds the card object associated with my user email
                 // myCard = that card
                 // myCard.setApproved(true);
+            }
+        });
+
+        // CHANGE PICTURE
+        userProfPicView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Select Image
+                Intent intent = new Intent(SettingsActivity.this, ImagePickerActivity.class);
+
+                intent.putExtra(ImagePickerActivity.INTENT_EXTRA_FOLDER_MODE, true);
+                intent.putExtra(ImagePickerActivity.INTENT_EXTRA_MODE, ImagePickerActivity.MODE_SINGLE);
+                intent.putExtra(ImagePickerActivity.INTENT_EXTRA_LIMIT, 1);
+                intent.putExtra(ImagePickerActivity.INTENT_EXTRA_SHOW_CAMERA, true);
+                intent.putExtra(ImagePickerActivity.INTENT_EXTRA_SELECTED_IMAGES, new ArrayList<Image>());
+                intent.putExtra(ImagePickerActivity.INTENT_EXTRA_FOLDER_TITLE, "Albums");
+                intent.putExtra(ImagePickerActivity.INTENT_EXTRA_IMAGE_TITLE, "Select an Image");
+                intent.putExtra(ImagePickerActivity.INTENT_EXTRA_IMAGE_DIRECTORY, "Camera");
+
+                startActivityForResult(intent, 0);
             }
         });
     }
@@ -166,5 +196,24 @@ public class SettingsActivity extends AppCompatActivity {
         // display dialog
         dialog.show();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case(0): {
+                // Return from HomeActivity
+            }
+            break;
+        }
+
+        if(requestCode == 0 && resultCode == RESULT_OK && data != null){
+            ArrayList<Image> images = data.getParcelableArrayListExtra(ImagePickerActivity.INTENT_EXTRA_SELECTED_IMAGES);
+            Bitmap image = BitmapFactory.decodeFile(images.get(0).getPath());
+            userProfPicView.setImageBitmap(image);
+            //userProfPicView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        }
+    }
+
 
 }
