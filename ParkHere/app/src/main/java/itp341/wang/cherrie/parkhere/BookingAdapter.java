@@ -1,5 +1,6 @@
 package itp341.wang.cherrie.parkhere;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -29,11 +30,14 @@ public class BookingAdapter extends ArrayAdapter<Booking>{
 
     private final LayoutInflater mLayoutInflater;
 
+    private Activity activity;
+
     public static final String BOOKING_REVIEW_INTENT_KEY = "Sending listing for user to review";
 
-    public BookingAdapter(Context context, int resource, ArrayList<Booking> objects){
+    public BookingAdapter(Context context, int resource, ArrayList<Booking> objects, Activity activity){
         super(context, resource, objects);
         mLayoutInflater = LayoutInflater.from(context);
+        this.activity = activity;
     }
 
     @Override

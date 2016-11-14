@@ -92,7 +92,6 @@ public class ListingDetailActivity extends AppCompatActivity{
         paymentMethodTextView = (TextView)findViewById(R.id.paymentMethodTextView);
         totalPriceTextView = (TextView)findViewById(R.id.totalPriceTextView);
         confirmBookingButton = (Button)findViewById(R.id.confirmBookingButton);
-        confirmBookingButton.setEnabled(false);
         listingRatingBar = (MaterialRatingBar)findViewById(R.id.listingRatingBar);
         ownerRatingBar = (MaterialRatingBar)findViewById(R.id.ownerRatingBar);
         reviewProfPicView = (SimpleDraweeView)findViewById(R.id.reviewProfPicView);
@@ -102,6 +101,11 @@ public class ListingDetailActivity extends AppCompatActivity{
         availibilityTextView = (TextView)findViewById(R.id.availibilityTextView);
         cancellationTextView = (TextView)findViewById(R.id.cancellationTextView);
 
+        //Availibility
+        //Set text for availibilityTextView to yes or no
+        //if no
+            //confirmBookingButton.setEnabled(false);
+
         populate();
     }
 
@@ -110,8 +114,7 @@ public class ListingDetailActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 BookListing();
-                //Intent for confirm
-                Debug.printToast("Confirm button clicked!", getApplicationContext());
+                Debug.printToast("Booking listing!", getApplicationContext());
                 Intent i = new Intent(ListingDetailActivity.this, ListOfBookingsActivity.class);
                 startActivity(i);
             }
@@ -153,7 +156,6 @@ public class ListingDetailActivity extends AppCompatActivity{
 
     private void BookListing() {
         Booking b = new Booking(myListing);
-        //myUser.appendBooking(b);
 
         Card c = new Card();
         c.setBalance(myListing.getPrice());
@@ -163,8 +165,9 @@ public class ListingDetailActivity extends AppCompatActivity{
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
-        myRef.child("users").child(myUser.getmNormalizedEmail()).setValue(myUser);
+
         myRef.child("bookings").child(b.getBookingTitle()).setValue(b);
+        myRef.child("users").child(myUser.getmNormalizedEmail()).child("mBookings").child(b.getBookingTitle()).setValue(b);
         myRef.child("transaction-tracker").child(c.getListingOwner()).setValue(c); // HELP
     }
 
