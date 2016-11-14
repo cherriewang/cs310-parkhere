@@ -13,6 +13,9 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.view.CardView;
 import itp341.wang.cherrie.parkhere.model.Listing;
@@ -84,9 +87,11 @@ public class RateReviewActivity extends AppCompatActivity {
                 //myReview Owner Image
                 myReview.setTitle(reviewTitleEditText.getText().toString());
                 myReview.setOwner(listingToReview);
+                setReviewDate();
 
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference();
+                listingToReview.addReview(myReview);
                 myRef.child("listings").child(listingToReview.getListingTitle()).child("reviews").child(myReview.getReviewer()).setValue(myReview);
                 finish();
 
@@ -102,6 +107,12 @@ public class RateReviewActivity extends AppCompatActivity {
         myReview.setListingImage(listingImageView.getDrawingCache());
         myReview.setOwnerReviewImage(ownerReviewProfPic.getDrawingCache());
         listingToReview.addReview(myReview);*/
+    }
+
+    private void setReviewDate(){
+        Calendar c = Calendar.getInstance();
+        String date = new SimpleDateFormat("MMMM").format(c.getTime()) + " " + c.get(Calendar.YEAR);
+        myReview.setDate(date);
     }
 
     class RatingBarListener implements MaterialRatingBar.OnRatingChangeListener {

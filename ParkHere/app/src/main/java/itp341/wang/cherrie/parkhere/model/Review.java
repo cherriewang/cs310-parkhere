@@ -18,6 +18,7 @@ public class Review implements Serializable{
     private Bitmap ownerReviewImage;
     private Bitmap listingImage;
     private String title;
+    private String date;
     private float listingRating;
     private float ownerRating;
 
@@ -75,6 +76,14 @@ public class Review implements Serializable{
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public float getListingRating() {

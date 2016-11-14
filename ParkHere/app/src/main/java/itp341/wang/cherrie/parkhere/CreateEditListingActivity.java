@@ -282,6 +282,8 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
                     myListing.setLatitude(latitude);
                     myListing.setLongitude(longitude);
                     myListing.setCancellationPolicy(cancellationTracker);
+                    //Setting latest review default
+                    myListing.setLatestReviewer("");
                     myUser.appendListing(myListing);
 
 

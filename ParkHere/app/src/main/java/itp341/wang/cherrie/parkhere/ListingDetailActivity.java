@@ -166,6 +166,7 @@ public class ListingDetailActivity extends AppCompatActivity{
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
 
+        myUser.appendBooking(b);
         myRef.child("listings").child(b.getOwner().getListingTitle()).child("bookings").child(b.getBookingOwner()).setValue(b);
         myRef.child("users").child(myUser.getmNormalizedEmail()).child("mBookings").child(b.getBookingTitle()).setValue(b);
         myRef.child("transaction-tracker").child(c.getListingOwner()).setValue(c); // HELP
@@ -184,6 +185,7 @@ public class ListingDetailActivity extends AppCompatActivity{
         //ownerRatingBar.setRating(myListing.getOwner().getAverageRating()); //need to fix so we can retrieve owner's rating
         paymentMethodTextView.setText("");
         Review latestReview = myListing.getLatestReview();
+
         if(latestReview == null){
             reviewUserNameTextView.setText("N/A");
             reviewDateTextView.setText("N/A");
@@ -191,7 +193,7 @@ public class ListingDetailActivity extends AppCompatActivity{
         }
         else{
             reviewUserNameTextView.setText(latestReview.getReviewer());
-            //reviewDateTextView.setText(latestReview.getDate);
+            reviewDateTextView.setText(latestReview.getDate());
             reviewContentTextView.setText(latestReview.getReviewText());
         }
         availibilityTextView.setText("Yes");

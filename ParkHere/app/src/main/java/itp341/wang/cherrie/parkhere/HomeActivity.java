@@ -338,7 +338,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         //Both today
         fromYear = c.get(Calendar.YEAR);
         fromMonthOfYear = c.get(Calendar.MONTH) + 1; //indexed from 0
-        Debug.printToast("Month integer is " + fromMonthOfYear, getApplicationContext());
         fromDayOfMonth = c.get(Calendar.DAY_OF_MONTH);
         toYear = fromYear;
         toMonthOfYear = fromMonthOfYear;

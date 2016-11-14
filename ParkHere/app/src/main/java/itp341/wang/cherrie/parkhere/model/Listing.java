@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import itp341.wang.cherrie.parkhere.Debug;
+
 /**
  * Created by Cherrie on 11/1/16.
  */
@@ -48,6 +50,9 @@ public class Listing implements Serializable{
 
     // cancellation
     private int cancellationPolicy;
+
+    // reviewer
+    private String latestReviewer;
 
     private HashMap<String, Review> reviews;
     private HashMap<String, Booking> bookings;
@@ -148,6 +153,10 @@ public class Listing implements Serializable{
 
     public HashMap<String, Review> getReviews() { return reviews; }
 
+    public void setReviews(HashMap<String, Review> reviews) {
+        this.reviews = reviews;
+    }
+
     public void setOwner(User owner) { this.owner = owner; }
 
     public void setListingTitle(String listingTitle) {
@@ -242,16 +251,24 @@ public class Listing implements Serializable{
         Longitude = longitude;
     }
 
+    public String getLatestReviewer() {
+        return latestReviewer;
+    }
+
+    public void setLatestReviewer(String latestReviewer) {
+        this.latestReviewer = latestReviewer;
+    }
+
     public void addReview(Review r)
     {
         if (reviews == null) {
             reviews = new HashMap<>();
         }
 
-        reviews.put(r.getTitle(), r);
+        reviews.put(r.getReviewer(), r);
     }
 
-    public void addBooking(Booking b)
+    /*public void addBooking(Booking b)
     {
         if (bookings == null) {
             bookings = new HashMap<>();
@@ -263,19 +280,22 @@ public class Listing implements Serializable{
     public void removeBooking(Booking b)
     {
         bookings.remove(b.getBookingOwner());
-    }
+    }*/
 
     public Review getLatestReview(){
-        if(getReviews() != null)
-            return reviews.get(reviews.size()-1);
-        else
-            return null;
+        if(reviews != null) {
+            if(!latestReviewer.isEmpty())
+                return reviews.get(latestReviewer);
+        }
+
+        return null;
     }
 
     public float getAverageRating() {
         float sum = 0;
-        if(getReviews() == null)
+        if(reviews == null) {
             return 0;
+        }
         else{
             Collection<Review> listingReviews =  reviews.values();
             for (Review r : listingReviews) {
