@@ -4,11 +4,13 @@ import android.graphics.Bitmap;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.io.Serializable;
+
 /**
  * Created by Cherrie on 11/1/16.
  */
 
-public class Review {
+public class Review implements Serializable{
 
     private Listing owner;
     private String reviewer;

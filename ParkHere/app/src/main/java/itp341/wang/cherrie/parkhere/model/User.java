@@ -161,7 +161,8 @@ public class User implements Serializable {
                     numReviews += 0;
                 }
                 else{
-                    for (Review r : listing.getReviews()) {
+                    Collection<Review> reviews = listing.getReviews().values();
+                    for (Review r : reviews) {
                         sum += r.getOwnerRating();
                     }
                     numReviews += listing.getReviews().size();

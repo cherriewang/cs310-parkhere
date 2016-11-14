@@ -4,18 +4,19 @@ package itp341.wang.cherrie.parkhere.model;
  * Created by Cherrie on 11/1/16.
  */
 
-public class Booking {
+import java.io.Serializable;
 
+public class Booking implements Serializable{
 
     // CONSTRUCTOR
     public Booking() {
         super();
     }
 
-    public Booking(Listing l) {
+    public Booking(Listing l, String bookingOwner) {
         this();
         if (l != null) {
-            this.bookingOwner = l.getListingOwner();
+            this.bookingOwner = bookingOwner;
             this.owner = l;
             this.bookingTitle = l.getListingTitle();
             this.handicapped = l.isHandicapped();

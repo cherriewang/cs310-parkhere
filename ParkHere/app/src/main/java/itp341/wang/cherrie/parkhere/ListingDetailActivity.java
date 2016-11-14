@@ -155,7 +155,7 @@ public class ListingDetailActivity extends AppCompatActivity{
     }
 
     private void BookListing() {
-        Booking b = new Booking(myListing);
+        Booking b = new Booking(myListing, myUser.getmNormalizedEmail());
 
         Card c = new Card();
         c.setBalance(myListing.getPrice());
@@ -166,7 +166,7 @@ public class ListingDetailActivity extends AppCompatActivity{
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
 
-        myRef.child("bookings").child(b.getBookingTitle()).setValue(b);
+        myRef.child("listings").child(b.getOwner().getListingTitle()).child("bookings").child(b.getBookingOwner()).setValue(b);
         myRef.child("users").child(myUser.getmNormalizedEmail()).child("mBookings").child(b.getBookingTitle()).setValue(b);
         myRef.child("transaction-tracker").child(c.getListingOwner()).setValue(c); // HELP
     }

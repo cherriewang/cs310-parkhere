@@ -66,7 +66,7 @@ public class ListOfRatingsActivity extends AppCompatActivity {
     private void createCards() {
         ArrayList<Review> listOfReviews = new ArrayList<>();
         if(myListing.getReviews() != null)
-            listOfReviews = (ArrayList<Review>) myListing.getReviews();
+            listOfReviews = (ArrayList<Review>) myListing.getReviews().values();
         mRatingAdapter = new RatingAdapter(getApplicationContext(), 0, listOfReviews);
         ratingsListView.setAdapter(mRatingAdapter);
     }

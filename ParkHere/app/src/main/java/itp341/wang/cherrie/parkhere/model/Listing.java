@@ -2,6 +2,8 @@ package itp341.wang.cherrie.parkhere.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -47,7 +49,8 @@ public class Listing implements Serializable{
     // cancellation
     private int cancellationPolicy;
 
-    private List<Review> reviews;
+    private HashMap<String, Review> reviews;
+    private HashMap<String, Booking> bookings;
 
     public User getOwner() { return owner; }
 
@@ -143,7 +146,7 @@ public class Listing implements Serializable{
         return cancellationPolicy;
     }
 
-    public List<Review> getReviews() { return reviews; }
+    public HashMap<String, Review> getReviews() { return reviews; }
 
     public void setOwner(User owner) { this.owner = owner; }
 
@@ -242,10 +245,24 @@ public class Listing implements Serializable{
     public void addReview(Review r)
     {
         if (reviews == null) {
-            reviews = new ArrayList<>();
+            reviews = new HashMap<>();
         }
 
-        reviews.add(r);
+        reviews.put(r.getTitle(), r);
+    }
+
+    public void addBooking(Booking b)
+    {
+        if (bookings == null) {
+            bookings = new HashMap<>();
+        }
+
+        bookings.put(b.getBookingOwner(), b);
+    }
+
+    public void removeBooking(Booking b)
+    {
+        bookings.remove(b.getBookingOwner());
     }
 
     public Review getLatestReview(){
@@ -260,7 +277,8 @@ public class Listing implements Serializable{
         if(getReviews() == null)
             return 0;
         else{
-            for (Review r : getReviews()) {
+            Collection<Review> listingReviews =  reviews.values();
+            for (Review r : listingReviews) {
                 sum += r.getListingRating();
             }
             return sum / (float)getReviews().size();

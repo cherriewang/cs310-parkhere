@@ -1,10 +1,12 @@
 package itp341.wang.cherrie.parkhere.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Cherrie on 11/3/16.
  */
 
-public class Card {
+public class Card implements Serializable{
 
     String payer;
     String listingOwner;

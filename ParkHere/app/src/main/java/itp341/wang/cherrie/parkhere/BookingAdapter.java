@@ -14,6 +14,8 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.androidviewhover.BlurLayout;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 
 import itp341.wang.cherrie.parkhere.model.Booking;
 import itp341.wang.cherrie.parkhere.model.Listing;
+import itp341.wang.cherrie.parkhere.model.User;
 
 /**
  * Created by Glarence Zhao on 11/2/2016.
@@ -30,6 +33,7 @@ public class BookingAdapter extends ArrayAdapter<Booking>{
 
     private final LayoutInflater mLayoutInflater;
 
+    private User myUser;
     private Activity activity;
 
     public static final String BOOKING_REVIEW_INTENT_KEY = "Sending listing for user to review";
@@ -37,7 +41,9 @@ public class BookingAdapter extends ArrayAdapter<Booking>{
     public BookingAdapter(Context context, int resource, ArrayList<Booking> objects, Activity activity){
         super(context, resource, objects);
         mLayoutInflater = LayoutInflater.from(context);
+
         this.activity = activity;
+        myUser = ((ParkHereApplication) activity.getApplication()).getMyUser();
     }
 
     @Override
@@ -117,7 +123,11 @@ public class BookingAdapter extends ArrayAdapter<Booking>{
             @Override
             public void onClick(View view) {
                 YoYo.with(Techniques.Wobble).duration(200).playOn(view);
-                //code to cancel or remove booking
+                Booking selectedBooking = getItem(position);
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference();
+                myRef.child("listings").child(selectedBooking.getOwner().getListingTitle()).child("bookings").child(selectedBooking.getBookingOwner()).removeValue();
+                myRef.child("users").child(myUser.getmNormalizedEmail()).child("mBookings").child(selectedBooking.getBookingTitle()).removeValue();
             }
         });
     }
