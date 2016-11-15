@@ -1,14 +1,10 @@
 package itp341.wang.cherrie.parkhere;
 
-import android.*;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Typeface;
 import android.location.Location;
-import android.os.AsyncTask;
-import android.os.Parcel;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -17,15 +13,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +27,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.blackcat.currencyedittext.CurrencyEditText;
-import com.borax12.materialdaterangepicker.date.DatePickerDialog;
 import com.borax12.materialdaterangepicker.time.RadialPickerLayout;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -84,6 +76,8 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -124,7 +118,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private String fromMinuteString = "";
     private String toHourString = "";
     private String toMinuteString = "";
-    //Filter parking spot booleans
+    //Parking spot type booleans
     private boolean searchCovered = false;
     private boolean searchSUV = false;
     private boolean searchHandicapped = false;
@@ -132,9 +126,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     //Filter dialog variables
     private long fromPriceRange = 0;
     private long toPriceRange = 0;
-    private int distance = 0;
-    private float minListingRating = 0;
-    private float minOwnerRating = 0;
+    private boolean sortDistance = false;
+    private boolean sortListingRating = false;
+    private boolean sortOwnerRating = false;
     //LatLong search dialog variables
     private float latitude = 0;
     private float longitude = 0;
@@ -653,11 +647,117 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             wrapInScrollView).positiveText("Display Results").onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            Debug.printToast("From price is: " + (double)fromPriceRange/100, getApplicationContext());
-                            Debug.printToast("To price rating is: " + (double)toPriceRange/100, getApplicationContext());
-                            Debug.printToast("Distance is: " + distance, getApplicationContext());
-                            Debug.printToast("Min listing rating is: " + minListingRating, getApplicationContext());
-                            Debug.printToast("Min owner rating is: " + minOwnerRating, getApplicationContext());
+                            final ArrayList<Listing> listingsToSort;
+
+                            double toPrice = ((double)toPriceRange)/100;
+                            double fromPrice = ((double)fromPriceRange)/100;
+
+                            if(toPrice > fromPrice){
+                                listingsToSort = new ArrayList<>();
+                                for(Listing listing : allListingsInFireBase){
+                                    if(listing.getPrice() >= fromPrice && listing.getPrice() <= toPrice){
+                                        listingsToSort.add(listing);
+                                    }
+                                }
+                                //Price high to low
+                                Collections.sort(listingsToSort, new Comparator<Listing>() {
+                                    @Override
+                                    public int compare(Listing listing1, Listing listing2) {
+                                        if(listing1.getPrice() < listing2.getPrice())
+                                            return -1;
+                                        if(listing1.getPrice() > listing2.getPrice())
+                                            return 1;
+
+                                        return 0;
+                                    }
+                                });
+                            }
+                            else{
+                                listingsToSort = allListingsInFireBase;
+                            }
+
+                            if(sortDistance){
+                                Debug.printToast("Sorting by distance", getApplicationContext());
+                                Collections.sort(listingsToSort, new Comparator<Listing>() {
+                                    @Override
+                                    public int compare(Listing listing1, Listing listing2) {
+                                        //TODO: Change to use last known location in future
+                                        Location lastKnownLocation = new Location("Last known location");
+                                        lastKnownLocation.setLatitude(glarenceAPT.latitude);
+                                        lastKnownLocation.setLongitude(glarenceAPT.longitude);
+
+                                        Location listing1Location = new Location("Listing 1 location");
+                                        listing1Location.setLatitude(listing1.getLatitude());
+                                        listing1Location.setLongitude(listing1.getLongitude());
+
+                                        Location listing2Location = new Location("Listing 2 location");
+                                        listing2Location.setLatitude(listing2.getLatitude());
+                                        listing2Location.setLongitude(listing2.getLongitude());
+
+                                        float listing1Distance = lastKnownLocation.distanceTo(listing1Location);
+                                        float listing2Distance = lastKnownLocation.distanceTo(listing2Location);
+
+                                        if(listing1Distance < listing2Distance)
+                                            return -1;
+                                        if(listing1Distance > listing2Distance)
+                                            return 1;
+
+                                        return 0;
+                                    }
+                                });
+                            }
+
+                            //Can't test since doing test values from Firebase doens't work, all listing ratings are 0 (reviews are null)
+                            if(sortListingRating){
+                                Debug.printToast("Sorting by listing rating", getApplicationContext());
+                                Collections.sort(listingsToSort, new Comparator<Listing>() {
+                                    @Override
+                                    public int compare(Listing listing1, Listing listing2) {
+                                        if(listing1.getAverageRating() > listing2.getAverageRating())
+                                            return 1;
+                                        if(listing1.getAverageRating() < listing2.getAverageRating())
+                                            return -1;
+
+                                        return 0;
+                                    }
+                                });
+                            }
+
+                            /*for(Listing listing : listingsToSort){
+                                System.out.println("Listing " + listing.getListingTitle() + " has a rating of  " + listing.getAverageRating());
+                            }*/
+
+                            if(sortOwnerRating){
+                                Debug.printToast("Sorting by owner rating", getApplicationContext());
+                                Collections.sort(listingsToSort, new Comparator<Listing>() {
+                                    @Override
+                                    public int compare(Listing listing1, Listing listing2) {
+                                        if(listing1.getOwner().getAverageRating() > listing2.getOwner().getAverageRating())
+                                            return 1;
+                                        if(listing1.getOwner().getAverageRating() < listing2.getOwner().getAverageRating())
+                                            return -1;
+                                        return 0;
+                                    }
+                                });
+                            }
+
+                            //get array of listing string titles for list dialog
+                            ArrayList<String> listingTitles = new ArrayList<>();
+                            for(Listing listing : listingsToSort){
+                                listingTitles.add(listing.getListingTitle());
+                            }
+
+                            new MaterialDialog.Builder(HomeActivity.this).title("Sorted Listings")
+                                        .items(listingTitles).itemsCallback(new MaterialDialog.ListCallback() {
+                                    @Override
+                                    public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
+                                        Listing listingSelected = listingsToSort.get(position);
+
+                                        Intent i = new Intent(HomeActivity.this, ListingDetailActivity.class);
+                                        i.putExtra(ListingAdapter.LISTING_DETAIL_INTENT_KEY, listingSelected);
+                                        startActivity(i);
+                                    }
+                                }).show();
                         }
                     }).show();
                     dialogListeners(id);
@@ -804,6 +904,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         if(id == R.id.action_filters){
             final View view = filtersDialog.getCustomView();
             final CurrencyEditText fromPriceEditText = (CurrencyEditText)view.findViewById(R.id.fromPriceEditText);
+            fromPriceEditText.setText(fromPriceRange + "");
             fromPriceEditText.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -818,6 +919,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 public void afterTextChanged(Editable s) {}
             });
             final CurrencyEditText toPriceEditText = (CurrencyEditText) view.findViewById(R.id.toPriceEditText);
+            toPriceEditText.setText(toPriceRange + "");
             toPriceEditText.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -831,33 +933,28 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 @Override
                 public void afterTextChanged(Editable s) {}
             });
-            SeekBar distanceSeekBar = (SeekBar)view.findViewById(R.id.distanceSeekBar);
-            distanceSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            CheckBox sortDistanceCheckBox = (CheckBox) view.findViewById(R.id.sortDistanceCheckBox);
+            sortDistanceCheckBox.setChecked(sortDistance);
+            sortDistanceCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    distance = progress;
-                    TextView distanceSeekBarTextView = (TextView) view.findViewById(R.id.distanceSeekBarTextView);
-                    distanceSeekBarTextView.setText(distance + "");
-                }
-
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {}
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {}
-            });
-            MaterialRatingBar minListingRatingBar = (MaterialRatingBar)view.findViewById(R.id.minListingRatingBar);
-            minListingRatingBar.setOnRatingChangeListener(new MaterialRatingBar.OnRatingChangeListener() {
-                @Override
-                public void onRatingChanged(MaterialRatingBar ratingBar, float rating) {
-                    minListingRating = rating;
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    sortDistance = isChecked;
                 }
             });
-            final MaterialRatingBar minOwnerRatingBar = (MaterialRatingBar)view.findViewById(R.id.minOwnerRatingBar);
-            minOwnerRatingBar.setOnRatingChangeListener(new MaterialRatingBar.OnRatingChangeListener() {
+            CheckBox sortListingCheckBox = (CheckBox) view.findViewById(R.id.sortListingRatingCheckBox);
+            sortListingCheckBox.setChecked(sortListingRating);
+            sortListingCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onRatingChanged(MaterialRatingBar ratingBar, float rating) {
-                    minOwnerRating = rating;
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    sortListingRating = isChecked;
+                }
+            });
+            CheckBox sortOwnerCheckBox = (CheckBox) view.findViewById(R.id.sortOwnerRatingCheckBox);
+            sortOwnerCheckBox.setChecked(sortOwnerRating);
+            sortOwnerCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    sortOwnerRating = isChecked;
                 }
             });
         }

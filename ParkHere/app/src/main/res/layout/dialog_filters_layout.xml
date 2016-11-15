@@ -47,36 +47,22 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginStart="32dp"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="Distance"
+            android:text="Sort by Distance"
             android:textSize="20sp"
             android:textStyle="bold"/>
 
-        <TextView
-            android:id="@+id/distanceSeekBarTextView"
+        <CheckBox
+            android:id="@+id/sortDistanceCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="0"
-            android:textSize="16sp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:text="miles"
-            android:textSize="16sp"/>
-
-        <SeekBar
-            android:id="@+id/distanceSeekBar"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:max="3"/>
+            android:layout_marginStart="32dp"
+            android:buttonTint="@color/colorAccent"/>
 
     </LinearLayout>
 
@@ -85,24 +71,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:layout_marginStart="32dp">
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp">
 
         <TextView
-            android:layout_width="140dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="Min. L. Rating:"
+            android:text="Sort by Listing Rating"
             android:textSize="20sp"
             android:textStyle="bold"/>
 
-        <me.zhanghai.android.materialratingbar.MaterialRatingBar
-            android:id="@+id/minListingRatingBar"
+        <CheckBox
+            android:id="@+id/sortListingRatingCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            style="@style/Widget.MaterialRatingBar.RatingBar"
-            app:mrb_progressTint="@color/rating_color"
-            app:mrb_secondaryProgressTint="@color/rating_color"/>
+            android:layout_marginStart="32dp"
+            android:buttonTint="@color/colorAccent"/>
 
     </LinearLayout>
 
@@ -111,25 +96,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:layout_marginStart="32dp">
-
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="10dp">
 
         <TextView
-            android:layout_width="140dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="Min. O. Rating:"
+            android:text="Sort by Owner Rating"
             android:textSize="20sp"
             android:textStyle="bold"/>
 
-        <me.zhanghai.android.materialratingbar.MaterialRatingBar
-            android:id="@+id/minOwnerRatingBar"
+        <CheckBox
+            android:id="@+id/sortOwnerRatingCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            style="@style/Widget.MaterialRatingBar.RatingBar"
-            app:mrb_progressTint="@color/rating_color"
-            app:mrb_secondaryProgressTint="@color/rating_color"/>
+            android:layout_marginStart="32dp"
+            android:buttonTint="@color/colorAccent"/>
 
     </LinearLayout>
 
