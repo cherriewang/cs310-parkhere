@@ -239,7 +239,7 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
             public void onClick(View v) {
                 if(!listingTitle.isEmpty() && !location.isEmpty() && !about.isEmpty() && !isPriceEditTextEmpty()){
                     // getting all values from the input fields
-                    price = priceEditText.getRawValue()/100;
+                    price = ((double)priceEditText.getRawValue())/100;
                     isTandem = tandemCheckBox.isChecked();
                     isHandicapped = handicappedCheckBox.isChecked();
                     isSUV = suvCheckBox.isChecked();
