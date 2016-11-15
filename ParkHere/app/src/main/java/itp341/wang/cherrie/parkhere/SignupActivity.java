@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -57,6 +58,7 @@ public class SignupActivity extends AppCompatActivity {
     private boolean isOwner = false;
     private SimpleDraweeView userProfPicView;
     private User myUser;
+    private CircularProgressView progressView;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -106,6 +108,7 @@ public class SignupActivity extends AppCompatActivity {
         passwordEditText = (EditText) findViewById(R.id.editTextPass);
         enterButton = (Button) findViewById(R.id.buttonEnter);
         userProfPicView = (SimpleDraweeView) findViewById(R.id.userProfPicView);
+        progressView = (CircularProgressView) findViewById(R.id.progress_view);
 
         ((ParkHereApplication) this.getApplication()).setMyUser(new User());
         myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
@@ -167,6 +170,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             //On click function
             public void onClick(View view) {
+                progressView.startAnimation();
                 // Populate User object
                 myUser.setmFirstName(firstNameEditText.getText().toString());
                 myUser.setmLastName(lastNameEditText.getText().toString());

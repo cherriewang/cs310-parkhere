@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
@@ -46,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
     private User myUser;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private CircularProgressView progressView;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -77,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
         forgotPassword = (TextView) findViewById(R.id.textForgotPassword);
         enterButton = (Button) findViewById(R.id.buttonEnter);
         rememberCheckBox = (CheckBox) findViewById(R.id.rememberCheckBox);
+        progressView = (CircularProgressView) findViewById(R.id.progress_view);
         FirebaseAuth.getInstance().signOut();
 
         SharedPreferences pref = getSharedPreferences(PREFS_NAME,MODE_PRIVATE);
@@ -144,6 +147,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             //On click function
             public void onClick(View view) {
+                progressView.startAnimation();
                 signIn();
                 if(isRemember){
                     getSharedPreferences(PREFS_NAME, MODE_PRIVATE)

@@ -6,10 +6,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.github.rahatarmanahmed.cpv.CircularProgressView;
+
 public class WelcomeActivity extends AppCompatActivity {
     private Button signUpButton;
     private Button loginButton;
     private Button mFacebookLoginButton;
+    private CircularProgressView progressView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,7 @@ public class WelcomeActivity extends AppCompatActivity {
         signUpButton = (Button) findViewById(R.id.buttonSignup);
         loginButton = (Button) findViewById(R.id.buttonLogin);
         mFacebookLoginButton = (Button) findViewById(R.id.buttonFacebook);
+        progressView = (CircularProgressView) findViewById(R.id.progress_view);
     }
 
     private void listeners(){
@@ -33,6 +37,8 @@ public class WelcomeActivity extends AppCompatActivity {
             @Override
             //On click function
             public void onClick(View view) {
+                progressView.startAnimation();
+                progressView.setVisibility(View.VISIBLE);
                 Intent signUpIntent = new Intent(getApplicationContext(), SignupActivity.class);
                 startActivityForResult(signUpIntent,0);
             }
@@ -44,6 +50,8 @@ public class WelcomeActivity extends AppCompatActivity {
             @Override
             //On click function
             public void onClick(View view) {
+                progressView.startAnimation();
+                progressView.setVisibility(View.VISIBLE);
                 Intent loginIntent = new Intent(getApplicationContext(),LoginActivity.class);
                 startActivityForResult(loginIntent,1);
             }
@@ -66,10 +74,14 @@ public class WelcomeActivity extends AppCompatActivity {
         switch (requestCode) {
             case(0): {
                 // Return from SignupActivity
+                progressView.stopAnimation();
+                progressView.setVisibility(View.GONE);
             }
             break;
             case (1): {
                 // Return from LoginActivity
+                progressView.stopAnimation();
+                progressView.setVisibility(View.GONE);
             }
             break;
         }
