@@ -5,8 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +37,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.common.data.DataBufferUtils;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.AutocompletePrediction;
@@ -42,6 +46,7 @@ import com.google.android.gms.location.places.AutocompletePredictionBuffer;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -89,7 +94,8 @@ import itp341.wang.cherrie.parkhere.model.User;
 
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, com.borax12.materialdaterangepicker.date.DatePickerDialog.OnDateSetListener,
-        com.borax12.materialdaterangepicker.time.TimePickerDialog.OnTimeSetListener, GoogleMap.OnInfoWindowClickListener{
+        com.borax12.materialdaterangepicker.time.TimePickerDialog.OnTimeSetListener, GoogleMap.OnInfoWindowClickListener,
+        LocationListener {
 
     private AccountHeader headerResult = null;
     private static Drawer navDrawer = null;
@@ -100,7 +106,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private User myUser;
 
     //Test markers
-    private LatLng glarenceAPT = new LatLng(34.024652, -118.280782);
+    //private LatLng glarenceAPT = new LatLng(34.024652, -118.280782);
 
     //Advanced dialog variables
     private int fromYear = 0;
@@ -132,10 +138,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private MaterialDialog filtersDialog;
     private MaterialDialog searchDialog;
 
+    //Location tracking variables
     private Location mLastLocation;
     private LatLng searchLatLng;
 
-    private final float THREE_MILES = (float)4828.03;
+    private final float THREE_MILES = (float) 4828.03;
 
     private ArrayList<Listing> allListingsInFireBase = new ArrayList<>();
     private ArrayList<Listing> allListingsToDisplay = new ArrayList<>();
@@ -209,9 +216,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         if (drawerItem != null) {
                             //Search
-                            if(drawerItem.getIdentifier() == 1){
+                            if (drawerItem.getIdentifier() == 1) {
                                 try {
-                                    if(myUser.isSeeker()) {
+                                    if (myUser.isSeeker()) {
                                         Intent intent =
                                                 new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
                                                         .build(HomeActivity.this);
@@ -226,41 +233,41 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 }
                             }
                             //Home
-                            if(drawerItem.getIdentifier() == 2){}
+                            if (drawerItem.getIdentifier() == 2) {
+                            }
                             //List of Bookings
-                            else if(drawerItem.getIdentifier() == 3){
+                            else if (drawerItem.getIdentifier() == 3) {
                                 Intent i = new Intent(HomeActivity.this, ListOfBookingsActivity.class);
                                 startActivity(i);
                             }
                             //List of Listings
-                            else if(drawerItem.getIdentifier() == 4){
+                            else if (drawerItem.getIdentifier() == 4) {
                                 Intent i = new Intent(HomeActivity.this, ListOfListingsActivity.class);
                                 startActivity(i);
                             }
                             //Create Listing
-                            else if(drawerItem.getIdentifier() == 5){
+                            else if (drawerItem.getIdentifier() == 5) {
                                 // DIALOG BOX OPENS IF USER IS NOT AN OWNER
                                 if (myUser.isOwner()) {
                                     Intent i = new Intent(HomeActivity.this, CreateEditListingActivity.class);
                                     startActivityForResult(i, CREATE_LISTING_REQUEST_CODE);
-                                }
-                                else {
+                                } else {
                                     showLocationDialog();
                                 }
                             }
                             //Payment
-                            else if(drawerItem.getIdentifier() == 6){
+                            else if (drawerItem.getIdentifier() == 6) {
                                 Intent i = new Intent(HomeActivity.this, ListOfPaymentsActivity.class);
                                 i.putExtra(ListingDetailActivity.SELECTING_PAYMENT, false);
                                 startActivity(i);
                             }
                             //Settings
-                            else if(drawerItem.getIdentifier() == 7){
+                            else if (drawerItem.getIdentifier() == 7) {
                                 Intent i = new Intent(HomeActivity.this, SettingsActivity.class);
                                 startActivity(i);
                             }
                             //Help
-                            else if(drawerItem.getIdentifier() == 8){
+                            else if (drawerItem.getIdentifier() == 8) {
                                 Intent i = new Intent(HomeActivity.this, HelpActivity.class);
                                 startActivity(i);
                             }
@@ -278,14 +285,14 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         //Set up floating search bar
-        mSearchView = (FloatingSearchView)findViewById(R.id.floating_search_view);
+        mSearchView = (FloatingSearchView) findViewById(R.id.floating_search_view);
         mSearchView.attachNavigationDrawerToMenuButton(navDrawer.getDrawerLayout());
 
         initialize();
         listeners();
     }
 
-    private void initialize(){
+    private void initialize() {
         // Create an instance of GoogleAPIClient.
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -308,20 +315,21 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 allListingsInFireBase.clear();
-                for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Listing listing = postSnapshot.getValue(Listing.class);
                     allListingsInFireBase.add(listing);
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {}
+            public void onCancelled(DatabaseError databaseError) {
+            }
         });
 
         initializeDateAndTime();
     }
 
-    private void initializeDateAndTime(){
+    private void initializeDateAndTime() {
         final Calendar c = Calendar.getInstance();
 
         //Both today
@@ -410,28 +418,19 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        CameraPosition defaultPosition = new CameraPosition.Builder()
-                //.target(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()))
-                .target(glarenceAPT)
-                .zoom(16) // this is the zoom level
-                .bearing(35)   // this is the rotation angle
-                .tilt(40)   // this is the degree of elevation
-                .build();
-
-        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(defaultPosition));
         mMap.getUiSettings().setIndoorLevelPickerEnabled(false);
         mMap.setPadding(0, 180, 0, 0);
         mMap.setOnInfoWindowClickListener(this);
         enableMyLocation();
     }
 
-    private Marker addListingMarker(LatLng latLng, String listingTitle){
+    private Marker addListingMarker(LatLng latLng, String listingTitle) {
         //Instead of title, put price for marker title
         return mMap.addMarker(new MarkerOptions().position(latLng).title(listingTitle)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
     }
 
-    private void addSearchMarker(LatLng latLng, String listingTitle){
+    private void addSearchMarker(LatLng latLng, String listingTitle) {
         mMap.clear();
         mMap.addMarker(new MarkerOptions().position(latLng).title(listingTitle)
                 .icon(BitmapDescriptorFactory.fromBitmap(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_map_pin).
@@ -446,30 +445,30 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .build();
 
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(currentPosition));
-        mMap.animateCamera(CameraUpdateFactory.scrollBy(-100,-50));
+        mMap.animateCamera(CameraUpdateFactory.scrollBy(-100, -50));
 
         populateListings(latLng);
     }
 
-    private void clearMarkers(){
+    private void clearMarkers() {
         //clear everything and populate
         allListingsToDisplay.clear();
-        for(Marker marker : markerListingHashmap.keySet())
+        for (Marker marker : markerListingHashmap.keySet())
             marker.remove();
         markerListingHashmap.clear();
     }
 
-    private void addMarkers(){
+    private void addMarkers() {
         //add markers
-        for(Listing listing : allListingsToDisplay){
+        for (Listing listing : allListingsToDisplay) {
             LatLng listingLatLng = new LatLng(listing.getLatitude(), listing.getLongitude());
             Marker listingMarker = addListingMarker(listingLatLng, listing.getListingTitle());
             markerListingHashmap.put(listingMarker, listing);
         }
     }
 
-    private void populateListings(LatLng searchMarker){
-        if(searchMarker != null){
+    private void populateListings(LatLng searchMarker) {
+        if (searchMarker != null) {
             clearMarkers();
 
             Location searchLocation = new Location("Search marker");
@@ -477,7 +476,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             searchLocation.setLongitude(searchMarker.longitude);
 
             //find listings to display
-            for(Listing listing : allListingsInFireBase){
+            for (Listing listing : allListingsInFireBase) {
                 Location listingLocation = new Location("Listing Location");
                 listingLocation.setLatitude(listing.getLatitude());
                 listingLocation.setLongitude(listing.getLongitude());
@@ -485,7 +484,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 float distance = searchLocation.distanceTo(listingLocation);
 
                 //Returned results must be less than three miles
-                if(distance <= THREE_MILES) {
+                if (distance <= THREE_MILES) {
                     allListingsToDisplay.add(listing);
                 }
             }
@@ -496,33 +495,33 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    private void advancedSearch(){
-        for(Iterator<Listing> iterator = allListingsToDisplay.iterator(); iterator.hasNext();){
+    private void advancedSearch() {
+        for (Iterator<Listing> iterator = allListingsToDisplay.iterator(); iterator.hasNext(); ) {
             Listing listingToCheck = iterator.next();
 
             //Short term date and time check
 
             //Parking spot types check
-            if(searchSUV){
-                if(!listingToCheck.isSuv()) {
+            if (searchSUV) {
+                if (!listingToCheck.isSuv()) {
                     iterator.remove();
                     continue;
                 }
             }
-            if(searchTandem){
-                if(!listingToCheck.isTandem()) {
+            if (searchTandem) {
+                if (!listingToCheck.isTandem()) {
                     iterator.remove();
                     continue;
                 }
             }
-            if(searchCovered){
-                if(!listingToCheck.isCovered()) {
+            if (searchCovered) {
+                if (!listingToCheck.isCovered()) {
                     iterator.remove();
                     continue;
                 }
             }
-            if(searchHandicapped){
-                if(!listingToCheck.isHandicapped()) {
+            if (searchHandicapped) {
+                if (!listingToCheck.isHandicapped()) {
                     iterator.remove();
                     continue;
                 }
@@ -557,12 +556,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         //handle the back press :D close the drawer first and if the drawer is closed close the activity
         if (navDrawer != null && navDrawer.isDrawerOpen()) {
             navDrawer.closeDrawer();
-        } else {
-            super.onBackPressed();
         }
     }
 
-    public static void setNavDrawerToHome(){
+    public static void setNavDrawerToHome() {
         //Back to home activity so highlight home nav drawer item
         navDrawer.setSelection(2, false);
     }
@@ -577,38 +574,43 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onStop();
     }
 
-    protected void enableMyLocation(){
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission to access the location is missing.
-            new TedPermission(this).setPermissionListener(permissionListener)
-                    .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                    .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION)
-                    .check();
-        }
-        else if(mMap != null){
-            //Only after enabling location permissions
-            mMap.setMyLocationEnabled(true);
+    protected void enableMyLocation() {
 
-            CameraPosition currentPosition = new CameraPosition.Builder()
-                    //.target(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()))
-                    .target(glarenceAPT)
-                    .zoom(16) // this is the zoom level
-                    .bearing(35)   // this is the rotation angle
-                    .tilt(40)   // this is the degree of elevation
-                    .build();
-
-            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(currentPosition));
-            mMap.animateCamera(CameraUpdateFactory.scrollBy(-100,-50));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
         }
+        mMap.setMyLocationEnabled(true);
     }
+
+    LocationRequest mLocationRequest;
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        mLocationRequest = LocationRequest.create();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
         }
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
     }
 
     @Override
@@ -619,6 +621,19 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         //Tried to connect but it failed
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        if(location == null){
+            Debug.printToast("Can't get current location!", getApplicationContext());
+        } else {
+                mLastLocation = location;
+                LatLng latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+
+                CameraUpdate update = CameraUpdateFactory.newLatLngZoom(latLng, 16);
+                mMap.animateCamera(update);
+        }
     }
 
     private void listeners(){
@@ -676,26 +691,23 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 Collections.sort(listingsToSort, new Comparator<Listing>() {
                                     @Override
                                     public int compare(Listing listing1, Listing listing2) {
-                                        //TODO: Change to use last known location in future
-                                        Location lastKnownLocation = new Location("Last known location");
-                                        lastKnownLocation.setLatitude(glarenceAPT.latitude);
-                                        lastKnownLocation.setLongitude(glarenceAPT.longitude);
+                                        if(mLastLocation != null){
+                                            Location listing1Location = new Location("Listing 1 location");
+                                            listing1Location.setLatitude(listing1.getLatitude());
+                                            listing1Location.setLongitude(listing1.getLongitude());
 
-                                        Location listing1Location = new Location("Listing 1 location");
-                                        listing1Location.setLatitude(listing1.getLatitude());
-                                        listing1Location.setLongitude(listing1.getLongitude());
+                                            Location listing2Location = new Location("Listing 2 location");
+                                            listing2Location.setLatitude(listing2.getLatitude());
+                                            listing2Location.setLongitude(listing2.getLongitude());
 
-                                        Location listing2Location = new Location("Listing 2 location");
-                                        listing2Location.setLatitude(listing2.getLatitude());
-                                        listing2Location.setLongitude(listing2.getLongitude());
+                                            float listing1Distance = mLastLocation.distanceTo(listing1Location);
+                                            float listing2Distance = mLastLocation.distanceTo(listing2Location);
 
-                                        float listing1Distance = lastKnownLocation.distanceTo(listing1Location);
-                                        float listing2Distance = lastKnownLocation.distanceTo(listing2Location);
-
-                                        if(listing1Distance < listing2Distance)
-                                            return -1;
-                                        if(listing1Distance > listing2Distance)
-                                            return 1;
+                                            if(listing1Distance < listing2Distance)
+                                                return -1;
+                                            if(listing1Distance > listing2Distance)
+                                                return 1;
+                                        }
 
                                         return 0;
                                     }
@@ -782,10 +794,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
         mSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
 
-            private LatLngBounds bounds = toBounds(glarenceAPT, 8);
-
             @Override
             public void onSearchTextChanged(String oldQuery, String newQuery) {
+                if(mLastLocation != null){
+                    LatLngBounds bounds = toBounds(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()), 8);
+                }
                 /*PendingResult<AutocompletePredictionBuffer> result = Places.GeoDataApi.getAutocompletePredictions(mGoogleApiClient, newQuery, bounds,
                                                                                 new AutocompleteFilter.Builder()
                                                                                 .setTypeFilter(AutocompleteFilter.TYPE_FILTER_NONE)
