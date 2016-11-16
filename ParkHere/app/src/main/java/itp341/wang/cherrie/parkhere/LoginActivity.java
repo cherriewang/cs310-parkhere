@@ -107,6 +107,8 @@ public class LoginActivity extends AppCompatActivity {
                             myUser  = dataSnapshot.getValue(User.class);
                             ((ParkHereApplication) getApplication()).setMyUser(myUser);
                             System.out.println(myUser.getmEmail());
+                            Debug.printToast("Should be true: " + myUser.hasRecentTransactionApproved(), getApplicationContext());
+                            // TODO: consider adding payment dialog here...
                             Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
                             startActivityForResult(homeIntent,0);
                         }
@@ -117,7 +119,8 @@ public class LoginActivity extends AppCompatActivity {
                     });
                 } else {
                     // User is signed out
-                    Debug.printToast("Signed out", getApplicationContext());
+                    // Commented this out because it seems to randomly toast in the beginning
+                    // Debug.printToast("Signed out", getApplicationContext());
                 }
             }
         };
@@ -147,6 +150,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             //On click function
             public void onClick(View view) {
+                progressView.setVisibility(View.VISIBLE);
                 progressView.startAnimation();
                 signIn();
                 if(isRemember){
@@ -181,6 +185,9 @@ public class LoginActivity extends AppCompatActivity {
                 if (!task.isSuccessful()) {
                     Log.w(TAG, "signInWithEmail:failed", task.getException());
                     Debug.printToast("Sign in failed", getApplicationContext());
+                    passwordEditText.setText("");
+                    progressView.stopAnimation();
+                    progressView.setVisibility(View.GONE);
                 }
             }
         });

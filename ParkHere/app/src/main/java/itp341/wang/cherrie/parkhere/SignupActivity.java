@@ -157,7 +157,9 @@ public class SignupActivity extends AppCompatActivity {
                     // the auth state listener will be notified and logic to handle the
                     // signed in user can be handled in the listener.
                     if (!task.isSuccessful()) {
-                        Toast.makeText(SignupActivity.this, "Sign up unsuccesful", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignupActivity.this, "Sign up unsuccessful", Toast.LENGTH_SHORT).show();
+                        progressView.stopAnimation();
+                        progressView.setVisibility(View.GONE);
                     }
                 }
             });
@@ -170,6 +172,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             //On click function
             public void onClick(View view) {
+                progressView.setVisibility(View.VISIBLE);
                 progressView.startAnimation();
                 // Populate User object
                 myUser.setmFirstName(firstNameEditText.getText().toString());
@@ -179,7 +182,6 @@ public class SignupActivity extends AppCompatActivity {
                 myUser.setmHashedPassword(passwordEditText.getText().toString().hashCode());
                 myUser.setOwner(isOwner);
                 myUser.setSeeker(isSeeker);
-
 
                 if(isFieldsEmpty()) {
                     Toast.makeText(getApplicationContext(), "Fields are empty, please fill them out",

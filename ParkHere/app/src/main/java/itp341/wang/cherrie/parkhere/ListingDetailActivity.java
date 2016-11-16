@@ -23,9 +23,9 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import itp341.wang.cherrie.parkhere.model.Booking;
-import itp341.wang.cherrie.parkhere.model.Card;
 import itp341.wang.cherrie.parkhere.model.Listing;
 import itp341.wang.cherrie.parkhere.model.Review;
+import itp341.wang.cherrie.parkhere.model.Transaction;
 import itp341.wang.cherrie.parkhere.model.User;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
@@ -157,11 +157,15 @@ public class ListingDetailActivity extends AppCompatActivity{
     private void BookListing() {
         Booking b = new Booking(myListing, myUser.getmNormalizedEmail());
 
-        Card c = new Card();
-        c.setBalance(myListing.getPrice());
-        c.setListingOwner(myListing.getListingOwner());
-        c.setPayer(myUser.getmNormalizedEmail());
-        c.setApproved(false);
+        Log.e("ListingDetail","ListingOwner: "+myListing.getListingOwner());
+
+        Transaction t = new Transaction();
+        t.setBalance(myListing.getPrice());
+        t.setListingOwner(myListing.getListingOwner());
+        t.setPayer(myUser.getmNormalizedEmail());
+        t.setApproved(false);
+        // add Transaction to User
+        myUser.appendTransaction(t);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
@@ -169,7 +173,8 @@ public class ListingDetailActivity extends AppCompatActivity{
         myUser.appendBooking(b);
         myRef.child("listings").child(b.getOwner().getListingTitle()).child("bookings").child(b.getBookingOwner()).setValue(b);
         myRef.child("users").child(myUser.getmNormalizedEmail()).child("mBookings").child(b.getBookingTitle()).setValue(b);
-        myRef.child("transaction-tracker").child(c.getListingOwner()).setValue(c); // HELP
+        myRef.child("users").child(myUser.getmNormalizedEmail()).child("mTransactions").child(t.getListingOwner()).setValue(t);
+        // myRef.child("transaction-tracker").child(t.getListingOwner()).setValue(t);
     }
 
     private void populate(){
@@ -181,6 +186,7 @@ public class ListingDetailActivity extends AppCompatActivity{
         ownerTextView.setText(myListing.getListingOwner());
         aboutTextView.setText(myListing.getAbout());
         //totalPriceTextView.setText(myListing.getPrice() + "");
+        totalPriceTextView.setText(String.valueOf(myListing.getPrice()));
         listingRatingBar.setRating(myListing.getAverageRating());
         //ownerRatingBar.setRating(myListing.getOwner().getAverageRating()); //need to fix so we can retrieve owner's rating
         paymentMethodTextView.setText("");

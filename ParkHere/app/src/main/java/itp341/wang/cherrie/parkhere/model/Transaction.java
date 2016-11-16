@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by Cherrie on 11/3/16.
  */
 
-public class Card implements Serializable{
+public class Transaction implements Serializable{
 
     String payer;
     String listingOwner;
@@ -15,7 +15,7 @@ public class Card implements Serializable{
     double balance = 0.0;
 
     // CONSTRUCTOR
-    public Card() {
+    public Transaction() {
         super();
     }
 

@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -290,6 +291,18 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         initialize();
         listeners();
+
+        Log.e("HomeActivity", "Is it true: "+myUser.hasRecentTransactionApproved());
+        Log.e("HomeActivity", "Who is my User:  "+myUser.getmNormalizedEmail());
+        // if a seeker has recently received a transaction for one of your listings
+        if (myUser.hasRecentTransactionApproved()){
+            Debug.printToast("ALERT: You have a recent completed transaction. Your account balance has been updated to reflect the change.", getApplicationContext());
+            // set back to false...
+            Log.e("HomeActivity", "We are approved!!!");
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference();
+            myRef.child("users").child(myUser.getmNormalizedEmail()).child("recentTransactionApproved").setValue(false);
+        }
     }
 
     private void initialize() {

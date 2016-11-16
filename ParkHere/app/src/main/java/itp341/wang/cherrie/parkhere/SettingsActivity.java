@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,8 +26,9 @@ import com.nguyenhoanglam.imagepicker.model.Image;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import itp341.wang.cherrie.parkhere.model.Card;
+import itp341.wang.cherrie.parkhere.model.Transaction;
 import itp341.wang.cherrie.parkhere.model.User;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -36,8 +38,8 @@ public class SettingsActivity extends AppCompatActivity {
     private SimpleDraweeView userProfPicView;
     private EditText firstNameEditText;
     private EditText lastNameEditText;
+    private HashMap<String, Transaction> transactionTracker;
     private User myUser;
-    private Card myCard;
     private double amountDue;
 
     @Override
@@ -98,12 +100,8 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             //On click function
             public void onClick(View view) {
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference ref = database.getReference("transaction-tracker");
-                Debug.printToast("Your pending payments have been authorized", getApplicationContext());
-                // finds the card object associated with my user email
-                // myCard = that card
-                // myCard.setApproved(true);
+                authorizeDialog();
+
             }
         });
 
@@ -135,7 +133,7 @@ public class SettingsActivity extends AppCompatActivity {
         HomeActivity.setNavDrawerToHome();
     }
 
-    private void notSeekerDialog() {
+    private void authorizeDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this, R.style.MyDialogTheme);
         builder.setTitle(getString(R.string.dialog_title_payment));
         builder.setMessage(getString(R.string.dialog_message_payment));
@@ -149,37 +147,37 @@ public class SettingsActivity extends AppCompatActivity {
 
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference myRef = database.getReference();
-                        // update the accountBalance of person to be paid
-                        // reset firebase with new users
-                        // delete transaction on transaction tracker
-                        Debug.printToast("Your pending payments have been authorized", getApplicationContext());
-                        myRef.child("transaction-tracker").child(myUser.getmNormalizedEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                // Get user information
-                                myCard  = dataSnapshot.getValue(Card.class);
-                                amountDue = myCard.getBalance();
-                                System.out.println(myCard.getBalance());
-                            }
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
+
+                        // finds the card object associated with my user email
+                        transactionTracker = myUser.getmTransactions();
+                        if (transactionTracker == null){
+                            Debug.printToast("You don't have any current pending payments", getApplicationContext());
+                        } else {
+                            // update the accountBalance of person to be paid
+                            // reset firebase with new users
+                            // delete transaction on transaction tracker
+                            for (String key : transactionTracker.keySet()) {
+                                Transaction currTrans = transactionTracker.get(key);
+                                // look up ownerToUpdate and add to ListingOwner balance
+                                myRef.child("users").child(currTrans.getListingOwner().replace(".", "%2E")).child("accountBalance").setValue(currTrans.getBalance());
+                                // change boolean to notify Owner that he/she has been paid
+                                Debug.printToast("The listing Owner is: "+currTrans.getListingOwner(), getApplicationContext());
+                                myRef.child("users").child(currTrans.getListingOwner().replace(".", "%2E")).child("recentTransactionApproved").setValue(true);
+                                // subtract from your balance
+                                myRef.child("users").child(myUser.getmNormalizedEmail()).child("accountBalance").setValue(myUser.getAccountBalance()-currTrans.getBalance());
+                                //myUser.setAccountBalance(myUser.getAccountBalance()-currTrans.getBalance());
+                                Log.e("SettingsActivity", "Is it false: "+myUser.hasRecentTransactionApproved());
+
                             }
-                        });
-                        myRef.child("users").child(myCard.getListingOwner()).child("accountBalance").setValue(amountDue);
-//                        myRef.child("users").child(myCard.getListingOwner).addListenerForSingleValueEvent(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(DataSnapshot dataSnapshot) {
-//                                // Get user information
-//                                myCard  = dataSnapshot.getValue(Card.class);
-//                                amountDue = myCard.getBalance();
-//                                System.out.println(myCard.getBalance());
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(DatabaseError databaseError) {
-//                            }
-//                        });
+                            // clear all transactions
+                            transactionTracker.clear();
+                            // set myUser transactions to cleared
+                            myRef.child("users").child(myUser.getmNormalizedEmail()).child("mTransactions").setValue(transactionTracker);
+
+                            Debug.printToast("Your pending payments have been authorized", getApplicationContext());
+                        }
+
                     }
                 });
 

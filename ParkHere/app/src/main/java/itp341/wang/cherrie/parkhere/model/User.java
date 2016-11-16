@@ -31,8 +31,10 @@ public class User implements Serializable {
 
     private boolean isOwner;
     private boolean isSeeker;
+    private boolean recentTransactionApproved;
     private HashMap<String, Booking> mBookings;
     private HashMap<String, Listing> mListings;
+    private HashMap<String, Transaction> mTransactions;
     private float rating;
     private int numRatings;
     private double accountBalance;
@@ -77,9 +79,15 @@ public class User implements Serializable {
         return isSeeker;
     }
 
+    public boolean hasRecentTransactionApproved() {
+        return recentTransactionApproved;
+    }
+
     public HashMap<String, Booking> getmBookings() { return mBookings; }
 
     public HashMap<String, Listing> getmListings() { return mListings; }
+
+    public HashMap<String, Transaction> getmTransactions() { return mTransactions; }
 
     public double getAccountBalance() {
         return accountBalance;
@@ -120,12 +128,24 @@ public class User implements Serializable {
         isSeeker = seeker;
     }
 
+    public void setRecentTransactionApproved(boolean recentTransactionApproved) {
+        this.recentTransactionApproved = recentTransactionApproved;
+    }
+
     public void appendListing(Listing l) {
         if (mListings == null) {
             mListings = new HashMap<>();
         }
 
         mListings.put(l.getListingTitle(), l);
+    }
+
+    public void appendTransaction(Transaction t) {
+        if (mTransactions == null) {
+            mTransactions = new HashMap<>();
+        }
+
+        mTransactions.put(t.getListingOwner(), t);
     }
 
     public void appendBooking(Booking b) {
@@ -144,6 +164,11 @@ public class User implements Serializable {
     public void removeBooking(Booking b) {
         if (mBookings != null)
             mBookings.remove(b.getBookingTitle());
+    }
+
+    public void removeBooking(Transaction t) {
+        if (mTransactions != null)
+            mTransactions.remove(t.getListingName());
     }
 
     public void setAccountBalance(double accountBalance) {
