@@ -41,7 +41,18 @@ public class User implements Serializable {
 
     // CONSTRUCTOR
     public User() {
-        super();
+    }
+
+    public User(String mFirstName, String mLastName, String mPhoneNumber, String mProfileImageURL, String mEmail, int mHashedPassword, String mNormalizedEmail, boolean isOwner, boolean isSeeker) {
+        this.mFirstName = mFirstName;
+        this.mLastName = mLastName;
+        this.mPhoneNumber = mPhoneNumber;
+        this.mProfileImageURL = mProfileImageURL;
+        this.mEmail = mEmail;
+        this.mHashedPassword = mHashedPassword;
+        this.mNormalizedEmail = mNormalizedEmail;
+        this.isOwner = isOwner;
+        this.isSeeker = isSeeker;
     }
 
     // getters
@@ -96,6 +107,8 @@ public class User implements Serializable {
     public double getAccountBalance() {
         return accountBalance;
     }
+
+
 
     // setters
 
