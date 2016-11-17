@@ -292,16 +292,17 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         initialize();
         listeners();
 
-        Log.e("HomeActivity", "Is it true: "+myUser.hasRecentTransactionApproved());
+        Log.e("HomeActivity", "Is it true: "+myUser.isRecentTransactionApproved());
         Log.e("HomeActivity", "Who is my User:  "+myUser.getmNormalizedEmail());
         // if a seeker has recently received a transaction for one of your listings
-        if (myUser.hasRecentTransactionApproved()){
-            Debug.printToast("ALERT: You have a recent completed transaction. Your account balance has been updated to reflect the change.", getApplicationContext());
+        if (myUser.isRecentTransactionApproved()){
+            //Debug.printToast("ALERT: You have a recent completed transaction. Your account balance has been updated to reflect the change.", getApplicationContext());
             // set back to false...
             Log.e("HomeActivity", "We are approved!!!");
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myRef = database.getReference();
             myRef.child("users").child(myUser.getmNormalizedEmail()).child("recentTransactionApproved").setValue(false);
+            transactionDialog();
         }
     }
 
@@ -410,6 +411,33 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference myRef = database.getReference();
                         myRef.child("users").child(myUser.getmNormalizedEmail()).setValue(myUser);
+                    }
+                });
+
+        String negativeText = getString(android.R.string.cancel);
+        builder.setNegativeButton(negativeText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // negative button logic
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        // display dialog
+        dialog.show();
+    }
+
+    private void transactionDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this, R.style.MyDialogTheme);
+        builder.setTitle("Transaction Approved");
+        builder.setMessage("A recent listing was just completed and the parking Seeker has approved the transaction. Your account balance has been updated to reflect the change.");
+
+        String positiveText = getString(android.R.string.ok);
+        builder.setPositiveButton(positiveText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
                     }
                 });
 

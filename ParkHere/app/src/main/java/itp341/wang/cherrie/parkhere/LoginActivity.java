@@ -107,8 +107,6 @@ public class LoginActivity extends AppCompatActivity {
                             myUser  = dataSnapshot.getValue(User.class);
                             ((ParkHereApplication) getApplication()).setMyUser(myUser);
                             System.out.println(myUser.getmEmail());
-                            Debug.printToast("Should be true: " + myUser.hasRecentTransactionApproved(), getApplicationContext());
-                            // TODO: consider adding payment dialog here...
                             Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
                             startActivityForResult(homeIntent,0);
                         }

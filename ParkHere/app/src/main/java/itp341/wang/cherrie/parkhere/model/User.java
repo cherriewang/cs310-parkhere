@@ -83,6 +83,10 @@ public class User implements Serializable {
         return recentTransactionApproved;
     }
 
+    public boolean isRecentTransactionApproved() {
+        return recentTransactionApproved;
+    }
+
     public HashMap<String, Booking> getmBookings() { return mBookings; }
 
     public HashMap<String, Listing> getmListings() { return mListings; }
