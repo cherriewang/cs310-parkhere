@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,6 +42,7 @@ public class SettingsActivity extends AppCompatActivity {
     private HashMap<String, Transaction> transactionTracker;
     private User myUser;
     private double amountDue;
+    private double existingBalance = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,8 +161,30 @@ public class SettingsActivity extends AppCompatActivity {
                             // delete transaction on transaction tracker
                             for (String key : transactionTracker.keySet()) {
                                 Transaction currTrans = transactionTracker.get(key);
+
+                                final DatabaseReference usersRef = database.getReference("user");
+                                usersRef.orderByChild(currTrans.getListingOwner().replace(".", "%2E")).addChildEventListener(new ChildEventListener() {
+                                    @Override
+                                    public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                                        User listingOwner = dataSnapshot.getValue(User.class);
+                                        existingBalance = listingOwner.getAccountBalance();
+                                    }
+
+                                    @Override
+                                    public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+                                    @Override
+                                    public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+                                    @Override
+                                    public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {}
+                                });
+                                
                                 // look up ownerToUpdate and add to ListingOwner balance
-                                myRef.child("users").child(currTrans.getListingOwner().replace(".", "%2E")).child("accountBalance").setValue(currTrans.getBalance());
+                                myRef.child("users").child(currTrans.getListingOwner().replace(".", "%2E")).child("accountBalance").setValue(existingBalance+currTrans.getBalance());
                                 // change boolean to notify Owner that he/she has been paid
                                 Debug.printToast("The listing Owner is: "+currTrans.getListingOwner(), getApplicationContext());
                                 myRef.child("users").child(currTrans.getListingOwner().replace(".", "%2E")).child("recentTransactionApproved").setValue(true);
