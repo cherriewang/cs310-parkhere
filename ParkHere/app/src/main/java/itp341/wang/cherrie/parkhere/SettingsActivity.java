@@ -12,12 +12,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity;
 import com.nguyenhoanglam.imagepicker.model.Image;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +49,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         initialize();
         listeners();
+
+        myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
     }
 
     private void initialize(){
@@ -53,37 +61,27 @@ public class SettingsActivity extends AppCompatActivity {
         firstNameEditText = (EditText) findViewById(R.id.firstNameEditText);
         lastNameEditText = (EditText) findViewById(R.id.lastNameEditText);
 
-        myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
-
         populate();
     }
 
     private void populate(){
-        firstNameEditText.setHint(myUser.getmFirstName());
-        lastNameEditText.setHint(myUser.getmLastName());
+        //firstNameEditText.setHint(myUser.getmFirstName());
+        //lastNameEditText.setHint(myUser.getmLastName());
     }
 
     private void listeners(){
+        // SEND EMAIL BUTTON LISTENER
         saveButton.setOnClickListener(new View.OnClickListener(){
             @Override
+            //On click function
             public void onClick(View view) {
-                String firstName = firstNameEditText.getText().toString();
-                String lastName = lastNameEditText.getText().toString();
-                if(!firstName.isEmpty() && !lastName.isEmpty()){
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef = database.getReference();
-                    myRef.child("users").child(myUser.getmNormalizedEmail()).child("mFirstName").setValue(firstName);
+                // log the user out
+                // set intent to return to welcome activity
 
-                    Debug.printToast("Successfully edited first and last name", getApplicationContext());
-
-                    populate();
-                }
-                else{
-                    Debug.printToast("Missing either first name and/or last name", getApplicationContext());
-                }
             }
         });
 
+        // SEND EMAIL BUTTON LISTENER
         logoutButton.setOnClickListener(new View.OnClickListener(){
             @Override
             //On click function
