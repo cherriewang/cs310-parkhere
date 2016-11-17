@@ -51,8 +51,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         initialize();
         listeners();
-
-        myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
     }
 
     private void initialize(){
@@ -63,12 +61,14 @@ public class SettingsActivity extends AppCompatActivity {
         firstNameEditText = (EditText) findViewById(R.id.firstNameEditText);
         lastNameEditText = (EditText) findViewById(R.id.lastNameEditText);
 
+        myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
+
         populate();
     }
 
     private void populate(){
-        //firstNameEditText.setHint(myUser.getmFirstName());
-        //lastNameEditText.setHint(myUser.getmLastName());
+        firstNameEditText.setHint(myUser.getmFirstName());
+        lastNameEditText.setHint(myUser.getmLastName());
     }
 
     private void listeners(){
@@ -77,9 +77,23 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             //On click function
             public void onClick(View view) {
-                // log the user out
-                // set intent to return to welcome activity
+                String firstName = firstNameEditText.getText().toString();
+                String lastName = lastNameEditText.getText().toString();
+                if(!firstName.isEmpty() && !lastName.isEmpty()){
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference();
+                    myRef.child("users").child(myUser.getmNormalizedEmail()).child("mFirstName").setValue(firstName);
+                    myRef.child("users").child(myUser.getmNormalizedEmail()).child("mLastName").setValue(lastName);
 
+                    Debug.printToast("Successfully edited first and last name", getApplicationContext());
+
+                    firstNameEditText.setText("");
+                    lastNameEditText.setText("");
+                    populate();
+                }
+                else{
+                    Debug.printToast("Missing either first name and/or last name", getApplicationContext());
+                }
             }
         });
 
