@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.blackcat.currencyedittext.CurrencyEditText;
+import com.borax12.materialdaterangepicker.date.DatePickerDialog;
 import com.borax12.materialdaterangepicker.time.RadialPickerLayout;
 import com.borax12.materialdaterangepicker.time.TimePickerDialog;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -43,7 +44,7 @@ import itp341.wang.cherrie.parkhere.model.User;
  * Created by glarencezhao on 10/24/16.
  */
 
-public class CreateEditListingActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
+public class CreateEditListingActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
 
     private ImageView listingImageView;
     private EditText listingTitleEditText;
@@ -67,6 +68,9 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
     private TextView toTimeTextView;
     private TextView policyTextView;
     private Spinner spinner;
+    private Button dateButton;
+    private TextView fromDateTextView;
+    private TextView toDateTextView;
 
     private String listingTitle = "";
     private String location = "";
@@ -88,6 +92,12 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
     private String toHourString = "";
     private String toMinuteString = "";
     private int cancellationTracker = 0;
+    private int fromYear = 0;
+    private int fromMonthOfYear = 0;
+    private int fromDayOfMonth = 0;
+    private int toYear = 0;
+    private int toMonthOfYear = 0;
+    private int toDayOfMonth = 0;
 
     private double latitude = 0;
     private double longitude = 0;
@@ -143,6 +153,9 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
         toTimeTextView = (TextView) findViewById(R.id.toTimeTextView);
         spinner = (Spinner) findViewById(R.id.spinnerCancellation);
         policyTextView = (TextView) findViewById(R.id.cancelDetailsTextView);
+        dateButton = (Button) findViewById(R.id.dateButton);
+        fromDateTextView = (TextView) findViewById(R.id.fromDateTextView);
+        toDateTextView = (TextView) findViewById(R.id.toDateTextView);
 
         populate();
 
@@ -191,6 +204,8 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
             sundayCheckBox.setChecked(isSunday);
             fromTimeTextView.setText(fromHourString + ":" + fromMinuteString);
             toTimeTextView.setText(toHourString + ":" + toMinuteString);
+            fromTimeTextView.setText(fromMonthOfYear + "/" + fromDayOfMonth + "/" + fromYear);
+            toTimeTextView.setText(toMonthOfYear + "/" + toDayOfMonth + "/" + toYear);
         }
         else
             myListing = new Listing();
@@ -311,6 +326,20 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
                 timePickerDialog.show(getFragmentManager(), "Select the Time");
             }
         });
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar now = Calendar.getInstance();
+                com.borax12.materialdaterangepicker.date.DatePickerDialog datePickerDialog = com.borax12.materialdaterangepicker.date.DatePickerDialog
+                        .newInstance(
+                                CreateEditListingActivity.this,
+                                now.get(Calendar.YEAR),
+                                now.get(Calendar.MONTH),
+                                now.get(Calendar.DAY_OF_MONTH)
+                        );
+                datePickerDialog.show(getFragmentManager(), "Select the Dates");
+            }
+        });
         listingTitleEditText.addTextChangedListener(new EditTextListener(listingTitleEditText.getId()));
         locationTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -390,10 +419,21 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
         toHourString = hourOfDayEnd < 10 ? "0"+hourOfDayEnd : ""+hourOfDayEnd;
         toMinuteString = minuteEnd < 10 ? "0"+minuteEnd : ""+minuteEnd;
 
-        TextView fromDateTextView = (TextView) findViewById(R.id.fromTimeTextView);
         fromDateTextView.setText(fromHourString + ":" + fromMinuteString);
-        TextView toDateTextView = (TextView) findViewById(R.id.toTimeTextView);
         toDateTextView.setText(toHourString + ":" + toMinuteString);
+    }
+
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth, int yearEnd, int monthOfYearEnd, int dayOfMonthEnd) {
+        fromYear = year;
+        fromMonthOfYear = ++monthOfYear;
+        fromDayOfMonth = dayOfMonth;
+        toYear = yearEnd;
+        toMonthOfYear = ++monthOfYearEnd;
+        toDayOfMonth = dayOfMonthEnd;
+
+        fromTimeTextView.setText(fromMonthOfYear + "/" + fromDayOfMonth + "/" + fromYear);
+        toTimeTextView.setText(toMonthOfYear + "/" + toDayOfMonth + "/" + toYear);
     }
 
     class EditTextListener implements TextWatcher{

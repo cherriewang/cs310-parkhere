@@ -18,7 +18,41 @@ public class Listing implements Serializable{
 
     // CONSTRUCTOR
     public Listing() {
-        super();
+
+    }
+
+    public Listing(String listingOwner, String listingTitle, boolean handicapped, boolean tandem, boolean suv, boolean covered, String location, String about, double price, boolean sunday, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, String fromHourString, String fromMinuteString, String toHourString, String toMinuteString, int fromYear, int fromMonthOfYear, int fromDayOfMonth, int toYear, int toMonthOfYear, int toDayOfMonth, User owner, double latitude, double longitude, int cancellationPolicy, String latestReviewer) {
+        this.listingOwner = listingOwner;
+        this.listingTitle = listingTitle;
+        this.handicapped = handicapped;
+        this.tandem = tandem;
+        this.suv = suv;
+        this.covered = covered;
+        this.location = location;
+        this.about = about;
+        this.price = price;
+        this.sunday = sunday;
+        this.monday = monday;
+        this.tuesday = tuesday;
+        this.wednesday = wednesday;
+        this.thursday = thursday;
+        this.friday = friday;
+        this.saturday = saturday;
+        this.fromHourString = fromHourString;
+        this.fromMinuteString = fromMinuteString;
+        this.toHourString = toHourString;
+        this.toMinuteString = toMinuteString;
+        this.fromYear = fromYear;
+        this.fromMonthOfYear = fromMonthOfYear;
+        this.fromDayOfMonth = fromDayOfMonth;
+        this.toYear = toYear;
+        this.toMonthOfYear = toMonthOfYear;
+        this.toDayOfMonth = toDayOfMonth;
+        this.owner = owner;
+        Latitude = latitude;
+        Longitude = longitude;
+        this.cancellationPolicy = cancellationPolicy;
+        this.latestReviewer = latestReviewer;
     }
 
     private String listingOwner;
@@ -42,6 +76,12 @@ public class Listing implements Serializable{
     private String fromMinuteString;
     private String toHourString;
     private String toMinuteString;
+    private int fromYear;
+    private int fromMonthOfYear;
+    private int fromDayOfMonth;
+    private int toYear;
+    private int toMonthOfYear;
+    private int toDayOfMonth;
     private User owner;
 
     // lat long
@@ -229,6 +269,54 @@ public class Listing implements Serializable{
 
     public void setFromMinuteString(String fromMinuteString) {
         this.fromMinuteString = fromMinuteString;
+    }
+
+    public int getFromYear() {
+        return fromYear;
+    }
+
+    public void setFromYear(int fromYear) {
+        this.fromYear = fromYear;
+    }
+
+    public int getFromMonthOfYear() {
+        return fromMonthOfYear;
+    }
+
+    public void setFromMonthOfYear(int fromMonthOfYear) {
+        this.fromMonthOfYear = fromMonthOfYear;
+    }
+
+    public int getFromDayOfMonth() {
+        return fromDayOfMonth;
+    }
+
+    public void setFromDayOfMonth(int fromDayOfMonth) {
+        this.fromDayOfMonth = fromDayOfMonth;
+    }
+
+    public int getToYear() {
+        return toYear;
+    }
+
+    public void setToYear(int toYear) {
+        this.toYear = toYear;
+    }
+
+    public int getToMonthOfYear() {
+        return toMonthOfYear;
+    }
+
+    public void setToMonthOfYear(int toMonthOfYear) {
+        this.toMonthOfYear = toMonthOfYear;
+    }
+
+    public int getToDayOfMonth() {
+        return toDayOfMonth;
+    }
+
+    public void setToDayOfMonth(int toDayOfMonth) {
+        this.toDayOfMonth = toDayOfMonth;
     }
 
     public void setCancellationPolicy(int cancellationPolicy) {
