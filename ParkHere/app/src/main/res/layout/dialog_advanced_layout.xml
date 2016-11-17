@@ -8,7 +8,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginTop="16dp"
         android:gravity="center_horizontal">
 
@@ -24,7 +24,7 @@
             android:id="@+id/fromDateTextView"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="10dp"
             android:text="11/03/2016"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -34,7 +34,7 @@
             android:id="@+id/toDateTextView"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="10dp"
             android:text="11/03/2016"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -45,7 +45,29 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Short Term Parking?"
+            android:textSize="18sp"
+            android:layout_marginStart="64dp"/>
+
+        <CheckBox
+            android:id="@+id/shortTermParkingCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:buttonTint="@color/colorAccent"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:gravity="center_horizontal">
 
@@ -61,7 +83,7 @@
             android:id="@+id/fromTimeTextView"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="10dp"
             android:text="11:59 PM"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -71,7 +93,7 @@
             android:id="@+id/toTimeTextView"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="10dp"
             android:text="11:59 PM"
             android:textSize="18sp"
             android:textStyle="bold"

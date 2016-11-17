@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.PorterDuff;
 import android.location.Location;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -120,6 +121,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private String fromMinuteString = "";
     private String toHourString = "";
     private String toMinuteString = "";
+    private boolean shortTermParking = false;
     //Parking spot type booleans
     private boolean searchCovered = false;
     private boolean searchSUV = false;
@@ -228,9 +230,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                         notSeekerDialog();
                                     }
                                 } catch (GooglePlayServicesRepairableException e) {
-                                    // TODO: Handle the error.
                                 } catch (GooglePlayServicesNotAvailableException e) {
-                                    // TODO: Handle the error.
                                 }
                             }
                             //Home
@@ -873,7 +873,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         return new LatLngBounds(southwest, northeast);
     }
 
+    private Button selectTimeButton;
+
     private void dialogListeners(int id){
+
         if(id == R.id.action_advanced){
             final View view = advancedDialog.getCustomView();
             //populate time
@@ -901,7 +904,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     datePickerDialog.show(getFragmentManager(), "Select the Dates");
                 }
             });
-            Button selectTimeButton = (Button)view.findViewById(R.id.timeButton);
+            selectTimeButton = (Button)view.findViewById(R.id.timeButton);
             selectTimeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -915,6 +918,24 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     );
                     timePickerDialog.setEndTime(Integer.parseInt(toHourString), Integer.parseInt(toMinuteString));
                     timePickerDialog.show(getFragmentManager(), "Select the Time");
+                }
+            });
+            CheckBox shortTermParkingCheckBox = (CheckBox)view.findViewById(R.id.shortTermParkingCheckBox);
+            shortTermParkingCheckBox.setChecked(shortTermParking);
+            if(!shortTermParkingCheckBox.isChecked()) {
+                selectTimeButton.setEnabled(false);
+            }
+            else
+                selectTimeButton.setEnabled(true);
+            shortTermParkingCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    shortTermParking = isChecked;
+                    if(isChecked) {
+                        selectTimeButton.setEnabled(false);
+                    }
+                    else
+                        selectTimeButton.setEnabled(true);
                 }
             });
             CheckBox coveredCheckBox = (CheckBox)view.findViewById(R.id.coveredCheckBox);
