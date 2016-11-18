@@ -203,11 +203,7 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
             toDayOfMonth = myListing.getToDayOfMonth();
             toMonthOfYear = myListing.getToMonthOfYear();
             toYear = myListing.getToYear();
-
-            //set image back
-            System.out.print("starting to set back");
             listingImageView.setImageBitmap(base64ToBitmap(myListing.getListingImageString()));
-            System.out.print("finishing set back");
 
             listingTitleEditText.setText(listingTitle);
             locationTextView.setText(location);

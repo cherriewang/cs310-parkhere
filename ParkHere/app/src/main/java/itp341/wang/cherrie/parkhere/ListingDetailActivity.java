@@ -1,13 +1,17 @@
 package itp341.wang.cherrie.parkhere;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cunoraz.tagview.Tag;
@@ -49,6 +53,7 @@ public class ListingDetailActivity extends AppCompatActivity{
     private MaterialRatingBar ownerRatingBar;
     private TagView categoryTags;
     private SimpleDraweeView reviewProfPicView;
+    private ImageView listingImageView;
     private TextView reviewUserNameTextView;
     private TextView reviewDateTextView;
     private TextView reviewContentTextView;
@@ -100,6 +105,7 @@ public class ListingDetailActivity extends AppCompatActivity{
         listingRatingBar = (MaterialRatingBar)findViewById(R.id.listingRatingBar);
         ownerRatingBar = (MaterialRatingBar)findViewById(R.id.ownerRatingBar);
         reviewProfPicView = (SimpleDraweeView)findViewById(R.id.reviewProfPicView);
+        listingImageView = (SimpleDraweeView)findViewById(R.id.listingImageView);
         reviewUserNameTextView = (TextView)findViewById(R.id.reviewUserNameTextView);
         reviewDateTextView = (TextView)findViewById(R.id.reviewDateTextView);
         reviewContentTextView = (TextView)findViewById(R.id.reviewContentTextView);
@@ -212,6 +218,7 @@ public class ListingDetailActivity extends AppCompatActivity{
 //        ownerRatingBar.setRating(myListing.getOwner().getAverageRating()); //need to fix so we can retrieve owner's rating
         paymentMethodTextView.setText("");
         Review latestReview = myListing.getLatestReview();
+        listingImageView.setImageBitmap(base64ToBitmap(myListing.getListingImageString()));
 
         if(latestReview == null){
             reviewUserNameTextView.setText("N/A");
@@ -245,6 +252,11 @@ public class ListingDetailActivity extends AppCompatActivity{
         //draweeView.setImageURI(uri);
 
         setCategoryTags();
+    }
+
+    private Bitmap base64ToBitmap(String b64) {
+        byte[] imageAsBytes = Base64.decode(b64.getBytes(), Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
     }
 
     private void setCategoryTags(){
