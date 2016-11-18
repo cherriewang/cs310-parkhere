@@ -33,7 +33,7 @@ import java.util.HashMap;
 import itp341.wang.cherrie.parkhere.model.Transaction;
 import itp341.wang.cherrie.parkhere.model.User;
 
-public class SettingsActivity extends AppCompatActivity {
+public class   SettingsActivity extends AppCompatActivity {
     private Button logoutButton;
     private Button authorizeButton;
     private Button saveButton;
@@ -74,6 +74,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void listeners(){
         // SEND EMAIL BUTTON LISTENER
+        final SettingsActivity _this = this;
         saveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             //On click function
@@ -81,6 +82,11 @@ public class SettingsActivity extends AppCompatActivity {
                 String firstName = firstNameEditText.getText().toString();
                 String lastName = lastNameEditText.getText().toString();
                 if(!firstName.isEmpty() && !lastName.isEmpty()){
+                    myUser.setmFirstName(firstName);
+                    myUser.setmLastName(lastName);
+
+                    ((ParkHereApplication) _this.getApplication()).setMyUser(myUser);
+
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference myRef = database.getReference();
                     myRef.child("users").child(myUser.getmNormalizedEmail()).child("mFirstName").setValue(firstName);
