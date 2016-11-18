@@ -110,6 +110,22 @@ public class ListingDetailActivity extends AppCompatActivity{
     }
 
     private void listeners(){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+        DatabaseReference refMyUser = myRef.child("users").child(myListing.getListingOwner());
+
+        refMyUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                ownerRatingBar.setRating(user.getAverageRating());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
         confirmBookingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,7 +204,7 @@ public class ListingDetailActivity extends AppCompatActivity{
         //totalPriceTextView.setText(myListing.getPrice() + "");
         totalPriceTextView.setText(String.valueOf(myListing.getPrice()));
         listingRatingBar.setRating(myListing.getAverageRating());
-        //ownerRatingBar.setRating(myListing.getOwner().getAverageRating()); //need to fix so we can retrieve owner's rating
+//        ownerRatingBar.setRating(myListing.getOwner().getAverageRating()); //need to fix so we can retrieve owner's rating
         paymentMethodTextView.setText("");
         Review latestReview = myListing.getLatestReview();
 
