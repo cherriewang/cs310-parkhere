@@ -20,8 +20,8 @@ public class UserUnitTest {
     @Test
     public void addBooking_isCorrect() throws Exception {
         User user = new User();
-        Booking booking1 = new Booking(new Listing());
-        Booking booking2 = new Booking(new Listing());
+        Booking booking1 = new Booking(new Listing(), null);
+        Booking booking2 = new Booking(new Listing(), null);
         booking2.setBookingTitle("Title");
         user.appendBooking(booking1);
         user.appendBooking(booking2);
