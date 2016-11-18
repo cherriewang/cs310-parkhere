@@ -59,6 +59,8 @@ public class ListingDetailActivity extends AppCompatActivity{
     private Listing myListing = new Listing();
     private User myUser;
 
+    private boolean isAvailable;
+
     public static final int SELECT_PAYMENT_REQUEST_CODE = 0;
     public static final String SELECTING_PAYMENT = "Selecting Payment";
     public static final String MORE_REVIEWS_INTENT_KEY = "Sending selected listing to display more reviews";
@@ -73,6 +75,9 @@ public class ListingDetailActivity extends AppCompatActivity{
             myListing = (Listing)i.getSerializableExtra(ListingAdapter.LISTING_DETAIL_INTENT_KEY);
         else
             myListing = null;
+        if(i.hasExtra(HomeActivity.LISTING_AVAILIBILITY_INTENT_KEY))
+            isAvailable = i.getBooleanExtra(HomeActivity.LISTING_AVAILIBILITY_INTENT_KEY, false);
+
 
         myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
         initialize();
@@ -214,11 +219,12 @@ public class ListingDetailActivity extends AppCompatActivity{
             reviewContentTextView.setText(latestReview.getReviewText());
         }
 
-        //Availibility
-        //Set text for availibilityTextView to yes or no
-        //if no
-        //confirmBookingButton.setEnabled(false);
-        availibilityTextView.setText("No");
+        if(isAvailable)
+            availibilityTextView.setText("Yes");
+        else {
+            availibilityTextView.setText("No");
+            confirmBookingButton.setEnabled(false);
+        }
 
         if(myListing.getCancellationPolicy() == 0){ // Strict
             cancellationTextView.setText(getResources().getString(R.string.cancel_string_strict));

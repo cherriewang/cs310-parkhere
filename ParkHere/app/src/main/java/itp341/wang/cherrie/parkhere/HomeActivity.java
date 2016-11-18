@@ -123,6 +123,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private String toHourString = "";
     private String toMinuteString = "";
     private boolean shortTermParking = false;
+    private boolean isAvailable = false;
     //Parking spot type booleans
     private boolean searchCovered = false;
     private boolean searchSUV = false;
@@ -157,6 +158,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private final int PERMISSION_REQUEST_CODE = 3;
 
     public final static String USER_PROFILE_INTENT_KEY = "Sending user object to detail user profile activity";
+    public static final String LISTING_AVAILIBILITY_INTENT_KEY = "Passing if a listing(s) is available or not";
 
     private PermissionListener permissionListener = new PermissionListener() {
         @Override
@@ -341,8 +343,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-
-        initializeDateAndTime();
     }
 
     private void initializeDateAndTime() {
@@ -532,13 +532,25 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             }
 
-            advancedSearch();
+            if(!timeDateEmpty())
+                advancedSearch();
 
             addMarkers();
         }
     }
 
+    private boolean timeDateEmpty(){
+        if(fromYear == 0 && fromMonthOfYear == 0 && fromDayOfMonth == 0 && toYear == 0
+                && toMonthOfYear == 0 && toDayOfMonth == 0 && fromHourString.isEmpty()
+                && fromMinuteString.isEmpty() && toHourString.isEmpty() && toMinuteString.isEmpty())
+            return true;
+
+        return false;
+    }
+
     private void advancedSearch() {
+        isAvailable = false;
+
         //Calendar uses zero based index
         int zeroBasedFromMonth = fromMonthOfYear - 1;
         int zeroBasedToMonth = toMonthOfYear - 1;
@@ -546,7 +558,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         for (Iterator<Listing> iterator = allListingsToDisplay.iterator(); iterator.hasNext(); ) {
             Listing listingToCheck = iterator.next();
 
-            //Short term date and time check
+            //Short term search
             if(shortTermParking){
                 Calendar calendar = Calendar.getInstance();
 
@@ -574,6 +586,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     continue;
                 }
             }
+            //long term search
             else{
                 if (fromYear >= listingToCheck.getFromYear() && toYear <= listingToCheck.getToYear()){
                     if (fromMonthOfYear >= listingToCheck.getFromMonthOfYear() && toMonthOfYear <= listingToCheck.getToMonthOfYear()){
@@ -620,10 +633,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             }
         }
+
+        isAvailable = !allListingsToDisplay.isEmpty();
     }
 
     private boolean checkDay(String weekDay, Listing listingToCheck){
-        Debug.printToast("Weekday is: " + weekDay, getApplicationContext());
         switch (weekDay) {
             case "Monday": if(listingToCheck.isMonday())
                                 return true;
@@ -770,6 +784,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 int id = item.getItemId();
                 boolean wrapInScrollView = false;
                 if(id == R.id.action_advanced){
+                    if(timeDateEmpty())
+                        initializeDateAndTime();
                     advancedDialog = new MaterialDialog.Builder(HomeActivity.this).customView(R.layout.dialog_advanced_layout,
                             wrapInScrollView).positiveText("Set").onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
@@ -949,6 +965,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         Intent i = new Intent(HomeActivity.this, ListingDetailActivity.class);
         i.putExtra(ListingAdapter.LISTING_DETAIL_INTENT_KEY, listingSelected);
+        i.putExtra(LISTING_AVAILIBILITY_INTENT_KEY, isAvailable);
         startActivity(i);
     }
 
