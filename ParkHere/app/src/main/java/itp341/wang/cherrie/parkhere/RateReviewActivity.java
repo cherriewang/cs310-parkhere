@@ -93,8 +93,7 @@ public class RateReviewActivity extends AppCompatActivity {
                 DatabaseReference myRef = database.getReference();
                 listingToReview.addReview(myReview);
                 myRef.child("listings").child(listingToReview.getListingTitle()).child("reviews").child(myUser.getmNormalizedEmail()).setValue(myReview);
-//                myRef.child("listings").child(listingToReview.getListingTitle()).child("reviews").setValue(myReview);
-
+                myRef.child("users").child(listingToReview.getListingOwner()).child("mListings").child(listingToReview.getListingTitle()).child("reviews").child(myUser.getmNormalizedEmail()).setValue(myReview);
 
                 finish();
 
