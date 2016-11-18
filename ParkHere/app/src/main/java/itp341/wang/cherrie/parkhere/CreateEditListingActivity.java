@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,6 +34,7 @@ import com.nguyenhoanglam.imagepicker.model.Image;
 
 import org.w3c.dom.Text;
 
+import java.io.ByteArrayOutputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -162,6 +164,16 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
         populate();
     }
 
+    private String bitmapToBase64(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+    private Bitmap base64ToBitmap(String b64) {
+        byte[] imageAsBytes = Base64.decode(b64.getBytes(), Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+    }
     //Used to fill up info if editing a listing
     private void populate(){
         if (myListing != null) {
@@ -191,6 +203,7 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
             toDayOfMonth = myListing.getToDayOfMonth();
             toMonthOfYear = myListing.getToMonthOfYear();
             toYear = myListing.getToYear();
+            listingImageView.setImageBitmap(base64ToBitmap(myListing.getListingImageString()));
 
             listingTitleEditText.setText(listingTitle);
             locationTextView.setText(location);
@@ -273,6 +286,20 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
                     isSaturday = saturdayCheckBox.isChecked();
                     isSunday = sundayCheckBox.isChecked();
 
+                    // getting image from the image input
+
+                    listingImageView.setDrawingCacheEnabled(true);
+                    listingImageView.buildDrawingCache();
+                    Bitmap bitmap = listingImageView.getDrawingCache();
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    byte[] data = baos.toByteArray();
+                    String imageString = Base64.encodeToString(data, Base64.DEFAULT);
+
+
+                    System.out.print("compressed image");
+
+
                     // CREATE LISTING OBJECT
                     myListing.setListingTitle(listingTitle);
                     myListing.setListingOwner(myUser.getmNormalizedEmail()); // should have a global user here
@@ -310,6 +337,7 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
                     myListing.setLongitude(longitude);
                     myListing.setCancellationPolicy(cancellationTracker);
                     //Setting latest review default
+                    myListing.setListingImageString(imageString);
                     myListing.setLatestReviewer("");
                     myUser.appendListing(myListing);
 

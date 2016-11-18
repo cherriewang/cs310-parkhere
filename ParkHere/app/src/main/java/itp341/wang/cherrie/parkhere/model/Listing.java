@@ -84,6 +84,17 @@ public class Listing implements Serializable{
     private int toDayOfMonth;
     private User owner;
 
+
+    public String getListingImageString() {
+        return listingImageString;
+    }
+
+    public void setListingImageString(String listingImageString) {
+        this.listingImageString = listingImageString;
+    }
+
+    private String listingImageString;
+
     // lat long
     private double Latitude;
     private double Longitude;

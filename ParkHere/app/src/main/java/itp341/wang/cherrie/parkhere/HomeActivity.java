@@ -864,9 +864,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                     @Override
                                     public int compare(Listing listing1, Listing listing2) {
                                         if(listing1.getAverageRating() > listing2.getAverageRating())
-                                            return 1;
-                                        if(listing1.getAverageRating() < listing2.getAverageRating())
                                             return -1;
+                                        if(listing1.getAverageRating() < listing2.getAverageRating())
+                                            return 1;
 
                                         return 0;
                                     }
@@ -883,9 +883,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                     @Override
                                     public int compare(Listing listing1, Listing listing2) {
                                         if(listing1.getOwner().getAverageRating() > listing2.getOwner().getAverageRating())
-                                            return 1;
-                                        if(listing1.getOwner().getAverageRating() < listing2.getOwner().getAverageRating())
                                             return -1;
+                                        if(listing1.getOwner().getAverageRating() < listing2.getOwner().getAverageRating())
+                                            return 1;
                                         return 0;
                                     }
                                 });
