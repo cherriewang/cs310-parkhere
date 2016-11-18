@@ -211,13 +211,15 @@ public class SettingsActivity extends AppCompatActivity {
                                     myRef.child("users").child(myUser.getmNormalizedEmail()).child("accountBalance").setValue(myUser.getAccountBalance()-currTrans.getBalance());
                                     //myUser.setAccountBalance(myUser.getAccountBalance()-currTrans.getBalance());
                                     Log.e("SettingsActivity", "Is it false: "+myUser.hasRecentTransactionApproved());
+                                    // removes it from the hashtable once we're done
+                                    transactionTracker.remove(key);
                                 }
 
                             }
-                            // TODO: make it such that we don't clear all transaction every time.. just remove the ones we're done with
                             // clear all transactions
-                            transactionTracker.clear();
-                            // set myUser transactions to cleared
+                            //transactionTracker.clear();
+
+                            // set myUser transactions to the updated map (with the completed ones removed)
                             myRef.child("users").child(myUser.getmNormalizedEmail()).child("mTransactions").setValue(transactionTracker);
 
                             Debug.printToast("Your pending payments have been authorized", getApplicationContext());
