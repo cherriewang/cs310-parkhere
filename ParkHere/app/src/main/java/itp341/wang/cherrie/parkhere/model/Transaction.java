@@ -1,6 +1,7 @@
 package itp341.wang.cherrie.parkhere.model;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
 /**
  * Created by Cherrie on 11/3/16.
@@ -11,6 +12,11 @@ public class Transaction implements Serializable{
     String payer;
     String listingOwner;
     String listingName;
+    String toHourString;
+    String toMinuteString;
+    int toYear;
+    int toMonthOfYear;
+    int toDayOfMonth;
     boolean approved;
     double balance = 0.0;
 
@@ -20,6 +26,46 @@ public class Transaction implements Serializable{
     }
 
     // GETTERS
+
+    public String getToHourString() {
+        return toHourString;
+    }
+
+    public void setToHourString(String toHourString) {
+        this.toHourString = toHourString;
+    }
+
+    public String getToMinuteString() {
+        return toMinuteString;
+    }
+
+    public void setToMinuteString(String toMinuteString) {
+        this.toMinuteString = toMinuteString;
+    }
+
+    public int getToYear() {
+        return toYear;
+    }
+
+    public void setToYear(int toYear) {
+        this.toYear = toYear;
+    }
+
+    public int getToMonthOfYear() {
+        return toMonthOfYear;
+    }
+
+    public int getToDayOfMonth() {
+        return toDayOfMonth;
+    }
+
+    public void setToDayOfMonth(int toDayOfMonth) {
+        this.toDayOfMonth = toDayOfMonth;
+    }
+
+    public void setToMonthOfYear(int toMonthOfYear) {
+        this.toMonthOfYear = toMonthOfYear;
+    }
 
     public boolean isApproved() {
         return approved;
@@ -60,6 +106,11 @@ public class Transaction implements Serializable{
         this.balance = balance;
     }
 
+    public Calendar getTransactionCalendar(){
+        Calendar myCal = Calendar.getInstance();
+        myCal.set(toYear, toMonthOfYear, toDayOfMonth, Integer.parseInt(toHourString), Integer.parseInt(toMinuteString));
+        return myCal;
+    }
 
 
 }

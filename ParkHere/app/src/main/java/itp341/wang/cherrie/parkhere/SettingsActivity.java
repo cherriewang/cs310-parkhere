@@ -27,6 +27,7 @@ import com.nguyenhoanglam.imagepicker.model.Image;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import itp341.wang.cherrie.parkhere.model.Transaction;
@@ -176,38 +177,44 @@ public class SettingsActivity extends AppCompatActivity {
                             for (String key : transactionTracker.keySet()) {
                                 Transaction currTrans = transactionTracker.get(key);
 
-                                final DatabaseReference usersRef = database.getReference("user");
-                                usersRef.orderByChild(currTrans.getListingOwner().replace(".", "%2E")).addChildEventListener(new ChildEventListener() {
-                                    @Override
-                                    public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
-                                        User listingOwner = dataSnapshot.getValue(User.class);
-                                        existingBalance = listingOwner.getAccountBalance();
-                                    }
+                                Calendar now = Calendar.getInstance();
+                                if(now.after(currTrans.getTransactionCalendar())){
+                                    // it's completed
 
-                                    @Override
-                                    public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
+                                    final DatabaseReference usersRef = database.getReference("user");
+                                    usersRef.orderByChild(currTrans.getListingOwner().replace(".", "%2E")).addChildEventListener(new ChildEventListener() {
+                                        @Override
+                                        public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                                            User listingOwner = dataSnapshot.getValue(User.class);
+                                            existingBalance = listingOwner.getAccountBalance();
+                                        }
 
-                                    @Override
-                                    public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                                        @Override
+                                        public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
 
-                                    @Override
-                                    public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+                                        @Override
+                                        public void onChildRemoved(DataSnapshot dataSnapshot) {}
 
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {}
-                                });
-                                
-                                // look up ownerToUpdate and add to ListingOwner balance
-                                myRef.child("users").child(currTrans.getListingOwner().replace(".", "%2E")).child("accountBalance").setValue(existingBalance+currTrans.getBalance());
-                                // change boolean to notify Owner that he/she has been paid
-                                Debug.printToast("The listing Owner is: "+currTrans.getListingOwner(), getApplicationContext());
-                                myRef.child("users").child(currTrans.getListingOwner().replace(".", "%2E")).child("recentTransactionApproved").setValue(true);
-                                // subtract from your balance
-                                myRef.child("users").child(myUser.getmNormalizedEmail()).child("accountBalance").setValue(myUser.getAccountBalance()-currTrans.getBalance());
-                                //myUser.setAccountBalance(myUser.getAccountBalance()-currTrans.getBalance());
-                                Log.e("SettingsActivity", "Is it false: "+myUser.hasRecentTransactionApproved());
+                                        @Override
+                                        public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {}
+                                    });
+
+                                    // look up ownerToUpdate and add to ListingOwner balance
+                                    myRef.child("users").child(currTrans.getListingOwner().replace(".", "%2E")).child("accountBalance").setValue(existingBalance+currTrans.getBalance());
+                                    // change boolean to notify Owner that he/she has been paid
+                                    Debug.printToast("The listing Owner is: "+currTrans.getListingOwner(), getApplicationContext());
+                                    myRef.child("users").child(currTrans.getListingOwner().replace(".", "%2E")).child("recentTransactionApproved").setValue(true);
+                                    // subtract from your balance
+                                    myRef.child("users").child(myUser.getmNormalizedEmail()).child("accountBalance").setValue(myUser.getAccountBalance()-currTrans.getBalance());
+                                    //myUser.setAccountBalance(myUser.getAccountBalance()-currTrans.getBalance());
+                                    Log.e("SettingsActivity", "Is it false: "+myUser.hasRecentTransactionApproved());
+                                }
 
                             }
+                            // TODO: make it such that we don't clear all transaction every time.. just remove the ones we're done with
                             // clear all transactions
                             transactionTracker.clear();
                             // set myUser transactions to cleared

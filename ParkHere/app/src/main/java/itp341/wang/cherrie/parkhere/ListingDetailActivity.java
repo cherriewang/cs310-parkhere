@@ -174,6 +174,11 @@ public class ListingDetailActivity extends AppCompatActivity{
         t.setBalance(myListing.getPrice());
         t.setListingOwner(myListing.getListingOwner());
         t.setPayer(myUser.getmNormalizedEmail());
+        t.setToYear(myListing.getToYear());
+        t.setToMonthOfYear(myListing.getToMonthOfYear());
+        t.setToDayOfMonth(myListing.getToDayOfMonth());
+        t.setToHourString(myListing.getToHourString());
+        t.setToMinuteString(myListing.getToMinuteString());
         t.setApproved(false);
         // add Transaction to User
         myUser.appendTransaction(t);
