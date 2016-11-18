@@ -157,9 +157,9 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
         fromDateTextView = (TextView) findViewById(R.id.fromDateTextView);
         toDateTextView = (TextView) findViewById(R.id.toDateTextView);
 
-        populate();
-
         myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
+
+        populate();
     }
 
     //Used to fill up info if editing a listing
@@ -185,6 +185,12 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
             fromMinuteString = myListing.getFromMinuteString();
             toHourString = myListing.getToHourString();
             toMinuteString = myListing.getToMinuteString();
+            fromDayOfMonth = myListing.getFromDayOfMonth();
+            fromMonthOfYear = myListing.getFromMonthOfYear();
+            fromYear = myListing.getFromYear();
+            toDayOfMonth = myListing.getToDayOfMonth();
+            toMonthOfYear = myListing.getToMonthOfYear();
+            toYear = myListing.getToYear();
 
             listingTitleEditText.setText(listingTitle);
             locationTextView.setText(location);
@@ -293,6 +299,12 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
                     myListing.setFromMinuteString(fromMinuteString);
                     myListing.setToHourString(toHourString);
                     myListing.setToMinuteString(toMinuteString);
+                    myListing.setFromDayOfMonth(fromDayOfMonth);
+                    myListing.setFromMonthOfYear(fromMonthOfYear);
+                    myListing.setFromYear(fromYear);
+                    myListing.setToDayOfMonth(toDayOfMonth);
+                    myListing.setToMonthOfYear(toMonthOfYear);
+                    myListing.setToYear(toYear);
                     //Setting Lat Lng for markers
                     myListing.setLatitude(latitude);
                     myListing.setLongitude(longitude);
@@ -419,8 +431,8 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
         toHourString = hourOfDayEnd < 10 ? "0"+hourOfDayEnd : ""+hourOfDayEnd;
         toMinuteString = minuteEnd < 10 ? "0"+minuteEnd : ""+minuteEnd;
 
-        fromDateTextView.setText(fromHourString + ":" + fromMinuteString);
-        toDateTextView.setText(toHourString + ":" + toMinuteString);
+        fromTimeTextView.setText(fromHourString + ":" + fromMinuteString);
+        toTimeTextView.setText(toHourString + ":" + toMinuteString);
     }
 
     @Override
@@ -432,8 +444,8 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
         toMonthOfYear = ++monthOfYearEnd;
         toDayOfMonth = dayOfMonthEnd;
 
-        fromTimeTextView.setText(fromMonthOfYear + "/" + fromDayOfMonth + "/" + fromYear);
-        toTimeTextView.setText(toMonthOfYear + "/" + toDayOfMonth + "/" + toYear);
+        fromDateTextView.setText(fromMonthOfYear + "/" + fromDayOfMonth + "/" + fromYear);
+        toDateTextView.setText(toMonthOfYear + "/" + toDayOfMonth + "/" + toYear);
     }
 
     class EditTextListener implements TextWatcher{
