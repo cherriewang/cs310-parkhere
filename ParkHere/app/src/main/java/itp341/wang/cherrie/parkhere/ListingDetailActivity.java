@@ -101,11 +101,6 @@ public class ListingDetailActivity extends AppCompatActivity{
         availibilityTextView = (TextView)findViewById(R.id.availibilityTextView);
         cancellationTextView = (TextView)findViewById(R.id.cancellationTextView);
 
-        //Availibility
-        //Set text for availibilityTextView to yes or no
-        //if no
-            //confirmBookingButton.setEnabled(false);
-
         populate();
     }
 
@@ -218,7 +213,12 @@ public class ListingDetailActivity extends AppCompatActivity{
             reviewDateTextView.setText(latestReview.getDate());
             reviewContentTextView.setText(latestReview.getReviewText());
         }
-        availibilityTextView.setText("Yes");
+
+        //Availibility
+        //Set text for availibilityTextView to yes or no
+        //if no
+        //confirmBookingButton.setEnabled(false);
+        availibilityTextView.setText("No");
 
         if(myListing.getCancellationPolicy() == 0){ // Strict
             cancellationTextView.setText(getResources().getString(R.string.cancel_string_strict));

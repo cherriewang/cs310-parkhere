@@ -86,6 +86,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 
 import itp341.wang.cherrie.parkhere.model.Listing;
 import itp341.wang.cherrie.parkhere.model.User;
@@ -537,10 +538,60 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void advancedSearch() {
+        //Calendar uses zero based index
+        int zeroBasedFromMonth = fromMonthOfYear - 1;
+        int zeroBasedToMonth = toMonthOfYear - 1;
+
         for (Iterator<Listing> iterator = allListingsToDisplay.iterator(); iterator.hasNext(); ) {
             Listing listingToCheck = iterator.next();
 
             //Short term date and time check
+            if(shortTermParking){
+                Calendar calendar = Calendar.getInstance();
+
+                calendar.set(fromYear, zeroBasedFromMonth, fromDayOfMonth);
+                String fromWeekDay = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
+                calendar.set(toYear, zeroBasedToMonth, toDayOfMonth);
+                String toWeekDay = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
+
+                if(checkDay(fromWeekDay, listingToCheck) && checkDay(toWeekDay, listingToCheck)){
+                    int fromHour = Integer.parseInt(fromHourString);
+                    int toHour = Integer.parseInt(toHourString);
+
+                    int fromListingHour = Integer.parseInt(listingToCheck.getFromHourString());
+                    int toListingHour = Integer.parseInt(listingToCheck.getToHourString());
+
+                    if(fromHour >= fromListingHour && toHour <= toListingHour) {
+                        //do not remove since listing is within ranges
+                    } else {
+                        iterator.remove();
+                        continue;
+                    }
+
+                } else {
+                    iterator.remove();
+                    continue;
+                }
+            }
+            else{
+                if (fromYear >= listingToCheck.getFromYear() && toYear <= listingToCheck.getToYear()){
+                    if (fromMonthOfYear >= listingToCheck.getFromMonthOfYear() && toMonthOfYear <= listingToCheck.getToMonthOfYear()){
+                        if (fromDayOfMonth >= listingToCheck.getFromDayOfMonth() && toDayOfMonth <= toDayOfMonth){
+                            //do not remove since listing is within ranges
+                        } else {
+                            iterator.remove();
+                            continue;
+                        }
+                    } else {
+                        iterator.remove();
+                        continue;
+                    }
+
+                } else {
+                    iterator.remove();
+                    continue;
+                }
+            }
 
             //Parking spot types check
             if (searchSUV) {
@@ -568,6 +619,28 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             }
         }
+    }
+
+    private boolean checkDay(String weekDay, Listing listingToCheck){
+        Debug.printToast("Weekday is: " + weekDay, getApplicationContext());
+        switch (weekDay) {
+            case "Monday": if(listingToCheck.isMonday())
+                                return true;
+            case "Tuesday": if(listingToCheck.isTuesday())
+                                return true;
+            case "Wednesday": if(listingToCheck.isWednesday())
+                                return true;
+            case "Thursday": if(listingToCheck.isThursday())
+                                return true;
+            case "Friday": if(listingToCheck.isFriday())
+                                return true;
+            case "Saturday": if(listingToCheck.isSaturday())
+                                return true;
+            case "Sunday": if(listingToCheck.isSunday())
+                                return true;
+        }
+
+        return false;
     }
 
     @Override
