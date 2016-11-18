@@ -932,10 +932,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     shortTermParking = isChecked;
                     if(isChecked) {
-                        selectTimeButton.setEnabled(false);
+                        selectTimeButton.setEnabled(true);
                     }
                     else
-                        selectTimeButton.setEnabled(true);
+                        selectTimeButton.setEnabled(false);
                 }
             });
             CheckBox coveredCheckBox = (CheckBox)view.findViewById(R.id.coveredCheckBox);
