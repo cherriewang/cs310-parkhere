@@ -41,7 +41,7 @@ public class ListingToBookingUnitTest {
         myListing.setHandicapped(true);
         myListing.setTandem(true);
 
-        myBooking = new Booking(myListing);
+        myBooking = new Booking(myListing, myUser.getmFirstName());
     }
 
     @Test
@@ -84,4 +84,3 @@ public class ListingToBookingUnitTest {
         assertEquals(myBooking.isSuv(), true);
     }
 }
-

@@ -86,13 +86,16 @@ public class RateReviewActivity extends AppCompatActivity {
                 //myReview Listing Image
                 //myReview Owner Image
                 myReview.setTitle(reviewTitleEditText.getText().toString());
-                myReview.setOwner(listingToReview);
+//                myReview.setOwner(listingToReview);
                 setReviewDate();
 
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference();
                 listingToReview.addReview(myReview);
-                myRef.child("listings").child(listingToReview.getListingTitle()).child("reviews").child(myReview.getReviewer()).setValue(myReview);
+                myRef.child("listings").child(listingToReview.getListingTitle()).child("reviews").child(myUser.getmNormalizedEmail()).setValue(myReview);
+//                myRef.child("listings").child(listingToReview.getListingTitle()).child("reviews").setValue(myReview);
+
+
                 finish();
 
                 Debug.printToast("Booking reviewed!", getApplicationContext());

@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 public class Review implements Serializable{
 
-    private Listing owner;
+//    private Listing owner;
     private String reviewer;
     private String reviewText;
     private Bitmap ownerReviewImage;
@@ -28,9 +28,9 @@ public class Review implements Serializable{
     }
 
     // GETTERS
-    public Listing getOwner() {
-        return owner;
-    }
+//    public Listing getOwner() {
+//        return owner;
+//    }
 
     public String getReviewer() {
         return reviewer;
@@ -48,11 +48,27 @@ public class Review implements Serializable{
         return listingImage;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public float getListingRating() {
+        return listingRating;
+    }
+
+    public float getOwnerRating() {
+        return ownerRating;
+    }
+
     // SETTERS
 
-    public void setOwner(Listing owner) {
-        this.owner = owner;
-    }
+//    public void setOwner(Listing owner) {
+//        this.owner = owner;
+//    }
 
     public void setReviewer(String reviewer) {
         this.reviewer = reviewer;
@@ -70,32 +86,16 @@ public class Review implements Serializable{
         this.listingImage = listingImage;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getDate() {
-        return date;
     }
 
     public void setDate(String date) {
         this.date = date;
     }
 
-    public float getListingRating() {
-        return listingRating;
-    }
-
     public void setListingRating(float listingRating) {
         this.listingRating = listingRating;
-    }
-
-    public float getOwnerRating() {
-        return ownerRating;
     }
 
     public void setOwnerRating(float ownerRating) { this.ownerRating = ownerRating; }
