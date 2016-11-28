@@ -61,6 +61,8 @@ public class SignupActivity extends AppCompatActivity {
     private CircularProgressView progressView;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseUser firebaseUser;
+
 
 
     public final static int SIGN_UP_REQUEST_CODE = 1;
@@ -119,16 +121,26 @@ public class SignupActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null && myUser != null && myUser.getmNormalizedEmail() != null) {
-                    Debug.printToast("Signup Successful", getApplicationContext());
+                    Debug.printToast("User is not null", getApplicationContext());
+                    if (user.isEmailVerified()) {
+                        Debug.printToast("Signup Successful", getApplicationContext());
+
+                        Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                        startActivityForResult(homeIntent, 0);
+                    } else {
+                        Debug.printToast("User is not verified, sending verification email", getApplicationContext());
+                        user.sendEmailVerification();
+
+                        progressView.stopAnimation();
+                        progressView.setVisibility(View.GONE);
+
+                        Intent welcomeIntent = new Intent(getApplicationContext(), WelcomeActivity.class);
+                        startActivityForResult(welcomeIntent, 0);
+                    }
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference myRef = database.getReference();
                     myRef.child("users").child(myUser.getmNormalizedEmail()).setValue(myUser);
-
-                    Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
-                    startActivityForResult(homeIntent,0);
-                } else {
-                    // User is signed out
                 }
             }
         };
@@ -153,6 +165,7 @@ public class SignupActivity extends AppCompatActivity {
             .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
+                    Toast.makeText(SignupActivity.this, "Signed up: " + task.isSuccessful(), Toast.LENGTH_SHORT).show();
                     // If sign in fails, display a message to the user. If sign in succeeds
                     // the auth state listener will be notified and logic to handle the
                     // signed in user can be handled in the listener.

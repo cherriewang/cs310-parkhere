@@ -100,21 +100,27 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    FirebaseDatabase.getInstance().getReference().child("users").child(user.getEmail().replace(".", "%2E")).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            // Get user information
-                            myUser  = dataSnapshot.getValue(User.class);
-                            ((ParkHereApplication) getApplication()).setMyUser(myUser);
-                            System.out.println(myUser.getmEmail());
-                            Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
-                            startActivityForResult(homeIntent,0);
-                        }
+                    if (user.isEmailVerified()) {
+                        FirebaseDatabase.getInstance().getReference().child("users").child(user.getEmail().replace(".", "%2E")).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                // Get user information
+                                myUser = dataSnapshot.getValue(User.class);
+                                ((ParkHereApplication) getApplication()).setMyUser(myUser);
+                                Intent homeIntent = new Intent(getApplicationContext(), HomeActivity.class);
+                                startActivityForResult(homeIntent, 0);
+                            }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                        }
-                    });
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                            }
+                        });
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Email not verified, re-sending", Toast.LENGTH_SHORT).show();
+                        user.sendEmailVerification();
+                        progressView.stopAnimation();
+                        progressView.setVisibility(View.GONE);
+                    }
                 } else {
                     // User is signed out
                     // Commented this out because it seems to randomly toast in the beginning
@@ -181,7 +187,6 @@ public class LoginActivity extends AppCompatActivity {
                 // the auth state listener will be notified and logic to handle the
                 // signed in user can be handled in the listener.
                 if (!task.isSuccessful()) {
-                    Log.w(TAG, "signInWithEmail:failed", task.getException());
                     Debug.printToast("Sign in failed", getApplicationContext());
                     passwordEditText.setText("");
                     progressView.stopAnimation();
