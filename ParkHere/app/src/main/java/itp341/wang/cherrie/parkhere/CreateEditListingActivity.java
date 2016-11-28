@@ -111,7 +111,7 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
     private Listing myListing;
 
     public final static int CREATE_EDIT_REQUEST_CODE = 0;
-    int PLACE_PICKER_REQUEST = 2;   //request code for google place picker
+    public final static int PLACE_PICKER_REQUEST = 2;   //request code for google place picker
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -55,14 +55,16 @@ public class Listing implements Serializable{
         this.latestReviewer = latestReviewer;
     }
 
-    private String listingOwner;
-    private String listingTitle;
     private boolean handicapped;
     private boolean tandem;
     private boolean suv;
     private boolean covered;
     private String location;
     private String about;
+    private String listingImageString;
+
+    private String listingOwner;
+    private String listingTitle;
     private double price;
     // regarding times
     private boolean sunday;
@@ -92,8 +94,6 @@ public class Listing implements Serializable{
     public void setListingImageString(String listingImageString) {
         this.listingImageString = listingImageString;
     }
-
-    private String listingImageString;
 
     // lat long
     private double Latitude;

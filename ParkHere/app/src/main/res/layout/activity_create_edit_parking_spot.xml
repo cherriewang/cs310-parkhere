@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_create_edit_listing"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context="itp341.wang.cherrie.parkhere.CreateEditListingActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/parkingSpotImageView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/placeholder_parking_spot"/>
+
+            <EditText
+                android:id="@+id/parkingSpotNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:textSize="18sp"
+                android:hint="Parking Spot Name"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"/>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <CheckBox
+                    android:id="@+id/handicappedCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorAccent"
+                    android:text="@string/handicapped_string"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="5dp"/>
+
+                <CheckBox
+                    android:id="@+id/tandemCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorAccent"
+                    android:text="@string/tandem_string"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="5dp"/>
+
+                <CheckBox
+                    android:id="@+id/suvCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorAccent"
+                    android:text="@string/suv_string"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="5dp"/>
+
+                <CheckBox
+                    android:id="@+id/coveredCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/colorAccent"
+                    android:text="@string/covered_string"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="5dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/locationTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="16dp"
+                android:textSize="18sp"
+                android:text="Location"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="12dp"/>
+
+            <EditText
+                android:id="@+id/aboutEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:textSize="18sp"
+                android:hint="@string/about_hint_string"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"/>
+
+            <Button
+                android:id="@+id/createParkingSpotButton"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:paddingEnd="50dp"
+                android:paddingStart="50dp"
+                android:text="@string/create_button_string"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/colorAccent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
