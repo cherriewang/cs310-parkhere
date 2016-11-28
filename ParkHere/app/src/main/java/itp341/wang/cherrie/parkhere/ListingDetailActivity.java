@@ -218,7 +218,10 @@ public class ListingDetailActivity extends AppCompatActivity{
 //        ownerRatingBar.setRating(myListing.getOwner().getAverageRating()); //need to fix so we can retrieve owner's rating
         paymentMethodTextView.setText("");
         Review latestReview = myListing.getLatestReview();
-        listingImageView.setImageBitmap(base64ToBitmap(myListing.getListingImageString()));
+        if (myListing.getListingImageString() != null) {
+            Log.e("ListingDetailActivity", "LIsting image string: "+myListing.getListingImageString());
+            listingImageView.setImageBitmap(base64ToBitmap(myListing.getListingImageString()));
+        }
 
         if(latestReview == null){
             reviewUserNameTextView.setText("N/A");

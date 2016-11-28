@@ -217,8 +217,11 @@ public class   SettingsActivity extends AppCompatActivity {
                                     myRef.child("users").child(myUser.getmNormalizedEmail()).child("accountBalance").setValue(myUser.getAccountBalance()-currTrans.getBalance());
                                     //myUser.setAccountBalance(myUser.getAccountBalance()-currTrans.getBalance());
                                     Log.e("SettingsActivity", "Is it false: "+myUser.hasRecentTransactionApproved());
-                                    // removes it from the hashtable once we're done
+                                    // removes it from the hashtable once we're done'
+                                    Debug.printToast(currTrans.getListingName()+" has been authorized for payment.", getApplicationContext());
                                     transactionTracker.remove(key);
+                                } else {
+                                    Debug.printToast(currTrans.getListingName()+" has not yet passed. You can only authorize payments for completed bookings.", getApplicationContext());
                                 }
 
                             }
@@ -228,7 +231,7 @@ public class   SettingsActivity extends AppCompatActivity {
                             // set myUser transactions to the updated map (with the completed ones removed)
                             myRef.child("users").child(myUser.getmNormalizedEmail()).child("mTransactions").setValue(transactionTracker);
 
-                            Debug.printToast("Your pending payments have been authorized", getApplicationContext());
+                            Debug.printToast("All eligible pending payments have been authorized", getApplicationContext());
                         }
 
                     }

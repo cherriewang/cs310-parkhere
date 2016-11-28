@@ -857,7 +857,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 });
                             }
 
-                            //Can't test since doing test values from Firebase doens't work, all listing ratings are 0 (reviews are null)
                             if(sortListingRating){
                                 Debug.printToast("Sorting by listing rating", getApplicationContext());
                                 Collections.sort(listingsToSort, new Comparator<Listing>() {
@@ -873,13 +872,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 });
                             }
 
-                            /*for(Listing listing : listingsToSort){
-                                System.out.println("Listing " + listing.getListingTitle() + " has a rating of  " + listing.getAverageRating());
-                            }*/
-
                             if(sortOwnerRating){
                                 Debug.printToast("Sorting by owner rating", getApplicationContext());
                                 Collections.sort(listingsToSort, new Comparator<Listing>() {
+
                                     @Override
                                     public int compare(Listing listing1, Listing listing2) {
                                         if(listing1.getOwner().getAverageRating() > listing2.getOwner().getAverageRating())
