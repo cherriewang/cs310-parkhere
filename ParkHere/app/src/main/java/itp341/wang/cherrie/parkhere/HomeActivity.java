@@ -156,6 +156,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private final int CREATE_LISTING_REQUEST_CODE = 2;
     private final int PERMISSION_REQUEST_CODE = 3;
+    private final int CREATE_PARKING_SPOT_REQUEST_CODE = 4;
 
     public final static String USER_PROFILE_INTENT_KEY = "Sending user object to detail user profile activity";
     public static final String LISTING_AVAILIBILITY_INTENT_KEY = "Passing if a listing(s) is available or not";
@@ -213,10 +214,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                         new PrimaryDrawerItem().withName(R.string.bookings_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_align_left).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(3),
                         new PrimaryDrawerItem().withName(R.string.listings_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_align_right).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(4),
                         new PrimaryDrawerItem().withName(R.string.create_listing_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_pencil_square).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(5),
-                        new PrimaryDrawerItem().withName(R.string.payment_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_credit_card_alt).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(6),
+                        new PrimaryDrawerItem().withName("Create Parking Spot").withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_car).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(6),
+                        new PrimaryDrawerItem().withName(R.string.payment_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_credit_card_alt).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(7),
                         new DividerDrawerItem(),
-                        new SecondaryDrawerItem().withName(R.string.settings_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_cog).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(7),
-                        new SecondaryDrawerItem().withName(R.string.help_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_question).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(8)
+                        new SecondaryDrawerItem().withName(R.string.settings_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_cog).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(8),
+                        new SecondaryDrawerItem().withName(R.string.help_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_question).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(9)
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -260,19 +262,29 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                     showLocationDialog();
                                 }
                             }
-                            //Payment
+                            //Create Parking Spot
                             else if (drawerItem.getIdentifier() == 6) {
+                                // DIALOG BOX OPENS IF USER IS NOT AN OWNER
+                                if (myUser.isOwner()) {
+                                    Intent i = new Intent(HomeActivity.this, CreateEditParkingSpotActivity.class);
+                                    startActivityForResult(i, CREATE_PARKING_SPOT_REQUEST_CODE);
+                                } else {
+                                    showLocationDialog();
+                                }
+                            }
+                            //Payment
+                            else if (drawerItem.getIdentifier() == 7) {
                                 Intent i = new Intent(HomeActivity.this, ListOfPaymentsActivity.class);
                                 i.putExtra(ListingDetailActivity.SELECTING_PAYMENT, false);
                                 startActivity(i);
                             }
                             //Settings
-                            else if (drawerItem.getIdentifier() == 7) {
+                            else if (drawerItem.getIdentifier() == 8) {
                                 Intent i = new Intent(HomeActivity.this, SettingsActivity.class);
                                 startActivity(i);
                             }
                             //Help
-                            else if (drawerItem.getIdentifier() == 8) {
+                            else if (drawerItem.getIdentifier() == 9) {
                                 Intent i = new Intent(HomeActivity.this, HelpActivity.class);
                                 startActivity(i);
                             }
@@ -1192,7 +1204,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         if (requestCode == CREATE_LISTING_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                Debug.printToast("Added listing!", getApplicationContext());
+                Debug.printToast("Created listing!", getApplicationContext());
+                setNavDrawerToHome();
+            }
+        }
+        if (requestCode == CREATE_PARKING_SPOT_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Debug.printToast("Created parking spot!", getApplicationContext());
                 setNavDrawerToHome();
             }
         }
