@@ -23,7 +23,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import itp341.wang.cherrie.parkhere.model.Booking;
@@ -63,6 +65,7 @@ public class ListingDetailActivity extends AppCompatActivity{
     private List<Listing> myListings;
     private Listing myListing = new Listing();
     private User myUser;
+    private ArrayList<Review> reviewlist;
 
     private boolean isAvailable;
 
@@ -112,6 +115,8 @@ public class ListingDetailActivity extends AppCompatActivity{
         availibilityTextView = (TextView)findViewById(R.id.availibilityTextView);
         cancellationTextView = (TextView)findViewById(R.id.cancellationTextView);
 
+        reviewlist = new ArrayList<Review>();
+
         populate();
     }
 
@@ -125,6 +130,25 @@ public class ListingDetailActivity extends AppCompatActivity{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 ownerRatingBar.setRating(user.getAverageRating());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        DatabaseReference refListingReviews = myRef.child("listing-reviews").child(myListing.getLocation()).child("reviews");
+
+        refListingReviews.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    Review review = postSnapshot.getValue(Review.class);
+                    reviewlist.add(review);
+                    System.out.println("found review for listing");
+                }
+                System.out.println("End of finding reviews");
+                listingRatingBar.setRating(getAverageRating(reviewlist));
             }
 
             @Override
@@ -204,6 +228,19 @@ public class ListingDetailActivity extends AppCompatActivity{
         // myRef.child("transaction-tracker").child(t.getListingOwner()).setValue(t);
     }
 
+    public float getAverageRating(ArrayList<Review> reviewList) {
+        float sum = 0;
+        if(reviewList == null) {
+            return 0;
+        }
+        else{
+            for (Review r : reviewList) {
+                sum += r.getListingRating();
+            }
+            return sum / (float)reviewList.size();
+        }
+    }
+
     private void populate(){
         //Populate details
         listingTitleTextView.setText(myListing.getListingTitle());
@@ -214,7 +251,6 @@ public class ListingDetailActivity extends AppCompatActivity{
         aboutTextView.setText(myListing.getAbout());
         //totalPriceTextView.setText(myListing.getPrice() + "");
         totalPriceTextView.setText(String.valueOf(myListing.getPrice()));
-        listingRatingBar.setRating(myListing.getAverageRating());
 //        ownerRatingBar.setRating(myListing.getOwner().getAverageRating()); //need to fix so we can retrieve owner's rating
         paymentMethodTextView.setText("");
         Review latestReview = myListing.getLatestReview();

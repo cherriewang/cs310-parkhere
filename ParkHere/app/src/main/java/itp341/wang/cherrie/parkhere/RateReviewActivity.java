@@ -94,6 +94,7 @@ public class RateReviewActivity extends AppCompatActivity {
                 listingToReview.addReview(myReview);
                 myRef.child("listings").child(listingToReview.getListingTitle()).child("reviews").child(myUser.getmNormalizedEmail()).setValue(myReview);
                 myRef.child("users").child(listingToReview.getListingOwner()).child("mListings").child(listingToReview.getListingTitle()).child("reviews").child(myUser.getmNormalizedEmail()).setValue(myReview);
+                myRef.child("listing-reviews").child(listingToReview.getLocation()).child("reviews").child(myUser.getmNormalizedEmail()).setValue(myReview);
 
                 finish();
 
