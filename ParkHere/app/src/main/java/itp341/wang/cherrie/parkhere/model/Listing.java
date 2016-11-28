@@ -55,14 +55,15 @@ public class Listing implements Serializable{
         this.latestReviewer = latestReviewer;
     }
 
-    private String listingOwner;
-    private String listingTitle;
     private boolean handicapped;
     private boolean tandem;
     private boolean suv;
     private boolean covered;
     private String location;
     private String about;
+
+    private String listingOwner;
+    private String listingTitle;
     private double price;
     // regarding times
     private boolean sunday;
