@@ -21,6 +21,8 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity;
 import com.nguyenhoanglam.imagepicker.model.Image;
 
@@ -158,6 +160,52 @@ public class CreateEditParkingSpotActivity extends AppCompatActivity{
         createParkingSpotButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // getting all values from the input fields
+                isTandem = tandemCheckBox.isChecked();
+                isHandicapped = handicappedCheckBox.isChecked();
+                isSUV = suvCheckBox.isChecked();
+                isCovered = coveredCheckBox.isChecked();
+
+                // getting image from the image input
+                parkingSpotImageView.setDrawingCacheEnabled(true);
+                parkingSpotImageView.buildDrawingCache();
+                Bitmap bitmap = parkingSpotImageView.getDrawingCache();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] data = baos.toByteArray();
+                String imageString = Base64.encodeToString(data, Base64.DEFAULT);
+
+                System.out.print("compressed image");
+
+                // CREATE LISTING OBJECT
+                myParkingSpot.setParkingSpotName(parkingSpotName);
+                myParkingSpot.setParkingSpotOwner(myUser.getmNormalizedEmail()); // should have a global user here
+                myParkingSpot.setLocation(location);
+                myParkingSpot.setAbout(about);
+
+                //Setting listing categories
+                myParkingSpot.setTandem(isTandem);
+                myParkingSpot.setHandicapped(isHandicapped);
+                myParkingSpot.setSuv(isSUV);
+                myParkingSpot.setCovered(isCovered);
+
+                //Setting Lat Lng to retrieve for a listing
+                myParkingSpot.setLatitude(latitude);
+                myParkingSpot.setLongitude(longitude);
+
+                //Setting parking spot image to retrieve for a listing
+                myParkingSpot.setParkingSpotImageString(imageString);
+
+                //myUser.appendListing(myListing);
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference();
+                myRef.child("parking spots").child(myParkingSpot.getParkingSpotName()).setValue(myParkingSpot);
+                myRef.child("users").child(myUser.getmNormalizedEmail()).child("mParkingSpots")
+                        .child(myParkingSpot.getParkingSpotName()).setValue(myParkingSpot);
+
+                setResult(RESULT_OK);
+                finish();
             }
         });
         locationTextView.setOnClickListener(new View.OnClickListener() {

@@ -296,9 +296,7 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
                     byte[] data = baos.toByteArray();
                     String imageString = Base64.encodeToString(data, Base64.DEFAULT);
 
-
                     System.out.print("compressed image");
-
 
                     // CREATE LISTING OBJECT
                     myListing.setListingTitle(listingTitle);
@@ -340,7 +338,6 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
                     myListing.setListingImageString(imageString);
                     myListing.setLatestReviewer("");
                     myUser.appendListing(myListing);
-
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference myRef = database.getReference();
