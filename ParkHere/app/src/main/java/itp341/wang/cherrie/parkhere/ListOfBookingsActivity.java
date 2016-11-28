@@ -34,6 +34,7 @@ public class ListOfBookingsActivity extends AppCompatActivity {
     private ListView bookingsListView;
     private BookingAdapter mBookingAdapter;
     private User myUser;
+    private boolean cache;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class ListOfBookingsActivity extends AppCompatActivity {
         bookingsListView = (ListView) findViewById(R.id.listingsListView);
 
         myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
+        cache = true;
     }
 
     private void createCards() {
@@ -68,10 +70,20 @@ public class ListOfBookingsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 myBookings.clear();
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                    Booking booking = postSnapshot.getValue(Booking.class);
-                    myBookings.add(booking);
+                long initialTime = System.nanoTime();
+                if (cache == false) {
+                    for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                        Booking booking = postSnapshot.getValue(Booking.class);
+                        myBookings.add(booking);
+                    }
+                } else { //rely on User object for adding bookings
+                    for (String key : myUser.getmBookings().keySet()) {
+                        myBookings.add(myUser.getmBookings().get(key));
+                    }
                 }
+                long endingTime = System.nanoTime();
+                System.out.print("Benchmark time for getting bookings: ");
+                System.out.println(endingTime - initialTime);
 
                 updateCardUi();
             }
@@ -80,6 +92,7 @@ public class ListOfBookingsActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+
     }
 
     private void updateCardUi() {
