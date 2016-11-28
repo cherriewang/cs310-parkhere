@@ -61,6 +61,7 @@ public class Listing implements Serializable{
     private boolean covered;
     private String location;
     private String about;
+    private String listingImageString;
 
     private String listingOwner;
     private String listingTitle;
@@ -93,8 +94,6 @@ public class Listing implements Serializable{
     public void setListingImageString(String listingImageString) {
         this.listingImageString = listingImageString;
     }
-
-    private String listingImageString;
 
     // lat long
     private double Latitude;
