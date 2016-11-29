@@ -79,7 +79,7 @@ public class ListOfBookingsActivity extends AppCompatActivity {
                 } else { //rely on User object for adding bookings
                     if (myUser.getmBookings() != null) {
                         for (String key : myUser.getmBookings().keySet()) {
-                            myUser.appendBooking(myUser.getmBookings().get(key));
+                            myBookings.add(myUser.getmBookings().get(key));
                         }
                     }
                 }
