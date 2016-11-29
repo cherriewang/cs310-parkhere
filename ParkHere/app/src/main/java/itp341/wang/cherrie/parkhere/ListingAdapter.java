@@ -3,6 +3,9 @@ package itp341.wang.cherrie.parkhere;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,6 +78,7 @@ public class ListingAdapter extends ArrayAdapter<Listing>{
         Listing results = getItem(position);
 
         holder.listingTitleTextView.setText(results.getListingTitle());
+        holder.listingImageView.setImageBitmap(base64ToBitmap(results.getListingImageString()));
         return row;
     }
 
@@ -124,8 +128,6 @@ public class ListingAdapter extends ArrayAdapter<Listing>{
         });
     }
 
-
-
     private void setHoverIcons(View v){
         ImageView listingDetail = (ImageView)v.findViewById(R.id.listingDetail);
         listingDetail.setImageDrawable(new IconicsDrawable(getContext()).icon(FontAwesome.Icon.faw_info).color(getContext().getResources().getColor(R.color.colorAccent)).sizeDp(20));
@@ -133,6 +135,11 @@ public class ListingAdapter extends ArrayAdapter<Listing>{
         edit.setImageDrawable(new IconicsDrawable(getContext()).icon(FontAwesome.Icon.faw_pencil_square).color(getContext().getResources().getColor(R.color.colorAccent)).sizeDp(20));
         ImageView cancel = (ImageView)v.findViewById(R.id.cancel);
         cancel.setImageDrawable(new IconicsDrawable(getContext()).icon(FontAwesome.Icon.faw_trash).color(getContext().getResources().getColor(R.color.colorAccent)).sizeDp(20));
+    }
+
+    private Bitmap base64ToBitmap(String b64) {
+        byte[] imageAsBytes = Base64.decode(b64.getBytes(), Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
     }
 
 }
