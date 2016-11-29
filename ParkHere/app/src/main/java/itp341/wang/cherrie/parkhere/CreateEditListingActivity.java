@@ -252,6 +252,8 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
             listingImageView.setImageBitmap(base64ToBitmap(myParkingSpot.getParkingSpotImageString()));
             //listingTitle = myParkingSpot.getParkingSpotName();
             location = myParkingSpot.getLocation();
+            latitude = myParkingSpot.getLatitude();
+            longitude = myParkingSpot.getLongitude();
             about = myParkingSpot.getAbout();
             isTandem = myParkingSpot.isTandem();
             isHandicapped = myParkingSpot.isHandicapped();

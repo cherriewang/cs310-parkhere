@@ -21,7 +21,7 @@ public class Listing implements Serializable{
 
     }
 
-    public Listing(String listingOwner, String listingTitle, boolean handicapped, boolean tandem, boolean suv, boolean covered, String location, String about, double price, boolean sunday, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, String fromHourString, String fromMinuteString, String toHourString, String toMinuteString, int fromYear, int fromMonthOfYear, int fromDayOfMonth, int toYear, int toMonthOfYear, int toDayOfMonth, User owner, double latitude, double longitude, int cancellationPolicy, String latestReviewer) {
+    public Listing(String listingOwner, String listingTitle, boolean handicapped, boolean tandem, boolean suv, boolean covered, String location, String about, double price, boolean sunday, boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday, boolean saturday, String fromHourString, String fromMinuteString, String toHourString, String toMinuteString, int fromYear, int fromMonthOfYear, int fromDayOfMonth, int toYear, int toMonthOfYear, int toDayOfMonth, User owner, double latitude, double longitude, int cancellationPolicy, String latestReviewer, ParkingSpot myParkingSpot) {
         this.listingOwner = listingOwner;
         this.listingTitle = listingTitle;
         this.handicapped = handicapped;
@@ -53,6 +53,7 @@ public class Listing implements Serializable{
         Longitude = longitude;
         this.cancellationPolicy = cancellationPolicy;
         this.latestReviewer = latestReviewer;
+        this.myParkingSpot = myParkingSpot;
     }
 
     private boolean handicapped;
