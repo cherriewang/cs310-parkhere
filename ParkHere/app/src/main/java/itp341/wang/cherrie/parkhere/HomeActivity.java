@@ -109,9 +109,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleApiClient mGoogleApiClient;
     private User myUser;
 
-    //Test markers
-    //private LatLng glarenceAPT = new LatLng(34.024652, -118.280782);
-
     //Advanced dialog variables
     private int fromYear = 0;
     private int fromMonthOfYear = 0;
@@ -147,6 +144,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     //Location tracking variables
     private Location mLastLocation;
     private LatLng searchLatLng;
+
+    private boolean isPriorBookings = false;
 
     private final float THREE_MILES = (float) 4828.03;
 
@@ -419,7 +418,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void priorBookingsDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this, R.style.MyDialogTheme);
         builder.setTitle("Prior Bookings Overview");
-        builder.setMessage("Would you like to see a visualized overview of all parking spots within three miles of the desired location?");
+        if(isPriorBookings)
+            builder.setMessage("Would you like to see a visualized overview of all listings within three miles of the desired location?");
+        else
+            builder.setMessage("Would you like to reset the visualized overview of all listings to the original color?");
 
         String positiveText = "Yes";
         builder.setPositiveButton(positiveText,
@@ -977,6 +979,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 }
                 if(id == R.id.action_prior_bookings){
+                    if(!markerListingHashmap.isEmpty() && markerListingHashmap != null)
+                        isPriorBookings = !isPriorBookings;
+                    else
+                        isPriorBookings = false;
                     priorBookingsDialog();
                 }
             }
@@ -1006,27 +1012,20 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void displayPriorBookings(){
-        Calendar now = Calendar.getInstance();
-
-        for(Booking booking : myUser.getmBookings().values()){
-            Listing owner = booking.getOwner();
-
-            if(owner.getToYear() > now.get(Calendar.YEAR)) //2016 > 2015
-                System.out.println("Not a prior booking");
-            else if(owner.getToYear() < now.get(Calendar.YEAR)) //2015 < 2016
-                System.out.println("This is a prior booking");
-            else{ //Same year
-                if(owner.getToMonthOfYear() > now.get(Calendar.MONTH) + 1) //11 > 10
-                    System.out.println("Not a prior booking");
-                else if(owner.getToMonthOfYear() < now.get(Calendar.MONTH) + 1) //10 < 11
-                    System.out.println("This is a prior booking");
-                else{ //Same month
-                    if(owner.getToDayOfMonth() >= now.get(Calendar.DAY_OF_MONTH)) //29th >= 29th or 28th
-                        System.out.println("Not a prior booking");
-                    else //29th < 30th
-                        System.out.println("This is a prior booking");
+        if(!markerListingHashmap.isEmpty() && markerListingHashmap != null){
+            if(isPriorBookings){
+                for(Marker marker : markerListingHashmap.keySet()){
+                    //TODO set orange to often, yellow to not often listings
+                    marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
                 }
             }
+            else{
+                for(Marker marker : markerListingHashmap.keySet()){
+                    marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+                }
+            }
+        } else {
+            Debug.printToast("Please search for listings first in order to display prior bookings visualization!", getApplicationContext());
         }
     }
 
