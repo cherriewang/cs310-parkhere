@@ -92,4 +92,5 @@
     <string name="dialog_title_payment">Authorize Payment</string>
     <string name="dialog_authorize">Your pending payments have been authorized</string>
     <string name="dialog_message_payment">Are you sure you would like to authorize your pending payments to go through?</string>
+    <string name="title_activity_list_of_parking_spots">ListOfParkingSpotsActivity</string>
 </resources>

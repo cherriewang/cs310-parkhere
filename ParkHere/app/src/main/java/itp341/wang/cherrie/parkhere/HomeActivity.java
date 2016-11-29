@@ -213,12 +213,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                         new PrimaryDrawerItem().withName(R.string.home_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_home).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(2),
                         new PrimaryDrawerItem().withName(R.string.bookings_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_align_left).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(3),
                         new PrimaryDrawerItem().withName(R.string.listings_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_align_right).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(4),
-                        new PrimaryDrawerItem().withName(R.string.create_listing_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_pencil_square).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(5),
-                        new PrimaryDrawerItem().withName("Create Parking Spot").withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_car).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(6),
-                        new PrimaryDrawerItem().withName(R.string.payment_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_credit_card_alt).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(7),
+                        new PrimaryDrawerItem().withName("Parking Spots").withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_car).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(5),
+                        new PrimaryDrawerItem().withName(R.string.create_listing_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_pencil_square).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(6),
+                        new PrimaryDrawerItem().withName("Add Parking Spot").withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_plus_circle).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(7),
+                        new PrimaryDrawerItem().withName(R.string.payment_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_credit_card_alt).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(8),
                         new DividerDrawerItem(),
-                        new SecondaryDrawerItem().withName(R.string.settings_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_cog).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(8),
-                        new SecondaryDrawerItem().withName(R.string.help_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_question).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(9)
+                        new SecondaryDrawerItem().withName(R.string.settings_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_cog).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(9),
+                        new SecondaryDrawerItem().withName(R.string.help_drawer_item_string).withIcon(new IconicsDrawable(this).icon(FontAwesome.Icon.faw_question).sizeDp(24).color(getResources().getColor(R.color.colorPrimary))).withIdentifier(10)
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -252,8 +253,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 Intent i = new Intent(HomeActivity.this, ListOfListingsActivity.class);
                                 startActivity(i);
                             }
-                            //Create Listing
+                            //List of Parking Spots
                             else if (drawerItem.getIdentifier() == 5) {
+                                Intent i = new Intent(HomeActivity.this, ListOfParkingSpotsActivity.class);
+                                startActivity(i);
+                            }
+                            //Create Listing
+                            else if (drawerItem.getIdentifier() == 6) {
                                 // DIALOG BOX OPENS IF USER IS NOT AN OWNER
                                 if (myUser.isOwner()) {
                                     Intent i = new Intent(HomeActivity.this, CreateEditListingActivity.class);
@@ -263,7 +269,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 }
                             }
                             //Create Parking Spot
-                            else if (drawerItem.getIdentifier() == 6) {
+                            else if (drawerItem.getIdentifier() == 7) {
                                 // DIALOG BOX OPENS IF USER IS NOT AN OWNER
                                 if (myUser.isOwner()) {
                                     Intent i = new Intent(HomeActivity.this, CreateEditParkingSpotActivity.class);
@@ -273,18 +279,18 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 }
                             }
                             //Payment
-                            else if (drawerItem.getIdentifier() == 7) {
+                            else if (drawerItem.getIdentifier() == 8) {
                                 Intent i = new Intent(HomeActivity.this, ListOfPaymentsActivity.class);
                                 i.putExtra(ListingDetailActivity.SELECTING_PAYMENT, false);
                                 startActivity(i);
                             }
                             //Settings
-                            else if (drawerItem.getIdentifier() == 8) {
+                            else if (drawerItem.getIdentifier() == 9) {
                                 Intent i = new Intent(HomeActivity.this, SettingsActivity.class);
                                 startActivity(i);
                             }
                             //Help
-                            else if (drawerItem.getIdentifier() == 9) {
+                            else if (drawerItem.getIdentifier() == 10) {
                                 Intent i = new Intent(HomeActivity.this, HelpActivity.class);
                                 startActivity(i);
                             }
