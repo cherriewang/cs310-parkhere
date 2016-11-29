@@ -16,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
 
+import java.text.NumberFormat;
 import java.util.HashMap;
 
 import itp341.wang.cherrie.parkhere.model.CreditCard;
@@ -68,7 +69,8 @@ public class ListOfPaymentsActivity extends AppCompatActivity{
         String expiry = "01/18";
         String cardNumber = "4242424242424242";
 
-        balanceTextView.setText(String.valueOf(myUser.getAccountBalance()));
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        balanceTextView.setText(String.valueOf(formatter.format(myUser.getAccountBalance())));
 
         cardContainer.addView(sampleCreditCardView);
         int index = cardContainer.getChildCount() - 1;
