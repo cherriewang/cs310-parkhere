@@ -478,10 +478,26 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
                                 ArrayList<String> parkingSpaceTitles = new ArrayList<String>();
                                 final ArrayList<ParkingSpot> parkingSpotsToDisplay = new ArrayList<ParkingSpot>();
 
-                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                                    ParkingSpot parkingSpot = postSnapshot.getValue(ParkingSpot.class);
-                                    parkingSpaceTitles.add(parkingSpot.getParkingSpotName());
-                                    parkingSpotsToDisplay.add(parkingSpot);
+                                if (myUser.getmParkingSpots().size() == 0) {
+                                    long initialTime = System.nanoTime();
+                                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                        ParkingSpot parkingSpot = postSnapshot.getValue(ParkingSpot.class);
+                                        parkingSpaceTitles.add(parkingSpot.getParkingSpotName());
+                                        parkingSpotsToDisplay.add(parkingSpot);
+                                        myUser.getmParkingSpots().put(parkingSpot.getParkingSpotName(), parkingSpot);
+                                    }
+                                    long endingTime = System.nanoTime();
+                                    System.out.print("Benchmark time for getting listings without cache: ");
+                                    System.out.println(endingTime - initialTime);
+                                } else { // using cache
+                                    long initialTime = System.nanoTime();
+                                    for (ParkingSpot parkingSpot : myUser.getmParkingSpots().values()) {
+                                        parkingSpaceTitles.add(parkingSpot.getParkingSpotName());
+                                        parkingSpotsToDisplay.add(parkingSpot);
+                                    }
+                                    long endingTime = System.nanoTime();
+                                    System.out.print("Benchmark time for getting listings with cache: ");
+                                    System.out.println(endingTime - initialTime);
                                 }
 
                                 new MaterialDialog.Builder(CreateEditListingActivity.this).title("Your Parking Spaces")

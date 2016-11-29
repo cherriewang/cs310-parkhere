@@ -196,7 +196,7 @@ public class CreateEditParkingSpotActivity extends AppCompatActivity{
                 //Setting parking spot image to retrieve for a listing
                 myParkingSpot.setParkingSpotImageString(imageString);
 
-                //myUser.appendListing(myListing);
+                myUser.getmParkingSpots().put(myParkingSpot.getParkingSpotName(), myParkingSpot);
 
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference();

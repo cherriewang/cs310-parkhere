@@ -35,6 +35,16 @@ public class User implements Serializable {
     private HashMap<String, Booking> mBookings;
     private HashMap<String, Listing> mListings;
     private HashMap<String, Transaction> mTransactions;
+
+    public HashMap<String, ParkingSpot> getmParkingSpots() {
+        return mParkingSpots;
+    }
+
+    public void setmParkingSpots(HashMap<String, ParkingSpot> mParkingSpots) {
+        this.mParkingSpots = mParkingSpots;
+    }
+
+    private HashMap<String, ParkingSpot> mParkingSpots;
     private float rating;
     private int numRatings;
     private double accountBalance;
