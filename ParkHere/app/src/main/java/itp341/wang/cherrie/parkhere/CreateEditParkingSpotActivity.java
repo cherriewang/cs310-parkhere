@@ -99,6 +99,7 @@ public class CreateEditParkingSpotActivity extends AppCompatActivity{
         if (myParkingSpot != null) {
             Debug.printToast("Parking spot will be populated!", getApplicationContext());
             parkingSpotName = myParkingSpot.getParkingSpotName();
+            parkingSpotOwner = myParkingSpot.getParkingSpotOwner();
             location = myParkingSpot.getLocation();
             about = myParkingSpot.getAbout();
             isTandem = myParkingSpot.isTandem();
