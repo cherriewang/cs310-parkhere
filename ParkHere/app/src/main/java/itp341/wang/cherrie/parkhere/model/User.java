@@ -183,6 +183,14 @@ public class User implements Serializable {
         mBookings.put(b.getBookingTitle(), b);
     }
 
+    public void appendParkingSpot(ParkingSpot p) {
+        if (mParkingSpots == null) {
+            mParkingSpots = new HashMap<>();
+        }
+
+        mParkingSpots.put(p.getParkingSpotName(), p);
+    }
+
     public void removeListing(Listing l) {
         if(mListings != null)
             mListings.remove(l.getListingTitle());

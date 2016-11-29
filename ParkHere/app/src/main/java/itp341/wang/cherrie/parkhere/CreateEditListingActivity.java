@@ -484,7 +484,7 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
                                         ParkingSpot parkingSpot = postSnapshot.getValue(ParkingSpot.class);
                                         parkingSpaceTitles.add(parkingSpot.getParkingSpotName());
                                         parkingSpotsToDisplay.add(parkingSpot);
-                                        myUser.getmParkingSpots().put(parkingSpot.getParkingSpotName(), parkingSpot);
+                                        myUser.appendParkingSpot(parkingSpot);
                                     }
                                     long endingTime = System.nanoTime();
                                     System.out.print("Benchmark time for getting listings without cache: ");
