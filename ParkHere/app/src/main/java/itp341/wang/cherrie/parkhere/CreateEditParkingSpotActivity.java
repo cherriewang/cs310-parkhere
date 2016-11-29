@@ -178,7 +178,7 @@ public class CreateEditParkingSpotActivity extends AppCompatActivity{
                 parkingSpotImageView.buildDrawingCache();
                 Bitmap bitmap = parkingSpotImageView.getDrawingCache();
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos);
                 byte[] data = baos.toByteArray();
                 String imageString = Base64.encodeToString(data, Base64.DEFAULT);
 
@@ -234,7 +234,7 @@ public class CreateEditParkingSpotActivity extends AppCompatActivity{
 
     private String bitmapToBase64(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream .toByteArray();
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }

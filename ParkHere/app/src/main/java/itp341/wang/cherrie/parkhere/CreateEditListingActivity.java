@@ -178,7 +178,7 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
 
     private String bitmapToBase64(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream .toByteArray();
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
@@ -189,7 +189,6 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
     //Used to fill up info if editing a listing
     private void populate(){
         if (myListing != null) {
-            Debug.printToast("Listing will be populated!", getApplicationContext());
             location = myListing.getLocation();
             about = myListing.getAbout();
             isTandem = myListing.isTandem();
@@ -335,7 +334,7 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
                     listingImageView.buildDrawingCache();
                     Bitmap bitmap = listingImageView.getDrawingCache();
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos);
                     byte[] data = baos.toByteArray();
                     String imageString = Base64.encodeToString(data, Base64.DEFAULT);
 

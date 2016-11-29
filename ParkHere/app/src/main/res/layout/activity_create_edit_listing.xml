@@ -20,7 +20,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/placeholder_parking_spot"/>
+                android:src="@drawable/placeholder_parking_spot"
+                android:adjustViewBounds="true"/>
 
             <LinearLayout
                 android:orientation="horizontal"

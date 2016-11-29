@@ -20,6 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
                 fresco:placeholderImageScaleType="centerCrop"
+                android:adjustViewBounds="true"
                 fresco:placeholderImage="@drawable/placeholder_parking_spot"/>
 
             <RelativeLayout

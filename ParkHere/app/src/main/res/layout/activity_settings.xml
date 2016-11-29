@@ -24,6 +24,7 @@
             android:layout_marginBottom="32dp"
             android:layout_marginTop="16dp"
             fresco:placeholderImageScaleType="centerCrop"
+            android:adjustViewBounds="true"
             fresco:placeholderImage="@drawable/placeholder_prof_pic"
             fresco:roundAsCircle="true"
             fresco:roundingBorderWidth="1dp"
