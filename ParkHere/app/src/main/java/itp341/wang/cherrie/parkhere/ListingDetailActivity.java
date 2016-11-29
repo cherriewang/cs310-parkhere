@@ -10,13 +10,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.cunoraz.tagview.Tag;
 import com.cunoraz.tagview.TagView;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,9 +29,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import itp341.wang.cherrie.parkhere.model.Booking;
+import itp341.wang.cherrie.parkhere.model.CreditCard;
 import itp341.wang.cherrie.parkhere.model.Listing;
 import itp341.wang.cherrie.parkhere.model.Review;
 import itp341.wang.cherrie.parkhere.model.Transaction;
@@ -48,7 +54,7 @@ public class ListingDetailActivity extends AppCompatActivity{
     private TextView aboutTextView;
     private TextView moreReviewsTextView;
     private TextView selectPaymentTextView;
-    private TextView paymentMethodTextView;
+//    private TextView paymentMethodTextView;
     private TextView totalPriceTextView;
     private Button confirmBookingButton;
     private MaterialRatingBar listingRatingBar;
@@ -61,11 +67,13 @@ public class ListingDetailActivity extends AppCompatActivity{
     private TextView reviewContentTextView;
     private TextView availibilityTextView;
     private TextView cancellationTextView;
+    private Spinner paymentMethodSpinner;
 
     private List<Listing> myListings;
     private Listing myListing = new Listing();
     private User myUser;
     private ArrayList<Review> reviewlist;
+    private HashMap<String, CreditCard> myCreditCards;
 
     private boolean isAvailable;
 
@@ -102,7 +110,6 @@ public class ListingDetailActivity extends AppCompatActivity{
         aboutTextView = (TextView)findViewById(R.id.aboutTextView);
         moreReviewsTextView = (TextView)findViewById(R.id.moreReviewsTextView);
         selectPaymentTextView = (TextView)findViewById(R.id.selectPaymentTextView);
-        paymentMethodTextView = (TextView)findViewById(R.id.paymentMethodTextView);
         totalPriceTextView = (TextView)findViewById(R.id.totalPriceTextView);
         confirmBookingButton = (Button)findViewById(R.id.confirmBookingButton);
         listingRatingBar = (MaterialRatingBar)findViewById(R.id.listingRatingBar);
@@ -114,6 +121,7 @@ public class ListingDetailActivity extends AppCompatActivity{
         reviewContentTextView = (TextView)findViewById(R.id.reviewContentTextView);
         availibilityTextView = (TextView)findViewById(R.id.availibilityTextView);
         cancellationTextView = (TextView)findViewById(R.id.cancellationTextView);
+        paymentMethodSpinner = (Spinner) findViewById(R.id.spinnerPaymentMethod);
 
         reviewlist = new ArrayList<Review>();
 
@@ -252,7 +260,7 @@ public class ListingDetailActivity extends AppCompatActivity{
         //totalPriceTextView.setText(myListing.getPrice() + "");
         totalPriceTextView.setText(String.valueOf(myListing.getPrice()));
 //        ownerRatingBar.setRating(myListing.getOwner().getAverageRating()); //need to fix so we can retrieve owner's rating
-        paymentMethodTextView.setText("");
+//        paymentMethodTextView.setText("");
         Review latestReview = myListing.getLatestReview();
         if (myListing.getListingImageString() != null) {
             Log.e("ListingDetailActivity", "LIsting image string: "+myListing.getListingImageString());
@@ -289,6 +297,30 @@ public class ListingDetailActivity extends AppCompatActivity{
         //Uri uri = Uri.parse("https://raw.githubusercontent.com/facebook/fresco/gh-pages/static/logo.png");
         //SimpleDraweeView draweeView = (SimpleDraweeView) findViewById(R.id.my_image_view);
         //draweeView.setImageURI(uri);
+
+
+        List<String> methods = new ArrayList<String>();
+        methods.add("Account Balance: $"+myUser.getAccountBalance());
+        myCreditCards = myUser.getmCreditCards();
+        // null check
+        if (myCreditCards != null) {
+            // loop through and add all credit cards
+            for (String key : myCreditCards.keySet()) {
+                CreditCard currCard = myCreditCards.get(key);
+                String cardNum = currCard.getCardNumber();
+                String substr = cardNum.substring(cardNum.length() - 4);
+                methods.add("Card ending in " + substr);
+            }
+        }
+
+        // convert list to string array
+        String[] simpleArray = new String[ methods.size() ];
+        methods.toArray( simpleArray );
+
+        // put payment methods into spinner
+        ArrayAdapter<String> paymentArray= new ArrayAdapter<String>(ListingDetailActivity.this,android.R.layout.simple_spinner_item, simpleArray);
+        paymentArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        paymentMethodSpinner.setAdapter(paymentArray);
 
         setCategoryTags();
     }

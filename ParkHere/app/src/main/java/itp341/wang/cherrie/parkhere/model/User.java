@@ -201,7 +201,7 @@ public class User implements Serializable {
             mCreditCards = new HashMap<>();
         }
 
-        mCreditCards.put(c.getCardHolderName(), c);
+        mCreditCards.put(c.getCardNumber(), c);
     }
 
     public void removeListing(Listing l) {
