@@ -6,10 +6,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.cooltechworks.creditcarddesign.CreditCardView;
 import com.cooltechworks.creditcarddesign.CardEditActivity;
 import com.cooltechworks.creditcarddesign.CreditCardUtils;
+
+import org.w3c.dom.Text;
+
+import itp341.wang.cherrie.parkhere.model.User;
 
 /**
  * Created by glarencezhao on 10/23/16.
@@ -20,6 +25,8 @@ public class ListOfPaymentsActivity extends AppCompatActivity{
     private Button addCardButton;
     private final int CREATE_NEW_CARD = 0;
     private LinearLayout cardContainer;
+    private TextView balanceTextView;
+    private User myUser;
 
     private boolean isSelectingPayment;
 
@@ -39,6 +46,10 @@ public class ListOfPaymentsActivity extends AppCompatActivity{
     private void initialize(){
         addCardButton = (Button) findViewById(R.id.add_card_button);
         cardContainer = (LinearLayout) findViewById(R.id.card_container);
+        balanceTextView = (TextView) findViewById(R.id.textViewBalance);
+
+        myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
+
         getSupportActionBar().setTitle("Payment");
         populate();
     }
@@ -55,6 +66,8 @@ public class ListOfPaymentsActivity extends AppCompatActivity{
         sampleCreditCardView.setCardHolderName(name);
         sampleCreditCardView.setCardExpiry(expiry);
         sampleCreditCardView.setCardNumber(cardNumber);
+
+        balanceTextView.setText(String.valueOf(myUser.getAccountBalance()));
 
         cardContainer.addView(sampleCreditCardView);
         int index = cardContainer.getChildCount() - 1;
