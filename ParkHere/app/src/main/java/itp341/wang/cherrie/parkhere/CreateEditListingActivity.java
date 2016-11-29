@@ -481,7 +481,7 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
                                 final ArrayList<ParkingSpot> parkingSpotsToDisplay = new ArrayList<ParkingSpot>();
 
                                 if(dataSnapshot.hasChildren()){
-                                    if (myUser.getmParkingSpots().size() == 0) {
+                                    if (myUser.getmParkingSpots() == null || myUser.getmParkingSpots().size() == 0) {
                                         long initialTime = System.nanoTime();
                                         for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                                             ParkingSpot parkingSpot = postSnapshot.getValue(ParkingSpot.class);
