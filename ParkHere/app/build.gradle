@@ -22,6 +22,10 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -48,7 +52,7 @@ dependencies {
     compile('com.mikepenz:materialdrawer:5.7.0@aar') {
         transitive = true
     }
-
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     compile 'com.google.firebase:firebase-core:9.6.0'
     compile 'com.google.firebase:firebase-database:9.6.0'
     compile 'com.google.firebase:firebase-auth:9.6.0'
