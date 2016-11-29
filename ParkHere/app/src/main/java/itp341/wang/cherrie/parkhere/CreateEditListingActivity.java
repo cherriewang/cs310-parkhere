@@ -73,6 +73,8 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
     private Button dateButton;
     private TextView fromDateTextView;
     private TextView toDateTextView;
+    private Button fillButton;
+    private TextView parkingSpotTextView;
 
     private String listingTitle = "";
     private String location = "";
@@ -158,6 +160,8 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
         dateButton = (Button) findViewById(R.id.dateButton);
         fromDateTextView = (TextView) findViewById(R.id.fromDateTextView);
         toDateTextView = (TextView) findViewById(R.id.toDateTextView);
+        fillButton = (Button) findViewById(R.id.fillButton);
+        parkingSpotTextView = (TextView) findViewById(R.id.parkingSpotTextView);
 
         myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
 
@@ -205,6 +209,7 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
             toYear = myListing.getToYear();
             listingImageView.setImageBitmap(base64ToBitmap(myListing.getListingImageString()));
 
+            //parkingSpotTextView.setText(); TODO populate parking spot name
             listingTitleEditText.setText(listingTitle);
             locationTextView.setText(location);
             aboutEditText.setText(about);
@@ -393,7 +398,6 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
         });
         aboutEditText.addTextChangedListener(new EditTextListener(aboutEditText.getId()));
 
-
         // Change listener for the Spinner deciding how things get split
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -421,6 +425,15 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 // sometimes you need nothing here
+            }
+        });
+        fillButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //if there are no parking spots
+                    //alert dialog go to create a new one
+                //else
+                    //choose from a list
             }
         });
     }

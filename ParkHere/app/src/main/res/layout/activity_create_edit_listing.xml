@@ -22,6 +22,31 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/placeholder_parking_spot"/>
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_horizontal">
+
+                <Button
+                    android:id="@+id/fillButton"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_button"
+                    android:textColor="@color/white"
+                    android:text="Fill Listing Info" />
+
+                <TextView
+                    android:id="@+id/parkingSpotTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="No Parking Spot Selected"
+                    android:textSize="16sp"/>
+
+            </LinearLayout>
+
             <EditText
                 android:id="@+id/listingTitleEditText"
                 android:layout_width="match_parent"
