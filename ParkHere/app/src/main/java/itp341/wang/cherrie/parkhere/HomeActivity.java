@@ -88,6 +88,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 
+import itp341.wang.cherrie.parkhere.model.Booking;
 import itp341.wang.cherrie.parkhere.model.Listing;
 import itp341.wang.cherrie.parkhere.model.User;
 
@@ -138,6 +139,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     //LatLong search dialog variables
     private float latitude = 0;
     private float longitude = 0;
+    //Prior bookings
+    private boolean isPriorBookingsChecked = false;
     //Dialogs
     private MaterialDialog advancedDialog;
     private MaterialDialog filtersDialog;
@@ -946,6 +949,37 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
                     dialogListeners(id);
 
+                }
+                if(id == R.id.action_prior_bookings){
+                    isPriorBookingsChecked = !isPriorBookingsChecked;
+
+                    if(isPriorBookingsChecked){
+                        Calendar now = Calendar.getInstance();
+
+                        for(Booking booking : myUser.getmBookings().values()){
+                            Listing owner = booking.getOwner();
+
+                            if(owner.getToYear() > now.get(Calendar.YEAR)) //2016 > 2015
+                                System.out.println("Not a prior booking");
+                            else if(owner.getToYear() < now.get(Calendar.YEAR)) //2015 < 2016
+                                System.out.println("This is a prior booking");
+                            else{ //Same year
+                                if(owner.getToMonthOfYear() > now.get(Calendar.MONTH) + 1) //11 > 10
+                                    System.out.println("Not a prior booking");
+                                else if(owner.getToMonthOfYear() < now.get(Calendar.MONTH) + 1) //10 < 11
+                                    System.out.println("This is a prior booking");
+                                else{ //Same month
+                                    if(owner.getToDayOfMonth() >= now.get(Calendar.DAY_OF_MONTH)) //29th >= 29th or 28th
+                                        System.out.println("Not a prior booking");
+                                    else //29th < 30th
+                                        System.out.println("This is a prior booking");
+                                }
+                            }
+                        }
+                    }
+                    else{
+                        Debug.printToast("Removing bookings markers overview", getApplicationContext());
+                    }
                 }
             }
         });

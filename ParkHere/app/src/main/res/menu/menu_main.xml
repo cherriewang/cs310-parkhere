@@ -13,4 +13,8 @@
         android:title="@string/menu_latlong_string"
         android:orderInCategory="3"
         app:showAsAction="never"/>
+    <item android:id="@+id/action_prior_bookings"
+        android:title="Prior Bookings"
+        android:orderInCategory="4"
+        app:showAsAction="never"/>
 </menu>
