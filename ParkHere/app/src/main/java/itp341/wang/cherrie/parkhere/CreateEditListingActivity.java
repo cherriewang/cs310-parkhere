@@ -1,9 +1,11 @@
 package itp341.wang.cherrie.parkhere;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -478,37 +480,41 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
                                 ArrayList<String> parkingSpaceTitles = new ArrayList<String>();
                                 final ArrayList<ParkingSpot> parkingSpotsToDisplay = new ArrayList<ParkingSpot>();
 
-                                if (myUser.getmParkingSpots().size() == 0) {
-                                    long initialTime = System.nanoTime();
-                                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                                        ParkingSpot parkingSpot = postSnapshot.getValue(ParkingSpot.class);
-                                        parkingSpaceTitles.add(parkingSpot.getParkingSpotName());
-                                        parkingSpotsToDisplay.add(parkingSpot);
-                                        myUser.getmParkingSpots().put(parkingSpot.getParkingSpotName(), parkingSpot);
+                                if(dataSnapshot.hasChildren()){
+                                    if (myUser.getmParkingSpots().size() == 0) {
+                                        long initialTime = System.nanoTime();
+                                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                            ParkingSpot parkingSpot = postSnapshot.getValue(ParkingSpot.class);
+                                            parkingSpaceTitles.add(parkingSpot.getParkingSpotName());
+                                            parkingSpotsToDisplay.add(parkingSpot);
+                                            myUser.getmParkingSpots().put(parkingSpot.getParkingSpotName(), parkingSpot);
+                                        }
+                                        long endingTime = System.nanoTime();
+                                        System.out.print("Benchmark time for getting listings without cache: ");
+                                        System.out.println(endingTime - initialTime);
+                                    } else { // using cache
+                                        long initialTime = System.nanoTime();
+                                        for (ParkingSpot parkingSpot : myUser.getmParkingSpots().values()) {
+                                            parkingSpaceTitles.add(parkingSpot.getParkingSpotName());
+                                            parkingSpotsToDisplay.add(parkingSpot);
+                                        }
+                                        long endingTime = System.nanoTime();
+                                        System.out.print("Benchmark time for getting listings with cache: ");
+                                        System.out.println(endingTime - initialTime);
                                     }
-                                    long endingTime = System.nanoTime();
-                                    System.out.print("Benchmark time for getting listings without cache: ");
-                                    System.out.println(endingTime - initialTime);
-                                } else { // using cache
-                                    long initialTime = System.nanoTime();
-                                    for (ParkingSpot parkingSpot : myUser.getmParkingSpots().values()) {
-                                        parkingSpaceTitles.add(parkingSpot.getParkingSpotName());
-                                        parkingSpotsToDisplay.add(parkingSpot);
-                                    }
-                                    long endingTime = System.nanoTime();
-                                    System.out.print("Benchmark time for getting listings with cache: ");
-                                    System.out.println(endingTime - initialTime);
+
+                                    new MaterialDialog.Builder(CreateEditListingActivity.this).title("Your Parking Spaces")
+                                            .items(parkingSpaceTitles).itemsCallback(new MaterialDialog.ListCallback() {
+                                        @Override
+                                        public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
+                                            myParkingSpot = parkingSpotsToDisplay.get(position);
+
+                                            populateParkingSpotDetails();
+                                        }
+                                    }).show();
+                                } else {
+                                    noParkingSpotsDialog();
                                 }
-
-                                new MaterialDialog.Builder(CreateEditListingActivity.this).title("Your Parking Spaces")
-                                        .items(parkingSpaceTitles).itemsCallback(new MaterialDialog.ListCallback() {
-                                    @Override
-                                    public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
-                                        myParkingSpot = parkingSpotsToDisplay.get(position);
-
-                                        populateParkingSpotDetails();
-                                    }
-                                }).show();
                             }
 
                             @Override
@@ -596,5 +602,34 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
         super.onBackPressed();
 
         HomeActivity.setNavDrawerToHome();
+    }
+
+    private void noParkingSpotsDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(CreateEditListingActivity.this, R.style.MyDialogTheme);
+        builder.setTitle("No parking spots available!");
+        builder.setMessage("Would you like to add a parking spot?");
+
+        String positiveText = getString(android.R.string.ok);
+        builder.setPositiveButton(positiveText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent i = new Intent(CreateEditListingActivity.this, CreateEditParkingSpotActivity.class);
+                        startActivity(i);
+                    }
+                });
+
+        String negativeText = getString(android.R.string.cancel);
+        builder.setNegativeButton(negativeText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // negative button logic
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        // display dialog
+        dialog.show();
     }
 }
