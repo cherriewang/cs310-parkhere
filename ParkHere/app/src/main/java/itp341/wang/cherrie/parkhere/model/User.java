@@ -35,6 +35,7 @@ public class User implements Serializable {
     private HashMap<String, Booking> mBookings;
     private HashMap<String, Listing> mListings;
     private HashMap<String, Transaction> mTransactions;
+    private HashMap<String, CreditCard> mCreditCards;
 
     public HashMap<String, ParkingSpot> getmParkingSpots() {
         return mParkingSpots;
@@ -114,6 +115,10 @@ public class User implements Serializable {
 
     public HashMap<String, Transaction> getmTransactions() { return mTransactions; }
 
+    public HashMap<String, CreditCard> getmCreditCards() {
+        return mCreditCards;
+    }
+
     public double getAccountBalance() {
         return accountBalance;
     }
@@ -189,6 +194,14 @@ public class User implements Serializable {
         }
 
         mParkingSpots.put(p.getParkingSpotName(), p);
+    }
+
+    public void appendCreditCard(CreditCard c) {
+        if (mCreditCards == null) {
+            mCreditCards = new HashMap<>();
+        }
+
+        mCreditCards.put(c.getCardHolderName(), c);
     }
 
     public void removeListing(Listing l) {
