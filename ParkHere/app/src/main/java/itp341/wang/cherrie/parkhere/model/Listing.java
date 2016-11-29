@@ -85,7 +85,7 @@ public class Listing implements Serializable{
     private int toMonthOfYear;
     private int toDayOfMonth;
     private User owner;
-
+    private ParkingSpot myParkingSpot;
 
     public String getListingImageString() {
         return listingImageString;
@@ -402,5 +402,13 @@ public class Listing implements Serializable{
             }
             return sum / (float)getReviews().size();
         }
+    }
+
+    public ParkingSpot getMyParkingSpot() {
+        return myParkingSpot;
+    }
+
+    public void setMyParkingSpot(ParkingSpot myParkingSpot) {
+        this.myParkingSpot = myParkingSpot;
     }
 }

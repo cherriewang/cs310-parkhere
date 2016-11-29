@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.blackcat.currencyedittext.CurrencyEditText;
 import com.borax12.materialdaterangepicker.date.DatePickerDialog;
 import com.borax12.materialdaterangepicker.time.RadialPickerLayout;
@@ -27,8 +28,11 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity;
 import com.nguyenhoanglam.imagepicker.model.Image;
 
@@ -40,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import itp341.wang.cherrie.parkhere.model.Listing;
+import itp341.wang.cherrie.parkhere.model.ParkingSpot;
 import itp341.wang.cherrie.parkhere.model.User;
 
 /**
@@ -111,6 +116,7 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
     private User myUser;
 
     private Listing myListing;
+    private ParkingSpot myParkingSpot;
 
     public final static int CREATE_EDIT_REQUEST_CODE = 0;
     public final static int PLACE_PICKER_REQUEST = 2;   //request code for google place picker
@@ -182,14 +188,24 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
     private void populate(){
         if (myListing != null) {
             Debug.printToast("Listing will be populated!", getApplicationContext());
-            listingTitle = myListing.getListingTitle();
             location = myListing.getLocation();
             about = myListing.getAbout();
-            price = myListing.getPrice();
             isTandem = myListing.isTandem();
             isHandicapped = myListing.isHandicapped();
             isSUV = myListing.isSuv();
             isCovered = myListing.isCovered();
+            listingImageView.setImageBitmap(base64ToBitmap(myListing.getListingImageString()));
+
+            locationTextView.setText(location);
+            aboutEditText.setText(about);
+            tandemCheckBox.setChecked(isTandem);
+            handicappedCheckBox.setChecked(isHandicapped);
+            suvCheckBox.setChecked(isSUV);
+            coveredCheckBox.setChecked(isCovered);
+
+            listingTitle = myListing.getListingTitle();
+
+            price = myListing.getPrice();
             isMonday = myListing.isMonday();
             isTuesday = myListing.isTuesday();
             isWednesday = myListing.isWednesday();
@@ -207,18 +223,11 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
             toDayOfMonth = myListing.getToDayOfMonth();
             toMonthOfYear = myListing.getToMonthOfYear();
             toYear = myListing.getToYear();
-            listingImageView.setImageBitmap(base64ToBitmap(myListing.getListingImageString()));
 
-            //parkingSpotTextView.setText(); TODO populate parking spot name
             listingTitleEditText.setText(listingTitle);
-            locationTextView.setText(location);
-            aboutEditText.setText(about);
+
             DecimalFormat decimalFormat = new DecimalFormat("#.00");
             priceEditText.setText(decimalFormat.format(price));
-            tandemCheckBox.setChecked(isTandem);
-            handicappedCheckBox.setChecked(isHandicapped);
-            suvCheckBox.setChecked(isSUV);
-            coveredCheckBox.setChecked(isCovered);
             mondayCheckBox.setChecked(isMonday);
             tuesdayCheckBox.setChecked(isTuesday);
             wednesdayCheckBox.setChecked(isWednesday);
@@ -233,6 +242,32 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
         }
         else
             myListing = new Listing();
+    }
+
+    //Update listing details with parking space if selected or editing
+    private void populateParkingSpotDetails(){
+        if(myParkingSpot != null){
+            listingImageView.setImageBitmap(base64ToBitmap(myParkingSpot.getParkingSpotImageString()));
+            //listingTitle = myParkingSpot.getParkingSpotName();
+            location = myParkingSpot.getLocation();
+            about = myParkingSpot.getAbout();
+            isTandem = myParkingSpot.isTandem();
+            isHandicapped = myParkingSpot.isHandicapped();
+            isSUV = myParkingSpot.isSuv();
+            isCovered = myParkingSpot.isCovered();
+
+            //listingTitleEditText.setText(listingTitle);
+            locationTextView.setText(location);
+            aboutEditText.setText(about);
+            tandemCheckBox.setChecked(isTandem);
+            handicappedCheckBox.setChecked(isHandicapped);
+            suvCheckBox.setChecked(isSUV);
+            coveredCheckBox.setChecked(isCovered);
+
+            parkingSpotTextView.setText(myParkingSpot.getParkingSpotName());
+        }
+        else
+            Debug.printToast("Cannot populate listing because myParkingSpot is null", getApplicationContext());
     }
 
     private void listeners(){
@@ -292,7 +327,6 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
                     isSunday = sundayCheckBox.isChecked();
 
                     // getting image from the image input
-
                     listingImageView.setDrawingCacheEnabled(true);
                     listingImageView.buildDrawingCache();
                     Bitmap bitmap = listingImageView.getDrawingCache();
@@ -343,6 +377,8 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
                     myListing.setListingImageString(imageString);
                     myListing.setLatestReviewer("");
                     myUser.appendListing(myListing);
+                    if(myParkingSpot != null)
+                        myListing.setMyParkingSpot(myParkingSpot);
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference myRef = database.getReference();
@@ -434,6 +470,34 @@ public class CreateEditListingActivity extends AppCompatActivity implements Time
                     //alert dialog go to create a new one
                 //else
                     //choose from a list
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                mDatabase.child("users").child(myUser.getmNormalizedEmail()).child("mParkingSpots")
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                ArrayList<String> parkingSpaceTitles = new ArrayList<String>();
+                                final ArrayList<ParkingSpot> parkingSpotsToDisplay = new ArrayList<ParkingSpot>();
+
+                                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                    ParkingSpot parkingSpot = postSnapshot.getValue(ParkingSpot.class);
+                                    parkingSpaceTitles.add(parkingSpot.getParkingSpotName());
+                                    parkingSpotsToDisplay.add(parkingSpot);
+                                }
+
+                                new MaterialDialog.Builder(CreateEditListingActivity.this).title("Your Parking Spaces")
+                                        .items(parkingSpaceTitles).itemsCallback(new MaterialDialog.ListCallback() {
+                                    @Override
+                                    public void onSelection(MaterialDialog dialog, View itemView, int position, CharSequence text) {
+                                        myParkingSpot = parkingSpotsToDisplay.get(position);
+
+                                        populateParkingSpotDetails();
+                                    }
+                                }).show();
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {}
+                        });
             }
         });
     }
