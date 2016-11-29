@@ -139,8 +139,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     //LatLong search dialog variables
     private float latitude = 0;
     private float longitude = 0;
-    //Prior bookings
-    private boolean isPriorBookingsChecked = false;
     //Dialogs
     private MaterialDialog advancedDialog;
     private MaterialDialog filtersDialog;
@@ -405,6 +403,34 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 });
 
         String negativeText = getString(android.R.string.cancel);
+        builder.setNegativeButton(negativeText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // negative button logic
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        // display dialog
+        dialog.show();
+    }
+
+    private void priorBookingsDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this, R.style.MyDialogTheme);
+        builder.setTitle("Prior Bookings Overview");
+        builder.setMessage("Would you like to see a visualized overview of all parking spots within three miles of the desired location?");
+
+        String positiveText = "Yes";
+        builder.setPositiveButton(positiveText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        displayPriorBookings();
+                    }
+                });
+
+        String negativeText = "No";
         builder.setNegativeButton(negativeText,
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -951,35 +977,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 }
                 if(id == R.id.action_prior_bookings){
-                    isPriorBookingsChecked = !isPriorBookingsChecked;
-
-                    if(isPriorBookingsChecked){
-                        Calendar now = Calendar.getInstance();
-
-                        for(Booking booking : myUser.getmBookings().values()){
-                            Listing owner = booking.getOwner();
-
-                            if(owner.getToYear() > now.get(Calendar.YEAR)) //2016 > 2015
-                                System.out.println("Not a prior booking");
-                            else if(owner.getToYear() < now.get(Calendar.YEAR)) //2015 < 2016
-                                System.out.println("This is a prior booking");
-                            else{ //Same year
-                                if(owner.getToMonthOfYear() > now.get(Calendar.MONTH) + 1) //11 > 10
-                                    System.out.println("Not a prior booking");
-                                else if(owner.getToMonthOfYear() < now.get(Calendar.MONTH) + 1) //10 < 11
-                                    System.out.println("This is a prior booking");
-                                else{ //Same month
-                                    if(owner.getToDayOfMonth() >= now.get(Calendar.DAY_OF_MONTH)) //29th >= 29th or 28th
-                                        System.out.println("Not a prior booking");
-                                    else //29th < 30th
-                                        System.out.println("This is a prior booking");
-                                }
-                            }
-                        }
-                    }
-                    else{
-                        Debug.printToast("Removing bookings markers overview", getApplicationContext());
-                    }
+                    priorBookingsDialog();
                 }
             }
         });
@@ -1005,6 +1003,31 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Debug.printToast(currentQuery, getApplicationContext());
             }
         });
+    }
+
+    private void displayPriorBookings(){
+        Calendar now = Calendar.getInstance();
+
+        for(Booking booking : myUser.getmBookings().values()){
+            Listing owner = booking.getOwner();
+
+            if(owner.getToYear() > now.get(Calendar.YEAR)) //2016 > 2015
+                System.out.println("Not a prior booking");
+            else if(owner.getToYear() < now.get(Calendar.YEAR)) //2015 < 2016
+                System.out.println("This is a prior booking");
+            else{ //Same year
+                if(owner.getToMonthOfYear() > now.get(Calendar.MONTH) + 1) //11 > 10
+                    System.out.println("Not a prior booking");
+                else if(owner.getToMonthOfYear() < now.get(Calendar.MONTH) + 1) //10 < 11
+                    System.out.println("This is a prior booking");
+                else{ //Same month
+                    if(owner.getToDayOfMonth() >= now.get(Calendar.DAY_OF_MONTH)) //29th >= 29th or 28th
+                        System.out.println("Not a prior booking");
+                    else //29th < 30th
+                        System.out.println("This is a prior booking");
+                }
+            }
+        }
     }
 
     @Override
