@@ -17,13 +17,17 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.androidviewhover.BlurLayout;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.ArrayList;
 
+import itp341.wang.cherrie.parkhere.model.Listing;
 import itp341.wang.cherrie.parkhere.model.ParkingSpot;
 import itp341.wang.cherrie.parkhere.model.User;
 
@@ -52,7 +56,7 @@ public class ParkingSpotAdapter extends ArrayAdapter<ParkingSpot> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
-        ListingAdapter.ResultsViewHolder holder;
+        ParkingSpotAdapter.ResultsViewHolder holder;
 
         if (row == null) {
             row = mLayoutInflater.inflate(R.layout.row_listing_layout, parent, false);
@@ -62,7 +66,7 @@ public class ParkingSpotAdapter extends ArrayAdapter<ParkingSpot> {
             setHoverIcons(hover);
             listeners(hover, position);
             listingBlurLayout.setHoverView(hover);
-            holder = new ListingAdapter.ResultsViewHolder(row);
+            holder = new ParkingSpotAdapter.ResultsViewHolder(row);
             listingBlurLayout.setBlurDuration(100);
             listingBlurLayout.addChildAppearAnimator(hover, R.id.listingDetail, Techniques.FlipInX, 550, 0);
             listingBlurLayout.addChildAppearAnimator(hover, R.id.edit, Techniques.FlipInX, 550, 250);
@@ -73,13 +77,13 @@ public class ParkingSpotAdapter extends ArrayAdapter<ParkingSpot> {
             row.setTag(holder);
         }
         else {
-            holder = (ListingAdapter.ResultsViewHolder) row.getTag();
+            holder = (ParkingSpotAdapter.ResultsViewHolder) row.getTag();
         }
 
         ParkingSpot results = getItem(position);
 
         holder.listingTitleTextView.setText(results.getParkingSpotName());
-        holder.listingImageView.setImageBitmap(base64ToBitmap(results.getParkingSpotImageString()));
+        //holder.listingImageView.setImageBitmap(base64ToBitmap(results.getParkingSpotImageString())); TODO FIX NULL
         return row;
     }
 
@@ -98,18 +102,19 @@ public class ParkingSpotAdapter extends ArrayAdapter<ParkingSpot> {
             @Override
             public void onClick(View view) {
                 YoYo.with(Techniques.Wobble).duration(200).playOn(view);
-                Intent i = new Intent(getContext(), ListingDetailActivity.class)
+                //TODO MAKE A PARKING SPOT DETAIL ACTIVITY
+                /*Intent i = new Intent(getContext(), ListingDetailActivity.class)
                         .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 ParkingSpot selectedParkingSpot = getItem(position);
                 i.putExtra(PARKING_SPOT_DETAIL_INTENT_KEY, selectedParkingSpot);
-                getContext().startActivity(i);
+                getContext().startActivity(i);*/
             }
         });
         v.findViewById(R.id.edit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 YoYo.with(Techniques.Wobble).duration(200).playOn(view);
-                Intent i = new Intent(getContext(), CreateEditListingActivity.class)
+                Intent i = new Intent(getContext(), CreateEditParkingSpotActivity.class)
                         .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 ParkingSpot selectedParkingSpot = getItem(position);
                 i.putExtra(PARKING_SPOT_EDIT_INTENT_KEY, selectedParkingSpot);
@@ -120,11 +125,31 @@ public class ParkingSpotAdapter extends ArrayAdapter<ParkingSpot> {
             @Override
             public void onClick(View view) {
                 YoYo.with(Techniques.Wobble).duration(200).playOn(view);
-                ParkingSpot selectedParkingSpot = getItem(position);
+                final ParkingSpot selectedParkingSpot = getItem(position);
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference();
-                myRef.child("listings").child(selectedParkingSpot.getParkingSpotName()).removeValue();
-                myRef.child("users").child(myUser.getmNormalizedEmail()).child("mListings").child(selectedParkingSpot.getParkingSpotName()).removeValue();
+                //Remove all associated listings
+                myRef.child("users").child(myUser.getmNormalizedEmail()).child("mListings");
+                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                            Listing userListing = postSnapshot.getValue(Listing.class);
+                            //TODO implement fixing removing listings from listings child, maybe only store parking spot name string
+                            //if(userListing.getMyParkingSpot().getParkingSpotName().equals(selectedParkingSpot.getParkingSpotName())){
+                                postSnapshot.getRef().removeValue();
+                             //   FirebaseDatabase.getInstance().getReference().child("listings")
+                             //           .child(userListing.getListingTitle()).removeValue();
+                            //}
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {}
+                });
+                //Remove parking spot
+                myRef.child("parking spots").child(selectedParkingSpot.getParkingSpotName()).removeValue();
+                myRef.child("users").child(myUser.getmNormalizedEmail()).child("mParkingSpots").child(selectedParkingSpot.getParkingSpotName()).removeValue();
             }
         });
     }

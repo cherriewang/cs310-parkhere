@@ -70,6 +70,12 @@ public class CreateEditParkingSpotActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_edit_parking_spot);
 
+        Intent i = getIntent();
+        if(i.hasExtra(ParkingSpotAdapter.PARKING_SPOT_EDIT_INTENT_KEY)) {
+            myParkingSpot = (ParkingSpot) i.getSerializableExtra(ParkingSpotAdapter.PARKING_SPOT_EDIT_INTENT_KEY);
+            isEditing = true;
+        }
+
         initialize();
         listeners();
     }
