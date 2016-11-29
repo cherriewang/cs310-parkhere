@@ -11,9 +11,15 @@ import android.widget.TextView;
 import com.cooltechworks.creditcarddesign.CreditCardView;
 import com.cooltechworks.creditcarddesign.CardEditActivity;
 import com.cooltechworks.creditcarddesign.CreditCardUtils;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
 
+import java.util.HashMap;
+
+import itp341.wang.cherrie.parkhere.model.CreditCard;
+import itp341.wang.cherrie.parkhere.model.Transaction;
 import itp341.wang.cherrie.parkhere.model.User;
 
 /**
@@ -27,7 +33,7 @@ public class ListOfPaymentsActivity extends AppCompatActivity{
     private LinearLayout cardContainer;
     private TextView balanceTextView;
     private User myUser;
-
+    private HashMap<String, CreditCard> creditCardRecord;
     private boolean isSelectingPayment;
 
     @Override
@@ -49,7 +55,7 @@ public class ListOfPaymentsActivity extends AppCompatActivity{
         balanceTextView = (TextView) findViewById(R.id.textViewBalance);
 
         myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
-
+        creditCardRecord = myUser.getmCreditCards();
         getSupportActionBar().setTitle("Payment");
         populate();
     }
@@ -61,11 +67,6 @@ public class ListOfPaymentsActivity extends AppCompatActivity{
         String cvv = "420";
         String expiry = "01/18";
         String cardNumber = "4242424242424242";
-
-        sampleCreditCardView.setCVV(cvv);
-        sampleCreditCardView.setCardHolderName(name);
-        sampleCreditCardView.setCardExpiry(expiry);
-        sampleCreditCardView.setCardNumber(cardNumber);
 
         balanceTextView.setText(String.valueOf(myUser.getAccountBalance()));
 
@@ -137,6 +138,17 @@ public class ListOfPaymentsActivity extends AppCompatActivity{
                 creditCardView.setCardHolderName(name);
                 creditCardView.setCardExpiry(expiry);
                 creditCardView.setCardNumber(cardNumber);
+
+                CreditCard newCreditCard = new CreditCard();
+                newCreditCard.setCvv(cvv);
+                newCreditCard.setCardHolderName(name);
+                newCreditCard.setExpiry(expiry);
+                newCreditCard.setCardNumber(cardNumber);
+                myUser.appendCreditCard(newCreditCard);
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference();
+                myRef.child("users").child(myUser.getmNormalizedEmail()).child("mCreditCards").setValue(myUser.getmCreditCards());
 
                 cardContainer.addView(creditCardView);
                 int index = cardContainer.getChildCount() - 1;
