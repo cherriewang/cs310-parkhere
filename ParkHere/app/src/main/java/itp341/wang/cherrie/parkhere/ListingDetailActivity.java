@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -76,6 +78,7 @@ public class ListingDetailActivity extends AppCompatActivity{
     private HashMap<String, CreditCard> myCreditCards;
 
     private boolean isAvailable;
+    private boolean useAccountBalance;
 
     public static final int SELECT_PAYMENT_REQUEST_CODE = 0;
     public static final String SELECTING_PAYMENT = "Selecting Payment";
@@ -206,6 +209,32 @@ public class ListingDetailActivity extends AppCompatActivity{
                 startActivity(i);
             }
         });
+
+        // Change listener for the Spinner deciding how things get split
+        paymentMethodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                Spinner spinner = (Spinner) parent;
+                if(position == 0)
+                {
+                    //do this
+                    useAccountBalance = true;
+                    Log.e("SPINNER","useAccountBalance is "+useAccountBalance);
+                }
+                else
+                {
+                    //do this
+                    useAccountBalance = false;
+                    Debug.printToast("Your payment will be processed through the selected credit card", getApplicationContext());
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // sometimes you need nothing here
+            }
+        });
     }
 
     private void BookListing() {
@@ -250,6 +279,9 @@ public class ListingDetailActivity extends AppCompatActivity{
     }
 
     private void populate(){
+        // To make the $$$ look gud
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+
         //Populate details
         listingTitleTextView.setText(myListing.getListingTitle());
         listingAddressTextView.setText(myListing.getLocation());
@@ -258,12 +290,12 @@ public class ListingDetailActivity extends AppCompatActivity{
         ownerTextView.setText(myListing.getListingOwner());
         aboutTextView.setText(myListing.getAbout());
         //totalPriceTextView.setText(myListing.getPrice() + "");
-        totalPriceTextView.setText(String.valueOf(myListing.getPrice()));
+        totalPriceTextView.setText(String.valueOf(formatter.format(myListing.getPrice())));
 //        ownerRatingBar.setRating(myListing.getOwner().getAverageRating()); //need to fix so we can retrieve owner's rating
 //        paymentMethodTextView.setText("");
         Review latestReview = myListing.getLatestReview();
         if (myListing.getListingImageString() != null) {
-            Log.e("ListingDetailActivity", "LIsting image string: "+myListing.getListingImageString());
+            Log.e("ListingDetailActivity", "Listing image string: "+myListing.getListingImageString());
             listingImageView.setImageBitmap(base64ToBitmap(myListing.getListingImageString()));
         }
 
@@ -300,7 +332,7 @@ public class ListingDetailActivity extends AppCompatActivity{
 
 
         List<String> methods = new ArrayList<String>();
-        methods.add("Account Balance: $"+myUser.getAccountBalance());
+        methods.add("Account Balance: "+formatter.format(myUser.getAccountBalance()));
         myCreditCards = myUser.getmCreditCards();
         // null check
         if (myCreditCards != null) {
