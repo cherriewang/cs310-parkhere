@@ -12,7 +12,8 @@
     <string name="owner">Owner</string>
     <string name="seeker">Seeker</string>
     <string name="password_invalid_signup">Password must have at least 10 characters long with one special character</string>
-
+    <string name="facebook_app_id">1788111538080511</string>
+    <string name="fb_login_protocol_scheme">fb1788111538080511</string>
     <!--ListOfPayments strings-->
     <string name="add_card_string">Add Card</string>
 

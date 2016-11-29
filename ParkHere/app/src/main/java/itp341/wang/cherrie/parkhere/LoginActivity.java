@@ -156,7 +156,14 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 progressView.setVisibility(View.VISIBLE);
                 progressView.startAnimation();
-                signIn();
+                if (hasEmptyFields()) {
+                    signIn();
+                } else {
+                    Debug.printToast("Please fill out the input fields", getApplicationContext());
+                    progressView.stopAnimation();
+                    progressView.setVisibility(View.GONE);
+                }
+                // remember stuff
                 if(isRemember){
                     getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
                             .edit()
@@ -173,6 +180,14 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private boolean hasEmptyFields(){
+        if(emailEditText.getText().toString().isEmpty() && passwordEditText.getText().toString().isEmpty()){
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private void signIn() {

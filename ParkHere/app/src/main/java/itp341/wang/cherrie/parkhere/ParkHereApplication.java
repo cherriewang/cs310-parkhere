@@ -2,6 +2,8 @@ package itp341.wang.cherrie.parkhere;
 
 import android.app.Application;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +33,9 @@ public class ParkHereApplication extends Application{
         Fresco.initialize(this);
         FirebaseApp.initializeApp(this);
         myUser = null;
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
     }
 
     @Override
