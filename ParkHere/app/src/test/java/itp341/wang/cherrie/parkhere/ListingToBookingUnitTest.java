@@ -41,7 +41,7 @@ public class ListingToBookingUnitTest {
         myListing.setHandicapped(true);
         myListing.setTandem(true);
 
-        myBooking = new Booking(myListing, myUser.getmFirstName());
+        myBooking = new Booking(myListing, myUser.getmFirstName(), 0, 0, 0, 0);
     }
 
     @Test
