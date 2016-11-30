@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import itp341.wang.cherrie.parkhere.model.Listing;
 import itp341.wang.cherrie.parkhere.model.Review;
@@ -65,8 +67,7 @@ public class ListOfRatingsActivity extends AppCompatActivity {
 
     private void createCards() {
         ArrayList<Review> listOfReviews = new ArrayList<>();
-        if(myListing.getReviews() != null)
-            listOfReviews = (ArrayList<Review>) myListing.getReviews().values();
+        FirebaseDatabase.getInstance().getReference();
         mRatingAdapter = new RatingAdapter(getApplicationContext(), 0, listOfReviews);
         ratingsListView.setAdapter(mRatingAdapter);
     }
