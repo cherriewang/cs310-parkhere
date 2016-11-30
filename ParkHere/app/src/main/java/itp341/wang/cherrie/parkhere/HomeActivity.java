@@ -159,7 +159,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private final int CREATE_PARKING_SPOT_REQUEST_CODE = 4;
 
     public final static String USER_PROFILE_INTENT_KEY = "Sending user object to detail user profile activity";
-    public static final String LISTING_AVAILIBILITY_INTENT_KEY = "Passing if a listing(s) is available or not";
+    public final static String LISTING_AVAILIBILITY_INTENT_KEY = "Passing if a listing(s) is available or not";
+    public final static String FROM_MONTH_INTENT_KEY = "From Month";
+    public final static String FROM_DAY_INTENT_KEY = "From Day";
+    public final static String TO_MONTH_INTENT_KEY = "To Month";
+    public final static String TO_DAY_INTENT_KEY = "To Day";
 
     private PermissionListener permissionListener = new PermissionListener() {
         @Override
@@ -1041,6 +1045,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         Intent i = new Intent(HomeActivity.this, ListingDetailActivity.class);
         i.putExtra(ListingAdapter.LISTING_DETAIL_INTENT_KEY, listingSelected);
         i.putExtra(LISTING_AVAILIBILITY_INTENT_KEY, isAvailable);
+        i.putExtra(FROM_MONTH_INTENT_KEY, fromMonthOfYear);
+        i.putExtra(FROM_DAY_INTENT_KEY, fromDayOfMonth);
+        i.putExtra(TO_MONTH_INTENT_KEY, toMonthOfYear);
+        i.putExtra(TO_DAY_INTENT_KEY, toDayOfMonth);
         startActivity(i);
     }
 

@@ -13,7 +13,7 @@ public class Booking implements Serializable{
         super();
     }
 
-    public Booking(Listing l, String bookingOwner) {
+    public Booking(Listing l, String bookingOwner, int fromMonthOfYear, int fromDayOfMonth, int toMonthOfYear, int toDayOfMonth) {
         this();
         if (l != null) {
             this.bookingOwner = bookingOwner;
@@ -26,6 +26,10 @@ public class Booking implements Serializable{
             this.location = l.getLocation();
             this.about = l.getAbout();
             this.price = l.getPrice();
+            this.fromMonthOfYear = fromMonthOfYear;
+            this.fromDayOfMonth = fromDayOfMonth;
+            this.toMonthOfYear = toMonthOfYear;
+            this.toDayOfMonth = toDayOfMonth;
         }
     }
 
@@ -39,6 +43,10 @@ public class Booking implements Serializable{
     private String location;
     private String about;
     private double price;
+    private int fromMonthOfYear;
+    private int fromDayOfMonth;
+    private int toMonthOfYear;
+    private int toDayOfMonth;
 
     public String getBookingOwner() {
         return bookingOwner;
@@ -118,5 +126,37 @@ public class Booking implements Serializable{
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public int getFromDayOfMonth() {
+        return fromDayOfMonth;
+    }
+
+    public void setFromDayOfMonth(int fromDayOfMonth) {
+        this.fromDayOfMonth = fromDayOfMonth;
+    }
+
+    public int getFromMonthOfYear() {
+        return fromMonthOfYear;
+    }
+
+    public void setFromMonthOfYear(int fromMonthOfYear) {
+        this.fromMonthOfYear = fromMonthOfYear;
+    }
+
+    public int getToDayOfMonth() {
+        return toDayOfMonth;
+    }
+
+    public void setToDayOfMonth(int toDayOfMonth) {
+        this.toDayOfMonth = toDayOfMonth;
+    }
+
+    public int getToMonthOfYear() {
+        return toMonthOfYear;
+    }
+
+    public void setToMonthOfYear(int toMonthOfYear) {
+        this.toMonthOfYear = toMonthOfYear;
     }
 }

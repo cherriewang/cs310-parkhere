@@ -80,6 +80,13 @@ public class ListingDetailActivity extends AppCompatActivity{
     private boolean isAvailable;
     private boolean useAccountBalance;
 
+    private int fromMonthOfYear;
+    private int fromDayOfMonth;
+    private int toMonthOfYear;
+    private int toDayOfMonth;
+
+    private boolean isOverlapping;
+
     public static final int SELECT_PAYMENT_REQUEST_CODE = 0;
     public static final String SELECTING_PAYMENT = "Selecting Payment";
     public static final String MORE_REVIEWS_INTENT_KEY = "Sending selected listing to display more reviews";
@@ -96,6 +103,14 @@ public class ListingDetailActivity extends AppCompatActivity{
             myListing = null;
         if(i.hasExtra(HomeActivity.LISTING_AVAILIBILITY_INTENT_KEY))
             isAvailable = i.getBooleanExtra(HomeActivity.LISTING_AVAILIBILITY_INTENT_KEY, false);
+        if(i.hasExtra(HomeActivity.FROM_MONTH_INTENT_KEY))
+            fromMonthOfYear = i.getIntExtra(HomeActivity.FROM_MONTH_INTENT_KEY, 0);
+        if(i.hasExtra(HomeActivity.FROM_DAY_INTENT_KEY))
+            fromDayOfMonth = i.getIntExtra(HomeActivity.FROM_DAY_INTENT_KEY, 0);
+        if(i.hasExtra(HomeActivity.TO_MONTH_INTENT_KEY))
+            toMonthOfYear = i.getIntExtra(HomeActivity.TO_MONTH_INTENT_KEY, 0);
+        if(i.hasExtra(HomeActivity.TO_DAY_INTENT_KEY))
+            toDayOfMonth = i.getIntExtra(HomeActivity.TO_DAY_INTENT_KEY, 0);
 
 
         myUser = ((ParkHereApplication) this.getApplication()).getMyUser();
@@ -171,9 +186,9 @@ public class ListingDetailActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 BookListing();
-                Debug.printToast("Booking listing!", getApplicationContext());
-                Intent i = new Intent(ListingDetailActivity.this, ListOfBookingsActivity.class);
-                startActivity(i);
+                //Debug.printToast("Booking listing!", getApplicationContext());
+                //Intent i = new Intent(ListingDetailActivity.this, ListOfBookingsActivity.class);
+                //startActivity(i);
             }
         });
         ownerTextView.setOnClickListener(new View.OnClickListener() {
@@ -238,32 +253,66 @@ public class ListingDetailActivity extends AppCompatActivity{
     }
 
     private void BookListing() {
-        Booking b = new Booking(myListing, myUser.getmNormalizedEmail());
-
-        Log.e("ListingDetail","ListingOwner: "+myListing.getListingOwner());
-
-        Transaction t = new Transaction();
-        t.setBalance(myListing.getPrice());
-        t.setListingOwner(myListing.getListingOwner());
-        t.setPayer(myUser.getmNormalizedEmail());
-        t.setToYear(myListing.getToYear());
-        t.setToMonthOfYear(myListing.getToMonthOfYear());
-        t.setToDayOfMonth(myListing.getToDayOfMonth());
-        t.setToHourString(myListing.getToHourString());
-        t.setToMinuteString(myListing.getToMinuteString());
-        t.setApproved(false);
-        // add Transaction to User
-        myUser.appendTransaction(t);
+        isOverlapping = false;
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
+        myRef.child("listings").child(myListing.getListingTitle()).child("bookings").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot postSnapShot : dataSnapshot.getChildren()){
+                    Booking booking = postSnapShot.getValue(Booking.class);
 
-        myUser.appendBooking(b);
-        myListing.addBooking(b);
-        myRef.child("listings").child(b.getOwner().getListingTitle()).child("bookings").child(b.getBookingOwner()).setValue(b);
-        myRef.child("users").child(myUser.getmNormalizedEmail()).child("mBookings").child(b.getBookingTitle()).setValue(b);
-        myRef.child("users").child(myUser.getmNormalizedEmail()).child("mTransactions").child(t.getListingOwner()).setValue(t);
-        // myRef.child("transaction-tracker").child(t.getListingOwner()).setValue(t);
+                    System.out.println("Pending booking days range is " + fromDayOfMonth + " to " + toDayOfMonth);
+                    System.out.println("\n" + booking.getBookingOwner());
+                    System.out.println("Compared booking days range is " + booking.getFromDayOfMonth() + " to " + booking.getToDayOfMonth());
+
+                    if(booking.getFromDayOfMonth() <= toDayOfMonth && fromDayOfMonth <= booking.getToDayOfMonth()){
+                        System.out.println("Overlapping");
+                        isOverlapping = true;
+                        break;
+                    }
+                    else
+                        System.out.println("Not overlapping!");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        if(!isOverlapping){
+            System.out.println("Going to do split booking!");
+            /*Booking b = new Booking(myListing, myUser.getmNormalizedEmail(), fromMonthOfYear, fromDayOfMonth, toMonthOfYear, toDayOfMonth);
+
+            Log.e("ListingDetail","ListingOwner: "+myListing.getListingOwner());
+
+            Transaction t = new Transaction();
+            t.setBalance(myListing.getPrice());
+            t.setListingOwner(myListing.getListingOwner());
+            t.setPayer(myUser.getmNormalizedEmail());
+            t.setToYear(myListing.getToYear());
+            t.setToMonthOfYear(myListing.getToMonthOfYear());
+            t.setToDayOfMonth(myListing.getToDayOfMonth());
+            t.setToHourString(myListing.getToHourString());
+            t.setToMinuteString(myListing.getToMinuteString());
+            t.setApproved(false);
+            // add Transaction to User
+            myUser.appendTransaction(t);
+
+            myUser.appendBooking(b);
+            //myListing.addBooking(b);
+            myRef.child("listings").child(b.getOwner().getListingTitle()).child("bookings").child(b.getBookingOwner()).setValue(b);
+            myRef.child("users").child(myUser.getmNormalizedEmail()).child("mBookings").child(b.getBookingTitle()).setValue(b);
+            myRef.child("users").child(myUser.getmNormalizedEmail()).child("mTransactions").child(t.getListingOwner()).setValue(t);*/
+            // myRef.child("transaction-tracker").child(t.getListingOwner()).setValue(t);
+        } else {
+            System.out.println("Can't split book, overlapping");
+            Debug.printToast("Based on existing bookings, we could not accomodate your reservation. Please try another availibility"
+                        , getApplicationContext());
+        }
     }
 
     public float getAverageRating(ArrayList<Review> reviewList) {
