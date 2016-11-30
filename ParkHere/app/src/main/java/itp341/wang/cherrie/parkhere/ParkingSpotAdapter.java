@@ -129,7 +129,7 @@ public class ParkingSpotAdapter extends ArrayAdapter<ParkingSpot> {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference();
                 //Remove all associated listings
-                myRef.child("users").child(myUser.getmNormalizedEmail()).child("mListings");
+                /*myRef.child("users").child(myUser.getmNormalizedEmail()).child("mListings");
                 myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -146,7 +146,7 @@ public class ParkingSpotAdapter extends ArrayAdapter<ParkingSpot> {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {}
-                });
+                });*/
                 //Remove parking spot
                 myRef.child("parking spots").child(selectedParkingSpot.getParkingSpotName()).removeValue();
                 myRef.child("users").child(myUser.getmNormalizedEmail()).child("mParkingSpots").child(selectedParkingSpot.getParkingSpotName()).removeValue();
