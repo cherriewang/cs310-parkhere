@@ -51,9 +51,10 @@ public class RatingAdapter extends ArrayAdapter<Review>{
         //review listing rating
         //review owner rating
         // TODO: Fix stars
+
         holder.reviewTextView.setText(results.getReviewText());
-        holder.ownerReviewRatingBar.setNumStars((int) results.getOwnerRating());
-        holder.listingReviewRatingBar.setNumStars((int) results.getListingRating());
+        holder.ownerReviewRatingBar.setRating((int) results.getOwnerRating());
+        holder.listingReviewRatingBar.setRating((int) results.getListingRating());
         holder.reviewNameTextView.setText(results.getReviewer());
         return row;
     }
