@@ -185,10 +185,23 @@ public class ListingDetailActivity extends AppCompatActivity{
         confirmBookingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BookListing();
-                //Debug.printToast("Booking listing!", getApplicationContext());
-                //Intent i = new Intent(ListingDetailActivity.this, ListOfBookingsActivity.class);
-                //startActivity(i);
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                final DatabaseReference myRef = database.getReference().child("listings").child(myListing.getListingTitle()).child("bookings");
+                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.hasChildren())
+                            splitBooking(myRef);
+                        else
+                            bookListing();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {}
+                });
+                Debug.printToast("Booking listing!", getApplicationContext());
+                Intent i = new Intent(ListingDetailActivity.this, ListOfBookingsActivity.class);
+                startActivity(i);
             }
         });
         ownerTextView.setOnClickListener(new View.OnClickListener() {
@@ -252,12 +265,9 @@ public class ListingDetailActivity extends AppCompatActivity{
         });
     }
 
-    private void BookListing() {
+    private void splitBooking(DatabaseReference myRef) {
         isOverlapping = false;
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
-        myRef.child("listings").child(myListing.getListingTitle()).child("bookings").addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot postSnapShot : dataSnapshot.getChildren()){
@@ -275,6 +285,15 @@ public class ListingDetailActivity extends AppCompatActivity{
                     else
                         System.out.println("Not overlapping!");
                 }
+
+                if(!isOverlapping){
+                    System.out.println("Going to do split booking!");
+                    bookListing();
+                } else {
+                    System.out.println("Can't split book, overlapping");
+                    Debug.printToast("Based on existing bookings, we could not accomodate your reservation. Please try another availibility"
+                            , getApplicationContext());
+                }
             }
 
             @Override
@@ -282,37 +301,35 @@ public class ListingDetailActivity extends AppCompatActivity{
 
             }
         });
+    }
 
-        if(!isOverlapping){
-            System.out.println("Going to do split booking!");
-            /*Booking b = new Booking(myListing, myUser.getmNormalizedEmail(), fromMonthOfYear, fromDayOfMonth, toMonthOfYear, toDayOfMonth);
+    private void bookListing(){
+        Booking b = new Booking(myListing, myUser.getmNormalizedEmail(), fromMonthOfYear, fromDayOfMonth, toMonthOfYear, toDayOfMonth);
 
-            Log.e("ListingDetail","ListingOwner: "+myListing.getListingOwner());
+        Log.e("ListingDetail","ListingOwner: "+myListing.getListingOwner());
 
-            Transaction t = new Transaction();
-            t.setBalance(myListing.getPrice());
-            t.setListingOwner(myListing.getListingOwner());
-            t.setPayer(myUser.getmNormalizedEmail());
-            t.setToYear(myListing.getToYear());
-            t.setToMonthOfYear(myListing.getToMonthOfYear());
-            t.setToDayOfMonth(myListing.getToDayOfMonth());
-            t.setToHourString(myListing.getToHourString());
-            t.setToMinuteString(myListing.getToMinuteString());
-            t.setApproved(false);
-            // add Transaction to User
-            myUser.appendTransaction(t);
+        Transaction t = new Transaction();
+        t.setBalance(myListing.getPrice());
+        t.setListingOwner(myListing.getListingOwner());
+        t.setPayer(myUser.getmNormalizedEmail());
+        t.setToYear(myListing.getToYear());
+        t.setToMonthOfYear(myListing.getToMonthOfYear());
+        t.setToDayOfMonth(myListing.getToDayOfMonth());
+        t.setToHourString(myListing.getToHourString());
+        t.setToMinuteString(myListing.getToMinuteString());
+        t.setApproved(false);
+        // add Transaction to User
+        myUser.appendTransaction(t);
 
-            myUser.appendBooking(b);
-            //myListing.addBooking(b);
-            myRef.child("listings").child(b.getOwner().getListingTitle()).child("bookings").child(b.getBookingOwner()).setValue(b);
-            myRef.child("users").child(myUser.getmNormalizedEmail()).child("mBookings").child(b.getBookingTitle()).setValue(b);
-            myRef.child("users").child(myUser.getmNormalizedEmail()).child("mTransactions").child(t.getListingOwner()).setValue(t);*/
-            // myRef.child("transaction-tracker").child(t.getListingOwner()).setValue(t);
-        } else {
-            System.out.println("Can't split book, overlapping");
-            Debug.printToast("Based on existing bookings, we could not accomodate your reservation. Please try another availibility"
-                        , getApplicationContext());
-        }
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference();
+
+        myUser.appendBooking(b);
+        //myListing.addBooking(b);
+        myRef.child("listings").child(b.getOwner().getListingTitle()).child("bookings").child(b.getBookingOwner()).setValue(b);
+        myRef.child("users").child(myUser.getmNormalizedEmail()).child("mBookings").child(b.getBookingTitle()).setValue(b);
+        myRef.child("users").child(myUser.getmNormalizedEmail()).child("mTransactions").child(t.getListingOwner()).setValue(t);
+        // myRef.child("transaction-tracker").child(t.getListingOwner()).setValue(t);
     }
 
     public float getAverageRating(ArrayList<Review> reviewList) {
