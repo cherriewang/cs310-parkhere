@@ -106,6 +106,15 @@ public class Listing implements Serializable{
     private String latestReviewer;
 
     private HashMap<String, Review> reviews;
+
+    public HashMap<String, Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(HashMap<String, Booking> bookings) {
+        this.bookings = bookings;
+    }
+
     private HashMap<String, Booking> bookings;
 
     public User getOwner() { return owner; }
@@ -367,7 +376,7 @@ public class Listing implements Serializable{
         reviews.put(r.getReviewer(), r);
     }
 
-    /*public void addBooking(Booking b)
+    public void addBooking(Booking b)
     {
         if (bookings == null) {
             bookings = new HashMap<>();
@@ -379,7 +388,7 @@ public class Listing implements Serializable{
     public void removeBooking(Booking b)
     {
         bookings.remove(b.getBookingOwner());
-    }*/
+    }
 
     public Review getLatestReview(){
         if(reviews != null) {

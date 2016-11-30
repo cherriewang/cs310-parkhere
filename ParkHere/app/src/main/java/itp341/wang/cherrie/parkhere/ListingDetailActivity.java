@@ -259,6 +259,7 @@ public class ListingDetailActivity extends AppCompatActivity{
         DatabaseReference myRef = database.getReference();
 
         myUser.appendBooking(b);
+        myListing.addBooking(b);
         myRef.child("listings").child(b.getOwner().getListingTitle()).child("bookings").child(b.getBookingOwner()).setValue(b);
         myRef.child("users").child(myUser.getmNormalizedEmail()).child("mBookings").child(b.getBookingTitle()).setValue(b);
         myRef.child("users").child(myUser.getmNormalizedEmail()).child("mTransactions").child(t.getListingOwner()).setValue(t);

@@ -1016,6 +1016,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             if(isPriorBookings){
                 for(Marker marker : markerListingHashmap.keySet()){
                     //TODO set orange to often, yellow to not often listings, none leave alone
+                    int numBookings = markerListingHashmap.get(marker).getBookings().size();
                     marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
                 }
             }
